@@ -30,7 +30,7 @@ const NAV = [
     href: '/log',
     label: 'Log',
     /* Centre floating action button — no active state, always green */
-    icon: (_active: boolean) => (
+    icon: () => (
       <div className="w-12 h-12 rounded-2xl bg-primary shadow-lg shadow-primary/30
         flex items-center justify-center -mt-5
         active:scale-95 transition-transform duration-100">

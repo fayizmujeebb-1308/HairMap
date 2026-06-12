@@ -167,7 +167,7 @@ export default async function DashboardPage() {
         <Link href="/log"
           className="flex items-center justify-between px-5 py-3 bg-gray-50 hover:bg-primary/5 transition-colors group"
           style={{ borderTop: '0.5px solid #f3f4f6' }}>
-          <span className="text-sm font-medium text-primary">Log today's treatment</span>
+          <span className="text-sm font-medium text-primary">Log today&apos;s treatment</span>
           <svg className="w-4 h-4 text-primary group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>

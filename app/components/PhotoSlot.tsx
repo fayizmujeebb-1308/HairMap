@@ -12,7 +12,7 @@ interface Props {
   photoId:   string | null
 }
 
-export default function PhotoSlot({ angle, label, desc, photoUrl: initialUrl, photoId: initialId }: Props) {
+export default function PhotoSlot({ angle, label, desc, photoUrl: initialUrl }: Props) {
   const [url, setUrl]         = useState(initialUrl)
   const [pending, start]      = useTransition()
   const [error, setError]     = useState('')

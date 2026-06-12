@@ -145,7 +145,6 @@ export default function SetupPage() {
 
   const handleAdd = () => {
     if (!name.trim()) { setAddMsg('Treatment name is required'); return }
-    const times = [morn && 'morning', eve && 'evening'].filter(Boolean) as string[]
     const fd = new FormData()
     fd.set('treatment_name', name.trim())
     fd.set('treatment_type', type)
@@ -367,7 +366,7 @@ export default function SetupPage() {
                   </button>
                 ))}
               </div>
-              {!morn && !eve && <p className="text-[10px] text-gray-400 mt-1.5">No time set — will appear as "Daily" in log.</p>}
+              {!morn && !eve && <p className="text-[10px] text-gray-400 mt-1.5">No time set — will appear as &quot;Daily&quot; in log.</p>}
             </div>
 
             {addMsg && (

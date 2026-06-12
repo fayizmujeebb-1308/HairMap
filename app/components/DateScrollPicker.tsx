@@ -29,7 +29,7 @@ function playTick() {
     g.connect(ac.destination)
     osc.start(now)
     osc.stop(now + 0.02)
-  } catch (_) {}
+  } catch {}
 }
 
 /* ── Column ── */
