@@ -2,26 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Brand tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary:       #1D9E75;
+  --color-primary-dark:  #0F6E56;
+  --color-primary-light: #E1F5EE;
+
+  /* Safe area fallbacks for non-iOS */
+  --sat: env(safe-area-inset-top,    0px);
+  --sar: env(safe-area-inset-right,  0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left,   0px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base resets ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  /* Stop iOS landscape font boosting */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  background-color: #F8F9FA;
+  color: #111827;
+
+  /* Remove iOS blue tap flash on every tappable element */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Disable long-press callout (copy/paste bubble) on non-text areas */
+  -webkit-touch-callout: none;
+
+  /* Prevent body from rubber-banding — pages handle their own scroll */
+  overscroll-behavior-y: none;
 }
 
+/* ── Momentum scrolling on scrollable containers ── */
+.overflow-y-auto,
+.overflow-y-scroll,
+.overflow-x-auto,
+.overflow-x-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Prevent iOS zoom on input focus (must be ≥ 16px) ──
+   We only apply on iOS (identified by touch-callout support).
+   This overrides Tailwind's text-sm etc. only on iOS Safari. */
+@supports (-webkit-touch-callout: none) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* ── Remove default input / button appearance on iOS ── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"],
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0; /* iOS adds its own radius — reset so Tailwind controls it */
+}
+
+button {
+  -webkit-appearance: none;
+  touch-action: manipulation; /* removes 300ms tap delay */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Smooth text rendering ── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Tailwind utilities ── */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Padding helpers that include safe area */
+  .pt-safe {
+    padding-top: var(--sat);
+  }
+  .pb-safe {
+    padding-bottom: var(--sab);
+  }
+  .px-safe {
+    padding-left: var(--sal);
+    padding-right: var(--sar);
+  }
+
+  /* Bottom nav height = 64px + safe area bottom */
+  .pb-nav {
+    padding-bottom: calc(4rem + var(--sab));
   }
 }

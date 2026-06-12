@@ -9,8 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "#1D9E75",
+          dark: "#0F6E56",
+          light: "#E1F5EE",
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-dm-sans)", "sans-serif"],
+        serif: ["var(--font-dm-serif)", "serif"],
+      },
+      borderRadius: {
+        component: "8px",
+        card: "12px",
+      },
+      borderWidth: {
+        DEFAULT: "0.5px",
       },
     },
   },
