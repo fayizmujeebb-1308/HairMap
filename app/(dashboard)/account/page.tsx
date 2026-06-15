@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export default async function AccountPage() {
   const supabase = await createClient()
@@ -32,9 +33,15 @@ export default async function AccountPage() {
   return (
     <div className="space-y-5">
 
-      <div className="pt-2">
-        <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Account</p>
-        <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Your Profile</h1>
+      <div className="flex items-start justify-between pt-2">
+        <div>
+          <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Account</p>
+          <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Your Profile</h1>
+        </div>
+        <Link href="/account/edit"
+          className="text-xs font-semibold text-primary bg-primary/8 px-3 py-1.5 rounded-xl active:scale-95 transition-transform">
+          Edit
+        </Link>
       </div>
 
       {/* Avatar / name card */}
