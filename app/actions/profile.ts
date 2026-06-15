@@ -4,10 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-export async function updateProfile(formData: FormData) {
+export async function updateProfile(formData: FormData): Promise<void> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) redirect('/login')
 
   const first_name    = formData.get('first_name') as string
   const last_name     = formData.get('last_name') as string
@@ -17,7 +17,7 @@ export async function updateProfile(formData: FormData) {
   const norwood_stage = formData.get('norwood_stage') as string
   const treatment_status = formData.get('treatment_status') as string
 
-  const { error } = await supabase
+  await supabase
     .from('profiles')
     .update({
       first_name,
@@ -30,8 +30,6 @@ export async function updateProfile(formData: FormData) {
       updated_at:       new Date().toISOString(),
     })
     .eq('user_id', user.id)
-
-  if (error) return { error: error.message }
 
   revalidatePath('/account')
   redirect('/account')

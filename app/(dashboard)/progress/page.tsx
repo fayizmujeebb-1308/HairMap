@@ -39,8 +39,10 @@ function last8Weeks(): { label: string; start: string; end: string }[] {
   }).reverse()
 }
 
-function milestone(daysTracked: number, streak: number, logCount: number, photoCount: number) {
-  const list = []
+type Milestone = { icon: string; label: string; done: boolean; progress?: number; total?: number }
+
+function milestone(daysTracked: number, streak: number, logCount: number, photoCount: number): Milestone[] {
+  const list: Milestone[] = []
   if (daysTracked >= 1)   list.push({ icon: '🌱', label: 'First day logged',    done: true })
   if (streak >= 7)        list.push({ icon: '🔥', label: '7-day streak',        done: true })
   else                    list.push({ icon: '🔥', label: '7-day streak',        done: false, progress: streak, total: 7 })
@@ -228,13 +230,13 @@ export default async function ProgressPage() {
                 {!m.done && 'progress' in m && (
                   <div className="mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-primary/40 rounded-full"
-                      style={{ width: `${Math.round((m.progress / m.total) * 100)}%` }} />
+                      style={{ width: `${Math.round(((m.progress ?? 0) / (m.total ?? 1)) * 100)}%` }} />
                   </div>
                 )}
               </div>
               {m.done
                 ? <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                : <span className="text-[10px] text-gray-300 shrink-0">{'progress' in m ? `${m.progress}/${m.total}` : ''}</span>
+                : <span className="text-[10px] text-gray-300 shrink-0">{m.progress != null ? `${m.progress}/${m.total}` : ''}</span>
               }
             </div>
           ))}
