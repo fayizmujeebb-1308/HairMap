@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogDoseButton from '@/app/components/LogDoseButton'
 import SideEffectLogger from '@/app/components/SideEffectLogger'
+import ReminderSetup from '@/app/components/ReminderSetup'
 
 const TYPE_ICON: Record<string, string> = {
   oral:       '💊',
@@ -51,10 +52,11 @@ export default async function LogPage() {
   const todayStr = today()
   const monthStart = todayStr.slice(0, 7) + '-01'
 
-  const [{ data: stack }, { data: todayLogs }, { data: monthLogs }] = await Promise.all([
+  const [{ data: stack }, { data: todayLogs }, { data: monthLogs }, { data: reminders }] = await Promise.all([
     supabase.from('treatment_stack').select('*').eq('user_id', user.id).eq('is_active', true).order('created_at'),
     supabase.from('treatment_logs').select('stack_item_id, notes, treatment_name').eq('user_id', user.id).gte('taken_at', todayStr + 'T00:00:00').lte('taken_at', todayStr + 'T23:59:59'),
     supabase.from('treatment_logs').select('taken_at').eq('user_id', user.id).gte('taken_at', monthStart),
+    supabase.from('reminder_settings').select('*').eq('user_id', user.id).eq('is_active', true),
   ])
 
   const streak    = calcStreak(monthLogs ?? [])
@@ -63,17 +65,22 @@ export default async function LogPage() {
   const adherence  = daysInMonth > 0 ? Math.round((loggedDays.size / daysInMonth) * 100) : 0
   const week       = weekDays()
 
-  // Build a set of "item_id:timeOfDay" for quick lookup
   const loggedSet = new Set(
     (todayLogs ?? []).map(l => `${l.stack_item_id}:${l.notes ?? 'once'}`)
   )
+
+  // Group reminders by stack item
+  const remindersByItem: Record<string, { id: string; reminder_time: string; email_enabled: boolean; push_enabled: boolean }[]> = {}
+  for (const r of reminders ?? []) {
+    if (!remindersByItem[r.stack_item_id]) remindersByItem[r.stack_item_id] = []
+    remindersByItem[r.stack_item_id].push(r)
+  }
 
   const morning = (stack ?? []).filter(s => s.times_of_day?.includes('morning'))
   const evening = (stack ?? []).filter(s => s.times_of_day?.includes('evening'))
   const once    = (stack ?? []).filter(s => !s.times_of_day?.includes('morning') && !s.times_of_day?.includes('evening'))
 
   const hasStack = (stack?.length ?? 0) > 0
-
   const dateLabel = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
   return (
@@ -162,7 +169,9 @@ export default async function LogPage() {
           {morning.map(item => (
             <TreatmentRow key={item.id} item={item}
               isLogged={loggedSet.has(`${item.id}:morning`)}
-              timeOfDay="morning" />
+              timeOfDay="morning"
+              existingReminders={remindersByItem[item.id] ?? []}
+            />
           ))}
         </div>
       )}
@@ -175,7 +184,9 @@ export default async function LogPage() {
           {once.map(item => (
             <TreatmentRow key={item.id} item={item}
               isLogged={loggedSet.has(`${item.id}:once`)}
-              timeOfDay="once" />
+              timeOfDay="once"
+              existingReminders={remindersByItem[item.id] ?? []}
+            />
           ))}
         </div>
       )}
@@ -187,7 +198,9 @@ export default async function LogPage() {
           {evening.map(item => (
             <TreatmentRow key={item.id} item={item}
               isLogged={loggedSet.has(`${item.id}:evening`)}
-              timeOfDay="evening" />
+              timeOfDay="evening"
+              existingReminders={remindersByItem[item.id] ?? []}
+            />
           ))}
         </div>
       )}
@@ -200,38 +213,48 @@ export default async function LogPage() {
 }
 
 /* ── Treatment row card ── */
-function TreatmentRow({ item, isLogged, timeOfDay }: {
+function TreatmentRow({ item, isLogged, timeOfDay, existingReminders }: {
   item: Record<string, string>
   isLogged: boolean
   timeOfDay: string
+  existingReminders: { id: string; reminder_time: string; email_enabled: boolean; push_enabled: boolean }[]
 }) {
   return (
-    <div className={`bg-white rounded-2xl border overflow-hidden flex items-center gap-4 px-4 py-3.5 transition-colors ${
+    <div className={`bg-white rounded-2xl border overflow-hidden px-4 py-3.5 transition-colors ${
       isLogged ? 'border-primary/15' : 'border-gray-100'
     }`} style={{ borderWidth: '0.5px' }}>
-      {/* Icon */}
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${
-        isLogged ? 'bg-primary/10' : 'bg-gray-50'
-      }`}>
-        {TYPE_ICON[item.treatment_type] ?? '💊'}
+      <div className="flex items-center gap-4">
+        {/* Icon */}
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${
+          isLogged ? 'bg-primary/10' : 'bg-gray-50'
+        }`}>
+          {TYPE_ICON[item.treatment_type] ?? '💊'}
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <p className={`text-sm font-semibold truncate ${isLogged ? 'text-primary' : 'text-gray-900'}`}>
+            {item.treatment_name}
+          </p>
+          <p className="text-[10px] text-gray-400 mt-0.5">
+            {item.dose && `${item.dose} · `}{FREQ_LABEL[item.frequency] ?? item.frequency}
+          </p>
+        </div>
+
+        {/* Log button */}
+        <LogDoseButton
+          stackItemId={item.id}
+          treatmentName={item.treatment_name}
+          timeOfDay={timeOfDay}
+          isLogged={isLogged}
+        />
       </div>
 
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <p className={`text-sm font-semibold truncate ${isLogged ? 'text-primary' : 'text-gray-900'}`}>
-          {item.treatment_name}
-        </p>
-        <p className="text-[10px] text-gray-400 mt-0.5">
-          {item.dose && `${item.dose} · `}{FREQ_LABEL[item.frequency] ?? item.frequency}
-        </p>
-      </div>
-
-      {/* Log button */}
-      <LogDoseButton
+      {/* Reminder setup */}
+      <ReminderSetup
         stackItemId={item.id}
         treatmentName={item.treatment_name}
-        timeOfDay={timeOfDay}
-        isLogged={isLogged}
+        existingReminders={existingReminders}
       />
     </div>
   )
