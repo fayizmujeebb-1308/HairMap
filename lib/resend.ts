@@ -1,6 +1,8 @@
 import { Resend } from 'resend'
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+export function getResend() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 export async function sendReminderEmail({
   to,
@@ -13,6 +15,7 @@ export async function sendReminderEmail({
   treatmentName: string
   streak: number
 }) {
+  const resend = getResend()
   const streakLine = streak >= 2
     ? `You&apos;re on a <strong>${streak}-day streak</strong> 🔥 Don&apos;t break it now.`
     : `Every dose counts. Keep going 💪`
