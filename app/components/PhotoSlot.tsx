@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { uploadPhoto } from '@/app/actions/photos'
 
 interface Props {
@@ -120,7 +121,14 @@ export default function PhotoSlot({ angle, label, desc, photoUrl: initialUrl }: 
               : <span className="text-[10px] text-gray-300">+ Add</span>
             }
           </div>
-          {error && <p className="text-[10px] text-red-500 mt-1">{error}</p>}
+          {error === 'UPGRADE_REQUIRED' ? (
+            <p className="text-[10px] text-amber-600 mt-1">
+              Photo limit reached.{' '}
+              <Link href="/pricing" className="underline font-semibold" onClick={e => e.stopPropagation()}>Upgrade to Pro</Link>
+            </p>
+          ) : error ? (
+            <p className="text-[10px] text-red-500 mt-1">{error}</p>
+          ) : null}
         </div>
       </div>
 

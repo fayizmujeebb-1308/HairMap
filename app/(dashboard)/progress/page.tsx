@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import AIAnalysis from '@/app/components/AIAnalysis'
+import UpgradeGate from '@/app/components/UpgradeGate'
 
 /* ── helpers ── */
 function toDate(iso: string) { return iso.split('T')[0] }
@@ -66,11 +68,25 @@ export default async function ProgressPage() {
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-  const [{ data: profile }, { data: photos }, { data: logs }] = await Promise.all([
-    supabase.from('profiles').select('created_at, norwood_stage, first_name').eq('user_id', user.id).single(),
-    supabase.from('progress_photos').select('taken_at, angle, thumb_path').eq('user_id', user.id).order('taken_at', { ascending: false }),
+  const [{ data: profile }, { data: photos }, { data: logs }, { data: lastAnalysis }] = await Promise.all([
+    supabase.from('profiles').select('created_at, norwood_stage, first_name, subscription_status').eq('user_id', user.id).single(),
+    supabase.from('progress_photos').select('taken_at, angle, thumb_path').eq('user_id', user.id).order('taken_at', { ascending: true }),
     supabase.from('treatment_logs').select('taken_at').eq('user_id', user.id).order('taken_at', { ascending: false }),
+    supabase.from('ai_analyses').select('analysis, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
   ])
+
+  // Photo comparison: first vs latest per angle
+  const photosByAngle: Record<string, { first: string; latest: string; count: number }> = {}
+  for (const p of photos ?? []) {
+    if (!p.thumb_path) continue
+    if (!photosByAngle[p.angle]) {
+      photosByAngle[p.angle] = { first: p.thumb_path, latest: p.thumb_path, count: 1 }
+    } else {
+      photosByAngle[p.angle].latest = p.thumb_path
+      photosByAngle[p.angle].count++
+    }
+  }
+  const comparisonAngles = Object.entries(photosByAngle).filter(([, v]) => v.count >= 2)
 
   const todayStr    = today()
   const logDates    = new Set((logs ?? []).map(l => toDate(l.taken_at)))
@@ -90,12 +106,13 @@ export default async function ProgressPage() {
     return { ...w, pct, loggedDays }
   })
 
-  // Latest photo per angle
+  // Latest photo per angle (photos ordered ascending so iterate reversed)
   const latestPhotos: Record<string, string> = {}
-  for (const p of photos ?? []) {
+  for (const p of [...(photos ?? [])].reverse()) {
     if (!latestPhotos[p.angle] && p.thumb_path) latestPhotos[p.angle] = p.thumb_path
   }
 
+  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
   const milestones = milestone(daysTracked, streak, logCount, photoCount)
   const ringOffset = RING_CIRC * (1 - adherence / 100)
 
@@ -111,13 +128,13 @@ export default async function ProgressPage() {
     <div className="space-y-5">
 
       {/* Header */}
-      <div className="pt-2">
+      <div className="pt-2 animate-fade-in-up">
         <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Your journey</p>
         <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Progress</h1>
       </div>
 
       {/* Hero — adherence ring + stats */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-5" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-5">
         <div className="flex items-center gap-5">
           {/* Ring */}
           <div className="relative shrink-0 w-[110px] h-[110px]">
@@ -159,7 +176,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* 28-day heatmap */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
         <p className="text-xs font-semibold text-gray-700 mb-3">Last 28 days</p>
         <div className="grid grid-cols-7 gap-1.5">
           {days28.map(date => {
@@ -188,7 +205,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* 8-week bar chart */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
         <p className="text-xs font-semibold text-gray-700 mb-4">Weekly adherence</p>
         <div className="flex items-end gap-1.5 h-24">
           {weeklyData.map((w, i) => {
@@ -216,8 +233,11 @@ export default async function ProgressPage() {
         </div>
       </div>
 
+      {/* AI Analysis — above milestones so it's not buried */}
+      <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} />
+
       {/* Milestones */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
         <p className="text-xs font-semibold text-gray-700 mb-3">Milestones</p>
         <div className="space-y-3">
           {milestones.map((m, i) => (
@@ -245,7 +265,7 @@ export default async function ProgressPage() {
 
       {/* Photo gallery */}
       {photoCount > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-gray-700">Latest photos</p>
             <Link href="/photos" className="text-[10px] text-primary font-semibold">View all →</Link>
@@ -263,9 +283,46 @@ export default async function ProgressPage() {
         </div>
       )}
 
+      {/* Photo comparison */}
+      {comparisonAngles.length > 0 && (
+        isPro ? (
+          <div className="bg-white rounded-2xl shadow-card px-5 py-4">
+            <p className="text-xs font-semibold text-gray-700 mb-1">Before vs Now</p>
+            <p className="text-[10px] text-gray-400 mb-4">Your first photo compared to your latest</p>
+            <div className="space-y-4">
+              {comparisonAngles.slice(0, 3).map(([angle, data]) => (
+                <div key={angle}>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-2 capitalize">{angle}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
+                      <Image src={data.first} alt={`${angle} first`} fill className="object-cover" sizes="45vw" unoptimized />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/40 py-1 px-2">
+                        <p className="text-[9px] text-white font-medium">First</p>
+                      </div>
+                    </div>
+                    <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
+                      <Image src={data.latest} alt={`${angle} latest`} fill className="object-cover" sizes="45vw" unoptimized />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/40 py-1 px-2">
+                        <p className="text-[9px] text-white font-medium">Latest</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <UpgradeGate
+            feature="Before vs Now comparison"
+            description="See your first photo side-by-side with your latest to measure real progress."
+          />
+        )
+      )}
+
+
       {/* Empty photo CTA */}
       {photoCount === 0 && (
-        <div className="bg-primary/5 border border-primary/10 rounded-2xl px-5 py-5 text-center" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-5 text-center">
           <p className="text-2xl mb-2">📸</p>
           <p className="text-sm font-semibold text-gray-900 mb-1">Add progress photos</p>
           <p className="text-xs text-gray-400 mb-3 leading-relaxed">Photos are the most powerful way to see real change over time.</p>

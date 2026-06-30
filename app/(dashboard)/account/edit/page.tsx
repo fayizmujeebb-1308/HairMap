@@ -36,7 +36,7 @@ export default async function EditProfilePage() {
       <form action={updateProfile} className="space-y-4">
 
         {/* Name */}
-        <div className="bg-white rounded-2xl border border-gray-100 px-5 py-5 space-y-4" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-5 space-y-4" >
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Name</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -55,14 +55,14 @@ export default async function EditProfilePage() {
         </div>
 
         {/* Demographics */}
-        <div className="bg-white rounded-2xl border border-gray-100 px-5 py-5 space-y-4" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-5 space-y-4" >
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Demographics</p>
 
           <div>
             <label className="block text-[10px] text-gray-400 mb-1.5">Gender</label>
             <div className="grid grid-cols-2 gap-2">
               {GENDERS.map(g => (
-                <label key={g} className="flex items-center gap-2 px-3 py-2.5 border border-gray-100 rounded-xl cursor-pointer has-[:checked]:border-primary/20 has-[:checked]:bg-primary/5 transition-colors" style={{ borderWidth: '0.5px' }}>
+                <label key={g} className="flex items-center gap-2 px-3 py-2.5 shadow-card rounded-xl cursor-pointer has-[:checked]:border-primary/20 has-[:checked]:bg-primary/5 transition-colors" >
                   <input type="radio" name="gender" value={g} defaultChecked={p?.gender === g} className="accent-primary w-3.5 h-3.5 shrink-0" />
                   <span className="text-xs font-medium text-gray-700">{g}</span>
                 </label>
@@ -89,7 +89,7 @@ export default async function EditProfilePage() {
         </div>
 
         {/* Hair profile */}
-        <div className="bg-white rounded-2xl border border-gray-100 px-5 py-5 space-y-4" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-5 space-y-4" >
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Hair Profile</p>
 
           <div>
@@ -113,7 +113,7 @@ export default async function EditProfilePage() {
             <label className="block text-[10px] text-gray-400 mb-1.5">Primary treatment</label>
             <div className="grid grid-cols-2 gap-2">
               {TREATMENTS.map(t => (
-                <label key={t} className="flex items-center gap-2 px-3 py-2.5 border border-gray-100 rounded-xl cursor-pointer has-[:checked]:border-primary/20 has-[:checked]:bg-primary/5 transition-colors" style={{ borderWidth: '0.5px' }}>
+                <label key={t} className="flex items-center gap-2 px-3 py-2.5 shadow-card rounded-xl cursor-pointer has-[:checked]:border-primary/20 has-[:checked]:bg-primary/5 transition-colors" >
                   <input type="radio" name="treatment_status" value={t} defaultChecked={p?.treatment_status === t} className="accent-primary w-3.5 h-3.5 shrink-0" />
                   <span className="text-xs font-medium text-gray-700">{t}</span>
                 </label>

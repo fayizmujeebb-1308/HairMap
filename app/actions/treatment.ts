@@ -52,6 +52,14 @@ export async function addToStack(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
+  // Free plan: max 1 active treatment
+  const { data: profile } = await supabase.from('profiles').select('subscription_status').eq('user_id', user.id).single()
+  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
+  if (!isPro) {
+    const { count } = await supabase.from('treatment_stack').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_active', true)
+    if ((count ?? 0) >= 1) return { error: 'UPGRADE_REQUIRED' }
+  }
+
   const times: string[] = []
   if (formData.get('morning')) times.push('morning')
   if (formData.get('evening')) times.push('evening')
@@ -73,7 +81,7 @@ export async function addToStack(formData: FormData) {
   return { success: true }
 }
 
-export async function applyTemplate(treatments: Array<{
+export async function applyTemplate(treatments: Array<{ // Pro required if adding multiple treatments
   treatment_name: string
   generic_name?: string
   treatment_type: string
@@ -84,6 +92,13 @@ export async function applyTemplate(treatments: Array<{
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
+
+  // Free plan: templates with multiple treatments require Pro
+  if (treatments.length > 1) {
+    const { data: profile } = await supabase.from('profiles').select('subscription_status').eq('user_id', user.id).single()
+    const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
+    if (!isPro) return { error: 'UPGRADE_REQUIRED' }
+  }
 
   const rows = treatments.map(t => ({
     ...t,

@@ -29,7 +29,7 @@ html {
 
 body {
   min-height: 100%;
-  background-color: #F8F9FA;
+  background-color: #F4F3EF;
   color: #111827;
 
   /* Remove iOS blue tap flash on every tappable element */
@@ -85,6 +85,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Stagger animation delays ── */
+.delay-75  { animation-delay: 75ms  }
+.delay-100 { animation-delay: 100ms }
+.delay-150 { animation-delay: 150ms }
+.delay-200 { animation-delay: 200ms }
+.delay-300 { animation-delay: 300ms }
+.delay-400 { animation-delay: 400ms }
+.delay-500 { animation-delay: 500ms }
 
 /* ── Tailwind utilities ── */
 @layer utilities {

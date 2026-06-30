@@ -15,6 +15,14 @@ export async function uploadPhoto(formData: FormData) {
   if (!file || !file.size) return { error: 'No file provided' }
   if (file.size > 15 * 1024 * 1024) return { error: 'File too large (max 15 MB)' }
 
+  // Free plan: max 10 photos
+  const { data: profile } = await supabase.from('profiles').select('subscription_status').eq('user_id', user.id).single()
+  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
+  if (!isPro) {
+    const { count } = await supabase.from('progress_photos').select('id', { count: 'exact', head: true }).eq('user_id', user.id)
+    if ((count ?? 0) >= 10) return { error: 'UPGRADE_REQUIRED' }
+  }
+
   const ext  = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
   const path = `${user.id}/${angle}/${Date.now()}.${ext}`
 

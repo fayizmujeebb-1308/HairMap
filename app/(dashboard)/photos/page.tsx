@@ -58,7 +58,7 @@ export default async function PhotosPage() {
 
       {/* Tip */}
       {doneCount < 6 && (
-        <div className="bg-primary/5 border border-primary/10 rounded-2xl px-4 py-3 flex items-center gap-3" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-3">
           <span className="text-lg shrink-0">💡</span>
           <p className="text-xs text-primary/80 leading-relaxed">
             {doneCount === 0
@@ -70,7 +70,7 @@ export default async function PhotosPage() {
       )}
 
       {doneCount === 6 && (
-        <div className="bg-primary/5 border border-primary/10 rounded-2xl px-4 py-3 flex items-center gap-3" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-3">
           <span className="text-lg shrink-0">🎉</span>
           <p className="text-xs text-primary/80 leading-relaxed font-medium">
             All 6 angles captured! Your AI analysis is ready.
@@ -96,7 +96,7 @@ export default async function PhotosPage() {
       </div>
 
       {/* How-to guide */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4 space-y-3" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-4 space-y-3">
         <p className="text-xs font-semibold text-gray-700">📸 Photo tips for best results</p>
         <ul className="space-y-2">
           {[

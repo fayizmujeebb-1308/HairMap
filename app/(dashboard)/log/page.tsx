@@ -83,11 +83,16 @@ export default async function LogPage() {
   const hasStack = (stack?.length ?? 0) > 0
   const dateLabel = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
+  // Check if all treatments logged today
+  const allLoggedToday = hasStack && (stack ?? []).every(s =>
+    loggedSet.has(`${s.id}:morning`) || loggedSet.has(`${s.id}:once`) || loggedSet.has(`${s.id}:evening`)
+  )
+
   return (
     <div className="space-y-5">
 
       {/* Header */}
-      <div className="flex items-start justify-between pt-2">
+      <div className="flex items-start justify-between pt-2 animate-fade-in-up">
         <div>
           <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">{dateLabel}</p>
           <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Treatment Log</h1>
@@ -103,13 +108,13 @@ export default async function LogPage() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 animate-fade-in-up delay-100">
         {[
           { label: 'Streak', value: streak, unit: 'days', icon: '🔥' },
           { label: 'Adherence', value: adherence, unit: '%', icon: '📊' },
           { label: 'Treatments', value: stack?.length ?? 0, unit: 'active', icon: '💊' },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-2xl border border-gray-100 px-3 py-3 text-center" style={{ borderWidth: '0.5px' }}>
+          <div key={s.label} className="bg-white rounded-2xl shadow-card px-3 py-3 text-center">
             <p className="text-base mb-1">{s.icon}</p>
             <p className="font-serif text-xl text-gray-900 leading-none">{s.value}<span className="text-xs text-gray-400 font-sans ml-0.5">{s.unit}</span></p>
             <p className="text-[10px] text-gray-400 mt-0.5">{s.label}</p>
@@ -118,7 +123,7 @@ export default async function LogPage() {
       </div>
 
       {/* This week */}
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">This week</p>
         <div className="flex justify-between">
           {week.map(({ label, date }) => {
@@ -147,9 +152,27 @@ export default async function LogPage() {
         </div>
       </div>
 
+      {/* All done banner */}
+      {allLoggedToday && (
+        <div className="rounded-2xl px-5 py-4 flex items-center gap-3 shadow-glow-green"
+          style={{ background: 'linear-gradient(135deg, #0F6E56 0%, #1D9E75 100%)' }}>
+          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-white">All done for today</p>
+            <p className="text-xs text-white/60 mt-0.5">
+              {streak >= 2 ? `${streak}-day streak — great consistency.` : 'Come back tomorrow to build your streak.'}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Empty state */}
       {!hasStack && (
-        <div className="bg-white rounded-2xl border border-gray-100 px-5 py-8 text-center" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card px-5 py-8 text-center">
           <p className="text-3xl mb-3">💊</p>
           <p className="text-sm font-semibold text-gray-900 mb-1">No treatments yet</p>
           <p className="text-xs text-gray-400 mb-4 leading-relaxed">
@@ -220,9 +243,9 @@ function TreatmentRow({ item, isLogged, timeOfDay, existingReminders }: {
   existingReminders: { id: string; reminder_time: string; email_enabled: boolean; push_enabled: boolean }[]
 }) {
   return (
-    <div className={`bg-white rounded-2xl border overflow-hidden px-4 py-3.5 transition-colors ${
-      isLogged ? 'border-primary/15' : 'border-gray-100'
-    }`} style={{ borderWidth: '0.5px' }}>
+    <div className={`bg-white rounded-2xl overflow-hidden px-4 py-3.5 transition-all ${
+      isLogged ? 'shadow-[0_1px_3px_rgba(29,158,117,0.15),0_1px_2px_rgba(29,158,117,0.1)]' : 'shadow-card'
+    }`}>
       <div className="flex items-center gap-4">
         {/* Icon */}
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${

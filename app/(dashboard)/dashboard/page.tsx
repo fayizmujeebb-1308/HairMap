@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 function greeting() {
   const h = new Date().getHours()
@@ -9,12 +10,19 @@ function greeting() {
   return 'Good evening'
 }
 
-function daysSince(date: string) {
-  return Math.floor((Date.now() - new Date(date).getTime()) / 86400000)
-}
-
 function formatDate() {
   return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+}
+
+function calcStreak(logs: { taken_at: string }[]): number {
+  const days = new Set(logs.map(l => l.taken_at.split('T')[0]))
+  let streak = 0
+  const d = new Date()
+  while (days.has(d.toISOString().split('T')[0])) {
+    streak++
+    d.setDate(d.getDate() - 1)
+  }
+  return streak
 }
 
 export default async function DashboardPage() {
@@ -30,248 +38,293 @@ export default async function DashboardPage() {
 
   if (!profile?.onboarding_completed) redirect('/onboarding')
 
-  const { data: photos } = await supabase
-    .from('progress_photos')
-    .select('angle, taken_at, storage_path')
-    .eq('user_id', user.id)
-    .order('taken_at', { ascending: false })
-    .limit(6)
+  const today = new Date().toISOString().split('T')[0]
+  const ninetyDaysAgo = new Date()
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
 
-  const { data: logs } = await supabase
-    .from('treatment_logs')
-    .select('treatment_name, taken_at')
-    .eq('user_id', user.id)
-    .order('taken_at', { ascending: false })
-    .limit(5)
+  const [{ data: photos }, { data: allLogs }, { data: todayLogs }, { data: stack }] = await Promise.all([
+    supabase.from('progress_photos').select('angle, thumb_path').eq('user_id', user.id).order('taken_at', { ascending: false }),
+    supabase.from('treatment_logs').select('taken_at').eq('user_id', user.id).gte('taken_at', ninetyDaysAgo.toISOString()),
+    supabase.from('treatment_logs').select('treatment_name, taken_at, stack_item_id').eq('user_id', user.id).gte('taken_at', `${today}T00:00:00`),
+    supabase.from('treatment_stack').select('id, treatment_name, treatment_type').eq('user_id', user.id).eq('is_active', true),
+  ])
 
-  const daysTracked    = daysSince(profile.created_at)
-  const hasPhotos      = (photos?.length ?? 0) > 0
-  const hasTreatments  = (logs?.length ?? 0) > 0
-  const photoCount     = photos?.length ?? 0
+  const daysTracked    = Math.max(1, Math.floor((Date.now() - new Date(profile.created_at).getTime()) / 86400000))
+  const logDates       = new Set((allLogs ?? []).map(l => l.taken_at.split('T')[0]))
+  const streak         = calcStreak(allLogs ?? [])
+  const adherence      = Math.min(100, Math.round((logDates.size / Math.min(daysTracked, 90)) * 100))
+  const treatmentCount = stack?.length ?? 0
+  const loggedToday    = new Set((todayLogs ?? []).map(l => l.stack_item_id))
+  const pendingCount   = (stack ?? []).filter(s => !loggedToday.has(s.id)).length
+  const allDoneToday   = treatmentCount > 0 && pendingCount === 0
 
-  // Score ring percentage for CSS
-  const score = profile.hair_health_score
-  const scorePercent = score ? (score / 100) * 283 : 0   // circumference of r=45 circle
+  const latestPhotos: Record<string, string> = {}
+  for (const p of photos ?? []) {
+    if (!latestPhotos[p.angle] && p.thumb_path) latestPhotos[p.angle] = p.thumb_path
+  }
+  const photoAngles = Object.keys(latestPhotos).slice(0, 4)
+  const hasPhotos   = photoAngles.length > 0
+
+  const adherenceRingCirc = 2 * Math.PI * 45
+  const ringOffset = adherenceRingCirc * (1 - adherence / 100)
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
 
-      {/* ── Header ── */}
-      <div className="flex items-start justify-between pt-2">
+      {/* Header */}
+      <div className="flex items-start justify-between pt-2 animate-fade-in-up">
         <div>
-          <p className="text-xs text-gray-400 font-medium tracking-wide">{formatDate()}</p>
+          <p className="text-[10px] text-gray-400 font-medium tracking-wide">{formatDate()}</p>
           <h1 className="font-serif text-2xl text-gray-900 mt-0.5">
             {greeting()}, {profile.first_name || 'there'}
           </h1>
+          <p className="text-xs text-gray-400 mt-1">
+            {treatmentCount === 0
+              ? 'Set up your treatment stack to start tracking.'
+              : allDoneToday
+              ? 'All treatments logged today. Great consistency.'
+              : pendingCount === 1
+              ? '1 treatment remaining today.'
+              : `${pendingCount} treatments remaining today.`}
+          </p>
         </div>
-        {/* Streak badge */}
-        <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-100 rounded-xl px-3 py-1.5" style={{ borderWidth: '0.5px' }}>
-          <span className="text-base">🔥</span>
+        {/* Streak badge — glows amber */}
+        <div className="flex items-center gap-1.5 bg-amber-50 rounded-2xl px-3 py-2 shrink-0 shadow-glow-amber animate-fade-in-up delay-100">
+          <span className="text-lg">🔥</span>
           <div className="text-right">
-            <p className="text-sm font-bold text-amber-600 leading-none">{daysTracked}</p>
-            <p className="text-[10px] text-amber-500 leading-none mt-0.5">day streak</p>
+            <p className="text-base font-bold text-amber-600 leading-none">{streak}</p>
+            <p className="text-[10px] text-amber-400 leading-none mt-0.5">streak</p>
           </div>
         </div>
       </div>
 
-      {/* ── Score + Stats row ── */}
-      <div className="grid grid-cols-3 gap-3">
-
-        {/* Hair Health Score ring */}
-        <div className="col-span-1 bg-white rounded-2xl border border-gray-100 p-4 flex flex-col items-center justify-center" style={{ borderWidth: '0.5px' }}>
-          <div className="relative w-16 h-16">
-            <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#F3F4F6" strokeWidth="8" />
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#1D9E75" strokeWidth="8"
-                strokeDasharray="283" strokeDashoffset={score ? 283 - scorePercent : 283}
-                strokeLinecap="round"
-                style={{ transition: 'stroke-dashoffset 1s ease' }} />
+      {/* Onboarding nudge */}
+      {!profile.norwood_stage && (
+        <Link href="/onboarding"
+          className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-card animate-fade-in-up delay-150 active:scale-[0.99] transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-bold text-sm text-gray-900">{score ?? '—'}</span>
-            </div>
           </div>
-          <p className="text-[10px] text-gray-400 text-center mt-2 leading-tight">Hair<br/>Score</p>
-        </div>
-
-        {/* Right stats */}
-        <div className="col-span-2 grid grid-rows-2 gap-3">
-          <div className="bg-white rounded-2xl border border-gray-100 px-4 py-3 flex items-center justify-between" style={{ borderWidth: '0.5px' }}>
-            <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Norwood Stage</p>
-              <p className="font-serif text-xl text-gray-900 mt-0.5">
-                {profile.norwood_stage ? `NW${profile.norwood_stage}` : '—'}
-              </p>
-            </div>
-            <div className="flex gap-1">
-              {[1,2,3,4,5,6,7].map(n => (
-                <div key={n} className={`w-1.5 h-4 rounded-full ${
-                  profile.norwood_stage && n <= profile.norwood_stage ? 'bg-primary' : 'bg-gray-100'
-                }`} />
-              ))}
-            </div>
-          </div>
-          <div className="bg-white rounded-2xl border border-gray-100 px-4 py-3 flex items-center justify-between" style={{ borderWidth: '0.5px' }}>
-            <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Days Tracked</p>
-              <p className="font-serif text-xl text-gray-900 mt-0.5">{daysTracked}</p>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Today's action card ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden" style={{ borderWidth: '0.5px' }}>
-        <div className="px-5 py-4">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Today</p>
-              <h2 className="font-semibold text-gray-900 text-sm mt-0.5">Treatment log</h2>
-            </div>
-            {hasTreatments && (
-              <span className="text-[10px] text-primary font-medium bg-primary/8 px-2 py-0.5 rounded-full">
-                {logs?.filter(l => new Date(l.taken_at).toDateString() === new Date().toDateString()).length ?? 0} logged today
-              </span>
-            )}
-          </div>
-
-          {hasTreatments ? (
-            <div className="space-y-2">
-              {logs?.slice(0, 3).map((log, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full border-2 border-primary bg-primary/10 flex items-center justify-center">
-                    <svg className="w-3 h-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-sm text-gray-700">{log.treatment_name}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 py-1">
-              <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center">
-                <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <p className="text-sm text-gray-400">No treatments logged yet</p>
-            </div>
-          )}
-        </div>
-        <Link href="/log"
-          className="flex items-center justify-between px-5 py-3 bg-gray-50 hover:bg-primary/5 transition-colors group"
-          style={{ borderTop: '0.5px solid #f3f4f6' }}>
-          <span className="text-sm font-medium text-primary">Log today&apos;s treatment</span>
-          <svg className="w-4 h-4 text-primary group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <p className="text-xs text-gray-700 flex-1 font-medium">Complete your hair profile for accurate tracking.</p>
+          <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </Link>
+      )}
+
+      {/* Today's treatment status */}
+      {allDoneToday ? (
+        <div className="rounded-2xl px-5 py-4 shadow-glow-green animate-fade-in-up delay-150"
+          style={{ background: 'linear-gradient(135deg, #0F6E56 0%, #1D9E75 100%)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">All done for today</p>
+              <p className="text-xs text-white/60 mt-0.5">
+                {streak >= 2 ? `${streak}-day streak — keep it going.` : 'Come back tomorrow to keep your streak.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Link href="/log"
+          className="block bg-white rounded-2xl shadow-card overflow-hidden active:scale-[0.99] transition-transform animate-fade-in-up delay-150">
+          <div className="px-5 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Today</p>
+                <p className="text-sm font-semibold text-gray-900 mt-0.5">
+                  {treatmentCount === 0 ? 'No treatments set up' : `${pendingCount} of ${treatmentCount} remaining`}
+                </p>
+              </div>
+              {treatmentCount > 0 && (
+                <div className="flex gap-1 items-center">
+                  {(stack ?? []).map(s => (
+                    <div key={s.id} className={`w-2 h-7 rounded-full transition-colors ${loggedToday.has(s.id) ? 'bg-primary' : 'bg-gray-100'}`} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {treatmentCount > 0 ? (
+              <div className="space-y-2.5">
+                {(stack ?? []).slice(0, 3).map(s => {
+                  const done = loggedToday.has(s.id)
+                  return (
+                    <div key={s.id} className="flex items-center gap-3">
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                        done ? 'border-primary bg-primary shadow-sm shadow-primary/30' : 'border-gray-200'
+                      }`}>
+                        {done && (
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className={`text-sm transition-colors ${done ? 'text-gray-300 line-through' : 'text-gray-700 font-medium'}`}>
+                        {s.treatment_name}
+                      </span>
+                    </div>
+                  )
+                })}
+                {(stack?.length ?? 0) > 3 && (
+                  <p className="text-[10px] text-gray-400 pl-8">+{(stack?.length ?? 0) - 3} more</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-xs text-gray-400">Tap to set up your treatment stack →</p>
+            )}
+          </div>
+          <div className="flex items-center justify-between px-5 py-3 bg-gray-50/80"
+            style={{ borderTop: '0.5px solid #f0f0ee' }}>
+            <span className="text-sm font-semibold text-primary">{treatmentCount === 0 ? 'Set up treatments' : 'Log treatments'}</span>
+            <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </Link>
+      )}
+
+      {/* Stats strip */}
+      <div className="grid grid-cols-3 gap-3 animate-fade-in-up delay-200">
+        {/* Adherence ring */}
+        <div className="bg-white rounded-2xl shadow-card p-3 flex flex-col items-center justify-center">
+          <div className="relative w-14 h-14">
+            <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#EEEDE9" strokeWidth="10" />
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#1D9E75" strokeWidth="10"
+                strokeDasharray={adherenceRingCirc}
+                strokeDashoffset={logDates.size === 0 ? adherenceRingCirc : ringOffset}
+                strokeLinecap="round"
+                style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="font-bold text-xs text-gray-900">{logDates.size === 0 ? '—' : `${adherence}%`}</span>
+            </div>
+          </div>
+          <p className="text-[9px] text-gray-400 text-center mt-1.5 leading-tight">Adherence</p>
+        </div>
+
+        {/* Norwood */}
+        <div className="bg-white rounded-2xl shadow-card px-3 py-3 flex flex-col justify-between">
+          <p className="text-[9px] text-gray-400 uppercase tracking-wide">Norwood</p>
+          <p className="font-serif text-2xl text-gray-900 mt-1">
+            {profile.norwood_stage ? `NW${profile.norwood_stage}` : <span className="text-gray-200 text-lg">—</span>}
+          </p>
+          <div className="flex gap-0.5 mt-1">
+            {[1,2,3,4,5,6,7].map(n => (
+              <div key={n} className={`flex-1 h-1 rounded-full transition-colors ${
+                profile.norwood_stage && n <= profile.norwood_stage ? 'bg-primary' : 'bg-gray-100'
+              }`} />
+            ))}
+          </div>
+        </div>
+
+        {/* Days tracked */}
+        <div className="bg-white rounded-2xl shadow-card px-3 py-3 flex flex-col justify-between">
+          <p className="text-[9px] text-gray-400 uppercase tracking-wide">On treatment</p>
+          <p className="font-serif text-2xl text-gray-900 mt-1">{daysTracked}</p>
+          <p className="text-[9px] text-gray-400">days</p>
+        </div>
       </div>
 
-      {/* ── Progress photos card ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden" style={{ borderWidth: '0.5px' }}>
+      {/* Progress photos */}
+      <div className="bg-white rounded-2xl shadow-card overflow-hidden animate-fade-in-up delay-300">
         <div className="px-5 py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Progress</p>
-              <h2 className="font-semibold text-gray-900 text-sm mt-0.5">Photos</h2>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Progress</p>
+              <p className="text-sm font-semibold text-gray-900 mt-0.5">Photo log</p>
             </div>
-            <span className="text-[10px] text-gray-400">{photoCount} uploaded</span>
+            <span className="text-[10px] text-gray-400 font-medium">{photoAngles.length}/6 angles</span>
           </div>
 
           {hasPhotos ? (
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {photos?.slice(0, 4).map((p, i) => (
-                <div key={i} className="w-20 h-20 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <svg className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+              {photoAngles.map(angle => (
+                <div key={angle} className="w-20 h-20 rounded-xl flex-shrink-0 overflow-hidden relative bg-gray-100 shadow-sm">
+                  <Image src={latestPhotos[angle]} alt={angle} fill className="object-cover" sizes="80px" unoptimized />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-1.5 py-1.5">
+                    <p className="text-[9px] text-white font-semibold capitalize">{angle}</p>
                   </div>
-                  <span className="absolute bottom-1 left-0 right-0 text-center text-[9px] text-gray-400 capitalize">{p.angle}</span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="flex items-center gap-3 py-1">
-              <div className="flex gap-1.5">
-                {['front','crown','top'].map(a => (
-                  <div key={a} className="w-14 h-14 rounded-xl bg-gray-50 border border-dashed border-gray-200 flex flex-col items-center justify-center gap-0.5" style={{ borderWidth: '1px' }}>
-                    <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <span className="text-[8px] text-gray-300 capitalize">{a}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs text-gray-400 leading-tight">Upload your first<br/>progress photos</p>
+            <div className="rounded-2xl px-4 py-5 text-center" style={{ background: '#F4F3EF' }}>
+              <p className="text-2xl mb-2">📸</p>
+              <p className="text-xs font-semibold text-gray-700 mb-0.5">No photos yet</p>
+              <p className="text-[10px] text-gray-400 leading-relaxed">Photos are essential for tracking real change.</p>
             </div>
           )}
         </div>
         <Link href="/photos"
-          className="flex items-center justify-between px-5 py-3 bg-gray-50 hover:bg-primary/5 transition-colors group"
-          style={{ borderTop: '0.5px solid #f3f4f6' }}>
-          <span className="text-sm font-medium text-primary">{hasPhotos ? 'View all photos' : 'Upload photos'}</span>
-          <svg className="w-4 h-4 text-primary group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          className="flex items-center justify-between px-5 py-3 transition-colors active:bg-primary/5"
+          style={{ borderTop: '0.5px solid #f0f0ee', background: 'rgba(244,243,239,0.5)' }}>
+          <span className="text-sm font-semibold text-primary">{hasPhotos ? 'View all photos' : 'Upload first photos'}</span>
+          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </Link>
       </div>
 
-      {/* ── AI Analysis card ── */}
-      <div className="rounded-2xl overflow-hidden relative"
-        style={{ background: 'linear-gradient(135deg, #0f7a5a 0%, #1D9E75 50%, #22c55e 100%)' }}>
-        {/* Decorative circles */}
-        <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/5" />
-        <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-white/5" />
+      {/* Learn card */}
+      <Link href="/learn"
+        className="flex items-center gap-4 bg-white rounded-2xl shadow-card px-5 py-4 active:scale-[0.99] transition-transform animate-fade-in-up delay-400">
+        <div className="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
+          <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900">Education library</p>
+          <p className="text-xs text-gray-400 mt-0.5">7 evidence-based guides on hair loss and treatment</p>
+        </div>
+        <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
 
+      {/* AI Analysis card */}
+      <Link href={hasPhotos ? '/progress' : '/photos'}
+        className="block rounded-2xl overflow-hidden relative active:scale-[0.99] transition-transform shadow-card-md animate-fade-in-up delay-500"
+        style={{ background: 'linear-gradient(135deg, #0a6648 0%, #1D9E75 60%, #16a34a 100%)' }}>
+        <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-white/5" />
+        <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-white/5" />
+        <div className="absolute top-4 right-16 w-8 h-8 rounded-full bg-white/5" />
         <div className="relative px-5 py-5">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
-                  <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
-                <span className="text-xs text-white/70 font-medium uppercase tracking-wide">AI Analysis</span>
-              </div>
-              <h2 className="font-serif text-lg text-white leading-tight mb-1">
-                {hasPhotos ? 'Run your hair analysis' : 'Upload photos first'}
-              </h2>
-              <p className="text-xs text-white/60 leading-relaxed">
-                {hasPhotos
-                  ? 'Get your hair age, health score, and 10-year forecast'
-                  : 'AI analysis requires at least one progress photo'}
-              </p>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
             </div>
+            <span className="text-[10px] text-white/60 font-semibold uppercase tracking-wider">AI Analysis</span>
           </div>
-          <Link href={hasPhotos ? '/analysis' : '/photos'}
-            className="inline-flex items-center gap-2 mt-4 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl transition-all hover:scale-105 active:scale-95">
-            {hasPhotos ? 'Analyse now' : 'Add photos'}
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <p className="font-serif text-lg text-white leading-snug mb-1">
+            {hasPhotos ? 'Is your treatment working?' : 'Upload photos to unlock AI analysis'}
+          </p>
+          <p className="text-xs text-white/60 leading-relaxed mb-4">
+            {hasPhotos
+              ? 'Our AI reviews your photos and treatment history to give you a plain-English progress report.'
+              : 'Progress photos are required to generate an accurate analysis.'}
+          </p>
+          <div className="inline-flex items-center gap-2 bg-white text-primary text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
+            {hasPhotos ? 'Run analysis' : 'Add photos first'}
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
-          </Link>
-          <p className="text-[10px] text-white/40 mt-3">Not medical advice. For tracking purposes only.</p>
+          </div>
+          <p className="text-[10px] text-white/25 mt-3">For tracking purposes only. Not medical advice.</p>
         </div>
-      </div>
-
-      {/* ── Email verification warning ── */}
-      {!profile.email_verified && (
-        <div className="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3 flex items-center gap-3" style={{ borderWidth: '0.5px' }}>
-          <svg className="w-4 h-4 text-amber-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-          </svg>
-          <p className="text-xs text-amber-700">Please verify your email to unlock all features.</p>
-        </div>
-      )}
+      </Link>
 
     </div>
   )

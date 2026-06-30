@@ -207,7 +207,7 @@ export default function SetupPage() {
           )}
 
           {!loading && stack.length === 0 && (
-            <div className="bg-white rounded-2xl border border-gray-100 px-5 py-8 text-center" style={{ borderWidth: '0.5px' }}>
+            <div className="bg-white rounded-2xl shadow-card px-5 py-8 text-center" >
               <p className="text-3xl mb-3">💊</p>
               <p className="text-sm font-semibold text-gray-900 mb-1">Stack is empty</p>
               <p className="text-xs text-gray-400 mb-4">Start with a protocol template or add a custom treatment.</p>
@@ -308,7 +308,7 @@ export default function SetupPage() {
 
       {/* ── ADD CUSTOM ── */}
       {tab === 'add' && (
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden" style={{ borderWidth: '0.5px' }}>
+        <div className="bg-white rounded-2xl shadow-card overflow-hidden" >
           <div className="px-5 py-5 space-y-4">
 
             <div>
