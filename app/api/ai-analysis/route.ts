@@ -81,24 +81,25 @@ Progress photos taken: ${photoCount}
   const messages: { role: string; content: unknown }[] = [
     {
       role: 'system',
-      content: `You are a hair loss progress analyst for HairMap, an app that helps men track their hair loss treatments.
-Write a clear, honest, encouraging analysis of the user's progress based on their data and photos.
-Structure your response in these sections:
-- **Overall Progress** (2-3 sentences on what you observe)
-- **Treatment Consistency** (comment on their adherence and streak)
-- **What's Working** (positive observations)
-- **What to Watch** (honest areas to improve — no medical diagnoses)
-- **Next 30 Days** (one specific actionable recommendation)
-Keep the tone supportive but honest. No medical jargon. No diagnoses. Under 300 words total.`,
+      content: `You are a hair loss progress analyst for HairMap, a men's hair tracking app.
+Your job is to give a specific, honest, useful analysis — not generic advice.
+${photoUrls.length > 0 ? `You have been given progress photos. Look carefully at each one and describe what you actually see: hair density, hairline shape, crown coverage, any visible thinning patterns, scalp visibility. Be specific about what you observe in the images — do not be vague.` : ''}
+Structure your response in exactly these sections with bold headers:
+- **What I See** (describe specifically what the photos show OR if no photos, what the tracking data reveals about their habits)
+- **Treatment Adherence** (specific comment on their ${adherence}% adherence and ${streak}-day streak — is this good or bad?)
+- **What's Working** (specific positives — be honest, don't invent positives if there aren't any)
+- **What to Watch** (specific concern or area to improve — no diagnoses, no medical claims)
+- **Your Next 30 Days** (one concrete, specific action they should take)
+Be direct and specific. No filler sentences. No "it's great that you're tracking". Under 280 words.`,
     },
     {
       role: 'user',
       content: photoUrls.length > 0
         ? [
-            { type: 'text', text: `Here is my hair loss tracking data:\n\n${statsText}\n\nPlease analyse my progress based on this data and the progress photos below.` },
+            { type: 'text', text: `My hair loss tracking data:\n\n${statsText}\n\nAnalyse my progress based on this data and the photos below. Be specific about what you see in the photos.` },
             ...photoUrls.map(url => ({ type: 'image_url', image_url: { url } })),
           ]
-        : `Here is my hair loss tracking data:\n\n${statsText}\n\nI haven't uploaded any photos yet. Please analyse my progress based on the tracking data above.`,
+        : `My hair loss tracking data:\n\n${statsText}\n\nNo photos uploaded yet. Analyse my progress based on the tracking data only and be specific about what the numbers mean.`,
     },
   ]
 

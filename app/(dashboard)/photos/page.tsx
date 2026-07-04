@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import PhotoSlot from '@/app/components/PhotoSlot'
+import AIAnalysis from '@/app/components/AIAnalysis'
 
 const ANGLES = [
   { key: 'front',    label: 'Front',    desc: 'Face the mirror straight on' },
@@ -16,12 +17,11 @@ export default async function PhotosPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Latest photo per angle
-  const { data: photos } = await supabase
-    .from('progress_photos')
-    .select('id, angle, thumb_path, taken_at')
-    .eq('user_id', user.id)
-    .order('taken_at', { ascending: false })
+  const [{ data: photos }, { data: profile }, { data: lastAnalysis }] = await Promise.all([
+    supabase.from('progress_photos').select('id, angle, thumb_path, taken_at').eq('user_id', user.id).order('taken_at', { ascending: false }),
+    supabase.from('profiles').select('subscription_status').eq('user_id', user.id).single(),
+    supabase.from('ai_analyses').select('analysis, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
+  ])
 
   // Keep only the most recent photo per angle
   const latestByAngle: Record<string, { id: string; url: string }> = {}
@@ -32,6 +32,7 @@ export default async function PhotosPage() {
   }
 
   const doneCount = Object.keys(latestByAngle).length
+  const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
 
   return (
     <div className="space-y-5">
@@ -70,12 +71,7 @@ export default async function PhotosPage() {
       )}
 
       {doneCount === 6 && (
-        <div className="bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-3">
-          <span className="text-lg shrink-0">🎉</span>
-          <p className="text-xs text-primary/80 leading-relaxed font-medium">
-            All 6 angles captured! Your AI analysis is ready.
-          </p>
-        </div>
+        <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} compact />
       )}
 
       {/* Angle grid */}

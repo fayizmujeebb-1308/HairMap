@@ -13,7 +13,7 @@ function renderMarkdown(text: string) {
     .join('')
 }
 
-export default function AIAnalysis({ lastAnalysis, isPro }: { lastAnalysis?: { analysis: string; created_at: string } | null; isPro: boolean }) {
+export default function AIAnalysis({ lastAnalysis, isPro, compact }: { lastAnalysis?: { analysis: string; created_at: string } | null; isPro: boolean; compact?: boolean }) {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState('')
@@ -41,8 +41,23 @@ export default function AIAnalysis({ lastAnalysis, isPro }: { lastAnalysis?: { a
     : null
 
   if (!isPro) {
+    if (compact) {
+      return (
+        <div className="rounded-2xl px-5 py-4 shadow-glow-green flex items-center justify-between gap-4"
+          style={{ background: 'linear-gradient(135deg, #0a6648 0%, #1D9E75 60%, #16a34a 100%)' }}>
+          <div>
+            <p className="text-sm font-bold text-white">All 6 angles captured 🎉</p>
+            <p className="text-xs text-white/60 mt-0.5">Unlock AI analysis to see what your photos reveal</p>
+          </div>
+          <Link href="/pricing"
+            className="shrink-0 bg-white text-primary text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition-transform">
+            Upgrade
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-6 text-center" style={{ borderWidth: '0.5px' }}>
+      <div className="bg-white rounded-2xl shadow-card px-5 py-6 text-center">
         <div className="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center mb-3 mx-auto">
           <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -62,7 +77,7 @@ export default function AIAnalysis({ lastAnalysis, isPro }: { lastAnalysis?: { a
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 px-5 py-5 space-y-4" style={{ borderWidth: '0.5px' }}>
+    <div className={`bg-white rounded-2xl shadow-card px-5 py-5 space-y-4 ${compact ? '' : ''}`}>
 
       {/* Header */}
       <div className="flex items-start justify-between">
