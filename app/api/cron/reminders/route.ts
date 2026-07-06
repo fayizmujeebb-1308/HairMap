@@ -42,6 +42,11 @@ export async function POST(req: Request) {
     .gte('reminder_time', currentTime)
     .lt('reminder_time', nextTime)
 
+  // Early warning alerts — run once daily around 20:00 UTC
+  if (hh === '20' && mm === '00') {
+    await sendEarlyWarnings(supabase)
+  }
+
   if (!reminders?.length) return NextResponse.json({ sent: 0 })
 
   let sent = 0
@@ -114,6 +119,76 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ sent })
+}
+
+async function sendEarlyWarnings(supabase: Awaited<ReturnType<typeof createClient>>) {
+  const today = new Date().toISOString().split('T')[0]
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+  const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0]
+
+  // Get all users with an active treatment stack
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('user_id, first_name')
+
+  if (!profiles?.length) return
+
+  for (const profile of profiles) {
+    const { data: logs } = await supabase
+      .from('treatment_logs')
+      .select('taken_at')
+      .eq('user_id', profile.user_id)
+      .gte('taken_at', `${sevenDaysAgo}T00:00:00Z`)
+
+    if (!logs?.length) continue
+
+    const logDates = new Set(logs.map((l: { taken_at: string }) => l.taken_at.split('T')[0]))
+    const loggedToday = logDates.has(today)
+    const loggedYesterday = logDates.has(yesterday)
+    const weeklyAdherence = Math.round((logDates.size / 7) * 100)
+
+    // Streak about to break: had streak yesterday, nothing today
+    const streakWarning = loggedYesterday && !loggedToday
+    // Low adherence
+    const adherenceWarning = weeklyAdherence < 70 && logDates.size >= 3
+
+    if (!streakWarning && !adherenceWarning) continue
+
+    const { data: { user } } = await supabase.auth.admin.getUserById(profile.user_id)
+    const email = user?.email
+    const firstName = profile.first_name ?? 'there'
+
+    const title = streakWarning ? '⚠️ Don\'t break your streak!' : '📉 Your adherence is slipping'
+    const body = streakWarning
+      ? `You haven\'t logged today yet, ${firstName}. Log now to keep your streak alive.`
+      : `Your adherence is ${weeklyAdherence}% this week. Daily consistency is key to results.`
+
+    // Push notification
+    const { data: subs } = await supabase
+      .from('push_subscriptions')
+      .select('subscription')
+      .eq('user_id', profile.user_id)
+
+    for (const { subscription } of subs ?? []) {
+      try {
+        await webpush.sendNotification(subscription, JSON.stringify({ title, body, url: '/log' }))
+      } catch {}
+    }
+
+    // Email
+    if (email) {
+      try {
+        const { Resend } = await import('resend')
+        const resend = new Resend(process.env.RESEND_API_KEY)
+        await resend.emails.send({
+          from: 'HairMap <reminders@hair-map.vercel.app>',
+          to: email,
+          subject: title,
+          html: `<p>${body}</p><p><a href="https://hair-map.vercel.app/log">Log now →</a></p>`,
+        })
+      } catch {}
+    }
+  }
 }
 
 // Keep GET for manual testing

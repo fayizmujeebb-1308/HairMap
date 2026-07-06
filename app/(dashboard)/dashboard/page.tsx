@@ -98,16 +98,26 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Onboarding nudge */}
+      {/* Onboarding nudges */}
       {!profile.norwood_stage && (
         <Link href="/onboarding"
           className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-card animate-fade-in-up delay-150 active:scale-[0.99] transition-transform">
-          <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-            <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+            <span className="text-base">📋</span>
           </div>
           <p className="text-xs text-gray-700 flex-1 font-medium">Complete your hair profile for accurate tracking.</p>
+          <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
+      )}
+      {treatmentCount === 0 && (
+        <Link href="/log/setup"
+          className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-card animate-fade-in-up delay-150 active:scale-[0.99] transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <span className="text-base">💊</span>
+          </div>
+          <p className="text-xs text-gray-700 flex-1 font-medium">Add your first treatment to start tracking progress.</p>
           <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -292,37 +302,48 @@ export default async function DashboardPage() {
         </svg>
       </Link>
 
-      {/* AI Analysis card */}
-      <Link href={hasPhotos ? '/progress' : '/photos'}
+      {/* Progress link */}
+      <Link href="/progress"
+        className="flex items-center gap-4 bg-white rounded-2xl shadow-card px-5 py-4 active:scale-[0.99] transition-transform animate-fade-in-up delay-400">
+        <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+          <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900">Progress & AI Analysis</p>
+          <p className="text-xs text-gray-400 mt-0.5">Charts, heatmap, and monthly AI progress report</p>
+        </div>
+        <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+
+      {/* AI Coach card */}
+      <Link href="/coach"
         className="block rounded-2xl overflow-hidden relative active:scale-[0.99] transition-transform shadow-card-md animate-fade-in-up delay-500"
         style={{ background: 'linear-gradient(135deg, #0a6648 0%, #1D9E75 60%, #16a34a 100%)' }}>
         <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-white/5" />
         <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-white/5" />
-        <div className="absolute top-4 right-16 w-8 h-8 rounded-full bg-white/5" />
         <div className="relative px-5 py-5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
               <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </div>
-            <span className="text-[10px] text-white/60 font-semibold uppercase tracking-wider">AI Analysis</span>
+            <span className="text-[10px] text-white/60 font-semibold uppercase tracking-wider">AI Coach</span>
           </div>
-          <p className="font-serif text-lg text-white leading-snug mb-1">
-            {hasPhotos ? 'Is your treatment working?' : 'Upload photos to unlock AI analysis'}
-          </p>
+          <p className="font-serif text-lg text-white leading-snug mb-1">Ask your hair coach anything</p>
           <p className="text-xs text-white/60 leading-relaxed mb-4">
-            {hasPhotos
-              ? 'Our AI reviews your photos and treatment history to give you a plain-English progress report.'
-              : 'Progress photos are required to generate an accurate analysis.'}
+            Get answers about your treatments, what to expect, and how to improve results.
           </p>
           <div className="inline-flex items-center gap-2 bg-white text-primary text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
-            {hasPhotos ? 'Run analysis' : 'Add photos first'}
+            Chat now
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <p className="text-[10px] text-white/25 mt-3">For tracking purposes only. Not medical advice.</p>
         </div>
       </Link>
 
