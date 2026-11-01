@@ -4,17 +4,26 @@ import { redirect } from 'next/navigation'
 import { personalizeArticles, type UserContext } from '@/app/lib/personalize'
 
 const CATEGORY_META: Record<string, { color: string; bg: string; icon: string }> = {
-  Science:    { color: 'text-blue-600',  bg: 'bg-blue-50',   icon: '🔬' },
-  Treatments: { color: 'text-primary',   bg: 'bg-primary/8', icon: '💊' },
-  Progress:   { color: 'text-amber-600', bg: 'bg-amber-50',  icon: '📈' },
+  Science:    { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)',  icon: '🔬' },
+  Treatments: { color: '#10b981', bg: 'rgba(16,185,129,0.08)',  icon: '💊' },
+  Progress:   { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)',  icon: '📈' },
 }
 
-const TAG_STYLE: Record<string, string> = {
-  green: 'bg-primary/8 text-primary',
-  blue:  'bg-blue-50 text-blue-600',
-  amber: 'bg-amber-50 text-amber-600',
-  gray:  'bg-gray-100 text-gray-500',
+const TAG_STYLE: Record<string, { bg: string; color: string }> = {
+  green: { bg: 'rgba(16,185,129,0.08)',  color: '#059669' },
+  blue:  { bg: 'rgba(59,130,246,0.08)',  color: '#3b82f6' },
+  amber: { bg: 'rgba(245,158,11,0.08)',  color: '#d97706' },
+  gray:  { bg: 'rgba(156,163,175,0.12)', color: '#6b7280' },
 }
+
+const glassCard = {
+  background: 'rgba(255,255,255,0.9)',
+  backdropFilter: 'blur(20px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+  borderRadius: 20,
+} as const
 
 export default async function LearnPage() {
   const supabase = await createClient()
@@ -55,37 +64,47 @@ export default async function LearnPage() {
   const rest       = articles.filter(a => !restBySlug.has(a.slug))
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 pb-2">
 
-      {/* Header */}
-      <div className="pt-2">
+      {/* ── Header ── */}
+      <div className="pt-2 animate-fade-in-up">
         <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Education</p>
-        <h1 className="font-serif text-2xl text-gray-900 mt-1">Learn</h1>
+        <h1 className="font-serif text-[26px] text-gray-900 mt-0.5">Learn</h1>
         <p className="text-xs text-gray-400 mt-1 leading-relaxed">
           Personalised to your stage and treatment stack.
         </p>
       </div>
 
-      {/* Recommended for you */}
+      {/* ── Recommended ── */}
       {topPicks.length > 0 && (
-        <div>
+        <div className="animate-fade-in-up delay-75">
           <div className="flex items-center gap-2 mb-3">
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Recommended for you</p>
+            <span className="text-sm">⭐</span>
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Recommended for you</p>
           </div>
           <div className="space-y-2.5">
-            {topPicks.map(article => {
-              const meta = CATEGORY_META[article.category] ?? { color: 'text-gray-500', bg: 'bg-gray-50', icon: '📄' }
+            {topPicks.map((article, i) => {
+              const meta = CATEGORY_META[article.category] ?? { color: '#6b7280', bg: 'rgba(156,163,175,0.08)', icon: '📄' }
+              const tagStyle = article.tag ? (TAG_STYLE[article.tag.style] ?? TAG_STYLE.gray) : null
               return (
                 <Link key={article.slug} href={`/learn/${article.slug}`}
-                  className="flex items-start gap-4 bg-white rounded-2xl border px-4 py-4 active:scale-[0.99] transition-transform"
-                  style={{ borderWidth: '0.5px', borderColor: '#f0fdf9', background: 'linear-gradient(135deg, #fff 80%, #f0fdf9 100%)' }}>
-                  <div className={`w-10 h-10 rounded-xl ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}>
+                  className={`flex items-start gap-4 px-4 py-4 active:scale-[0.99] transition-transform block delay-${i * 75}`}
+                  style={{
+                    ...glassCard,
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 70%, rgba(240,253,244,0.9) 100%)',
+                    border: '1px solid rgba(16,185,129,0.10)',
+                  }}>
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                    style={{ background: meta.bg }}>
                     <span className="text-base">{meta.icon}</span>
                   </div>
+                  {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      {article.tag && (
-                        <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${TAG_STYLE[article.tag.style]}`}>
+                      {tagStyle && article.tag && (
+                        <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full"
+                          style={{ background: tagStyle.bg, color: tagStyle.color }}>
                           {article.tag.label}
                         </span>
                       )}
@@ -94,6 +113,7 @@ export default async function LearnPage() {
                     <p className="text-sm font-semibold text-gray-900 leading-snug">{article.title}</p>
                     <p className="text-xs text-gray-400 mt-1 leading-relaxed line-clamp-2">{article.subtitle}</p>
                   </div>
+                  {/* Arrow */}
                   <svg className="w-4 h-4 text-gray-200 shrink-0 mt-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
@@ -104,29 +124,34 @@ export default async function LearnPage() {
         </div>
       )}
 
-      {/* All articles */}
+      {/* ── All articles ── */}
       {rest.length > 0 && (
-        <div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-3">
+        <div className="animate-fade-in-up delay-150">
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-3">
             {topPicks.length > 0 ? 'All articles' : 'Articles'}
           </p>
           <div className="space-y-2.5">
-            {rest.map(article => {
-              const meta = CATEGORY_META[article.category] ?? { color: 'text-gray-500', bg: 'bg-gray-50', icon: '📄' }
+            {rest.map((article, i) => {
+              const meta = CATEGORY_META[article.category] ?? { color: '#6b7280', bg: 'rgba(156,163,175,0.08)', icon: '📄' }
+              const tagStyle = article.tag ? (TAG_STYLE[article.tag.style] ?? TAG_STYLE.gray) : null
               return (
                 <Link key={article.slug} href={`/learn/${article.slug}`}
-                  className="flex items-start gap-4 bg-white rounded-2xl border px-4 py-4 active:scale-[0.99] transition-transform"
-                  style={{ borderWidth: '0.5px', borderColor: '#f3f4f6' }}>
-                  <div className={`w-10 h-10 rounded-xl ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}>
+                  className={`flex items-start gap-4 px-4 py-4 active:scale-[0.99] transition-transform block delay-${i * 50}`}
+                  style={glassCard}>
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                    style={{ background: meta.bg }}>
                     <span className="text-base">{meta.icon}</span>
                   </div>
+                  {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className={`text-[9px] font-semibold ${meta.color}`}>{article.category}</span>
-                      {article.tag && (
+                      <span className="text-[9px] font-semibold" style={{ color: meta.color }}>{article.category}</span>
+                      {tagStyle && article.tag && (
                         <>
                           <span className="text-[9px] text-gray-200">·</span>
-                          <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${TAG_STYLE[article.tag.style]}`}>
+                          <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full"
+                            style={{ background: tagStyle.bg, color: tagStyle.color }}>
                             {article.tag.label}
                           </span>
                         </>
@@ -136,6 +161,7 @@ export default async function LearnPage() {
                     <p className="text-sm font-semibold text-gray-900 leading-snug">{article.title}</p>
                     <p className="text-xs text-gray-400 mt-1 leading-relaxed line-clamp-2">{article.subtitle}</p>
                   </div>
+                  {/* Arrow */}
                   <svg className="w-4 h-4 text-gray-200 shrink-0 mt-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
@@ -146,8 +172,8 @@ export default async function LearnPage() {
         </div>
       )}
 
-      {/* Disclaimer */}
-      <p className="text-[10px] text-gray-300 text-center pb-4 leading-relaxed px-4">
+      {/* ── Disclaimer ── */}
+      <p className="text-[10px] text-gray-300 text-center pb-4 leading-relaxed px-4 animate-fade-in-up delay-300">
         For general education only — not medical advice. Always consult a dermatologist before changing your treatment.
       </p>
 

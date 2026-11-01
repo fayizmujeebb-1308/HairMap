@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#1D9E75',
+  themeColor: '#10b981',
   width: 'device-width',
   initialScale: 1,
   // Cover the notch / Dynamic Island / home indicator

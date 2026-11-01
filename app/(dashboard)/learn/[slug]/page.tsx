@@ -170,7 +170,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     <p className="text-xs font-semibold text-gray-900 leading-snug line-clamp-2">{rel.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       {rel.tag && (
-                        <span className={`text-[9px] font-semibold`} style={{ color: rel.tag.style === 'green' ? '#1D9E75' : rel.tag.style === 'amber' ? '#d97706' : '#2563eb' }}>
+                        <span className={`text-[9px] font-semibold`} style={{ color: rel.tag.style === 'green' ? '#10b981' : rel.tag.style === 'amber' ? '#d97706' : '#2563eb' }}>
                           {rel.tag.label}
                         </span>
                       )}

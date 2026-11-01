@@ -174,7 +174,7 @@ function Column({ items, selected, onChange, label }: ColProps) {
               >
                 <span style={{
                   fontSize: isSel ? 16 : dist === 1 ? 13 : 11,
-                  color: isSel ? '#1D9E75' : '#6b7280',
+                  color: isSel ? '#10b981' : '#6b7280',
                   fontWeight: isSel ? 600 : 400,
                   display: 'inline-block',
                   transform: isHov ? 'scale(1.11)' : isSel ? 'scale(1.04)' : 'scale(1)',

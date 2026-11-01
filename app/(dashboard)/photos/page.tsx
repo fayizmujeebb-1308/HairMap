@@ -23,7 +23,7 @@ export default async function PhotosPage() {
     supabase.from('ai_analyses').select('analysis, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
   ])
 
-  // Keep only the most recent photo per angle
+  // Keep only most recent photo per angle
   const latestByAngle: Record<string, { id: string; url: string }> = {}
   for (const p of photos ?? []) {
     if (!latestByAngle[p.angle]) {
@@ -33,76 +33,105 @@ export default async function PhotosPage() {
 
   const doneCount = Object.keys(latestByAngle).length
   const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
+  const progress = (doneCount / 6) * 100
 
   return (
     <div className="space-y-5">
 
-      {/* Header */}
-      <div className="flex items-start justify-between pt-2">
+      {/* ── Header ── */}
+      <div className="flex items-start justify-between pt-2 animate-fade-in-up">
         <div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Progress</p>
-          <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Photos</h1>
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Progress</p>
+          <h1 className="font-serif text-[26px] text-gray-900 mt-0.5">Photos</h1>
         </div>
-        <div className="text-right">
-          <p className="font-serif text-2xl text-gray-900">{doneCount}<span className="text-sm text-gray-300">/6</span></p>
-          <p className="text-[10px] text-gray-400">angles</p>
+        <div className="text-right animate-scale-in">
+          <p className="font-serif text-2xl text-gray-900">
+            {doneCount}<span className="text-sm text-gray-300 font-sans font-normal">/6</span>
+          </p>
+          <p className="text-[10px] text-gray-400">angles captured</p>
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-primary rounded-full transition-all duration-500"
-          style={{ width: `${(doneCount / 6) * 100}%` }}
-        />
+      {/* ── Progress bar ── */}
+      <div className="space-y-1.5 animate-fade-in-up delay-75">
+        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-700"
+            style={{
+              width: `${progress}%`,
+              background: progress === 100
+                ? 'linear-gradient(90deg, #059669, #10b981)'
+                : 'linear-gradient(90deg, #10b981, #34d399)',
+            }}
+          />
+        </div>
+        <p className="text-[10px] text-gray-400">
+          {doneCount === 6
+            ? 'All angles complete — AI analysis ready'
+            : `${6 - doneCount} angle${6 - doneCount !== 1 ? 's' : ''} remaining for full AI analysis`}
+        </p>
       </div>
 
-      {/* Tip */}
-      {doneCount < 6 && (
-        <div className="bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-3">
-          <span className="text-lg shrink-0">💡</span>
-          <p className="text-xs text-primary/80 leading-relaxed">
+      {/* ── Tip / AI Analysis banner ── */}
+      {doneCount < 6 ? (
+        <div className="rounded-2xl px-4 py-3.5 flex items-center gap-3 animate-fade-in-up delay-100"
+          style={{
+            background: 'rgba(16,185,129,0.07)',
+            border: '1px solid rgba(16,185,129,0.15)',
+          }}>
+          <span className="text-xl shrink-0">💡</span>
+          <p className="text-xs text-gray-600 leading-relaxed">
             {doneCount === 0
               ? 'Tap any slot to take or upload a photo. All 6 angles give the most accurate AI analysis.'
-              : `${6 - doneCount} angle${6 - doneCount > 1 ? 's' : ''} remaining. Complete all 6 for full AI analysis.`
-            }
+              : `${6 - doneCount} angle${6 - doneCount > 1 ? 's' : ''} remaining. Complete all 6 for the full AI hair analysis.`}
           </p>
+        </div>
+      ) : (
+        <div className="animate-fade-in-up delay-100">
+          <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} compact />
         </div>
       )}
 
-      {doneCount === 6 && (
-        <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} compact />
-      )}
-
-      {/* Angle grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {ANGLES.map(angle => {
+      {/* ── Angle grid ── */}
+      <div className="grid grid-cols-2 gap-3 animate-fade-in-up delay-150">
+        {ANGLES.map((angle, i) => {
           const existing = latestByAngle[angle.key] ?? null
           return (
-            <PhotoSlot
-              key={angle.key}
-              angle={angle.key}
-              label={angle.label}
-              desc={angle.desc}
-              photoUrl={existing?.url ?? null}
-              photoId={existing?.id ?? null}
-            />
+            <div key={angle.key} className={`delay-${i * 75}`}>
+              <PhotoSlot
+                angle={angle.key}
+                label={angle.label}
+                desc={angle.desc}
+                photoUrl={existing?.url ?? null}
+                photoId={existing?.id ?? null}
+              />
+            </div>
           )
         })}
       </div>
 
-      {/* How-to guide */}
-      <div className="bg-white rounded-2xl shadow-card px-5 py-4 space-y-3">
-        <p className="text-xs font-semibold text-gray-700">📸 Photo tips for best results</p>
-        <ul className="space-y-2">
+      {/* ── Photo tips ── */}
+      <div className="rounded-2xl px-5 py-4 space-y-3 animate-fade-in-up delay-400"
+        style={{
+          background: 'rgba(255,255,255,0.9)',
+          backdropFilter: 'blur(20px) saturate(1.8)',
+          WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+          border: '1px solid rgba(255,255,255,0.7)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+        }}>
+        <div className="flex items-center gap-2">
+          <span className="text-base">📸</span>
+          <p className="text-xs font-semibold text-gray-700">Photo tips for best results</p>
+        </div>
+        <ul className="space-y-2.5">
           {[
-            'Use consistent lighting — natural light or bright bathroom',
-            'Same distance each time — arm\'s length from mirror',
-            'Dry hair — wet hair distorts density appearance',
-            'No styling products — they hide thinning',
-          ].map((tip, i) => (
-            <li key={i} className="flex items-start gap-2 text-[11px] text-gray-500 leading-relaxed">
-              <span className="text-primary font-bold mt-0.5 shrink-0">{i + 1}.</span>
+            ['🌞', 'Consistent lighting — natural light or bright bathroom'],
+            ['📏', 'Same distance each time — arm\'s length from mirror'],
+            ['💧', 'Dry hair — wet hair distorts density appearance'],
+            ['🚿', 'No styling products — they can hide thinning'],
+          ].map(([icon, tip], i) => (
+            <li key={i} className="flex items-start gap-2.5 text-[11px] text-gray-500 leading-relaxed">
+              <span className="shrink-0 text-sm">{icon}</span>
               {tip}
             </li>
           ))}

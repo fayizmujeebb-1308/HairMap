@@ -5,7 +5,6 @@ import Image from 'next/image'
 import AIAnalysis from '@/app/components/AIAnalysis'
 import UpgradeGate from '@/app/components/UpgradeGate'
 
-/* ── helpers ── */
 function toDate(iso: string) { return iso.split('T')[0] }
 function today() { return new Date().toISOString().split('T')[0] }
 
@@ -43,22 +42,27 @@ function last8Weeks(): { label: string; start: string; end: string }[] {
 
 type Milestone = { icon: string; label: string; done: boolean; progress?: number; total?: number }
 
-function milestone(daysTracked: number, streak: number, logCount: number, photoCount: number): Milestone[] {
-  const list: Milestone[] = []
-  if (daysTracked >= 1)   list.push({ icon: '🌱', label: 'First day logged',    done: true })
-  if (streak >= 7)        list.push({ icon: '🔥', label: '7-day streak',        done: true })
-  else                    list.push({ icon: '🔥', label: '7-day streak',        done: false, progress: streak, total: 7 })
-  if (logCount >= 30)     list.push({ icon: '💊', label: '30 doses logged',     done: true })
-  else                    list.push({ icon: '💊', label: '30 doses logged',     done: false, progress: logCount, total: 30 })
-  if (photoCount >= 6)    list.push({ icon: '📸', label: 'All 6 angles captured', done: true })
-  else                    list.push({ icon: '📸', label: 'All 6 angles captured', done: false, progress: photoCount, total: 6 })
-  if (streak >= 30)       list.push({ icon: '🏆', label: '30-day streak',       done: true })
-  else                    list.push({ icon: '🏆', label: '30-day streak',       done: false, progress: streak, total: 30 })
-  return list.slice(0, 5)
+function milestones(daysTracked: number, streak: number, logCount: number, photoCount: number): Milestone[] {
+  return [
+    { icon: '🌱', label: 'First day logged',      done: daysTracked >= 1 },
+    { icon: '🔥', label: '7-day streak',           done: streak >= 7,  progress: streak,     total: 7  },
+    { icon: '💊', label: '30 doses logged',        done: logCount >= 30, progress: logCount, total: 30 },
+    { icon: '📸', label: 'All 6 angles captured',  done: photoCount >= 6, progress: photoCount, total: 6 },
+    { icon: '🏆', label: '30-day streak',          done: streak >= 30, progress: streak,     total: 30 },
+  ]
 }
 
 const RING_R = 44
 const RING_CIRC = 2 * Math.PI * RING_R
+
+const glassCard = {
+  background: 'rgba(255,255,255,0.9)',
+  backdropFilter: 'blur(20px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+  borderRadius: 20,
+} as const
 
 export default async function ProgressPage() {
   const supabase = await createClient()
@@ -75,7 +79,6 @@ export default async function ProgressPage() {
     supabase.from('ai_analyses').select('analysis, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
   ])
 
-  // Photo comparison: first vs latest per angle
   const photosByAngle: Record<string, { first: string; latest: string; count: number }> = {}
   for (const p of photos ?? []) {
     if (!p.thumb_path) continue
@@ -98,26 +101,23 @@ export default async function ProgressPage() {
   const days28      = last28Days()
   const weeks8      = last8Weeks()
 
-  // Weekly adherence data
   const weeklyData = weeks8.map(w => {
-    const daysInWeek = 7
     const loggedDays = days28.filter(d => d >= w.start && d <= w.end && logDates.has(d)).length
-    const pct = Math.round((loggedDays / daysInWeek) * 100)
+    const pct = Math.round((loggedDays / 7) * 100)
     return { ...w, pct, loggedDays }
   })
 
-  // Latest photo per angle (photos ordered ascending so iterate reversed)
   const latestPhotos: Record<string, string> = {}
   for (const p of [...(photos ?? [])].reverse()) {
     if (!latestPhotos[p.angle] && p.thumb_path) latestPhotos[p.angle] = p.thumb_path
   }
 
   const isPro = profile?.subscription_status === 'pro' || profile?.subscription_status === 'trialing'
-  const milestones = milestone(daysTracked, streak, logCount, photoCount)
+  const ms = milestones(daysTracked, streak, logCount, photoCount)
   const ringOffset = RING_CIRC * (1 - adherence / 100)
 
   const adherenceMessage =
-    adherence >= 90 ? 'Outstanding — top 10% of users' :
+    adherence >= 90 ? 'Outstanding — top tier consistency.' :
     adherence >= 75 ? 'Great consistency. Keep it up.' :
     adherence >= 50 ? 'Good start. Aim for daily logging.' :
     'Log daily to see your adherence grow.'
@@ -125,42 +125,43 @@ export default async function ProgressPage() {
   const photoAngles = ['front', 'top', 'crown', 'hairline', 'left', 'right']
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 pb-2">
 
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="pt-2 animate-fade-in-up">
-        <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">Your journey</p>
-        <h1 className="font-serif text-2xl text-gray-900 mt-0.5">Progress</h1>
+        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Your journey</p>
+        <h1 className="font-serif text-[26px] text-gray-900 mt-0.5">Progress</h1>
       </div>
 
-      {/* Hero — adherence ring + stats */}
-      <div className="bg-white rounded-2xl shadow-card px-5 py-5">
+      {/* ── Hero adherence card ── */}
+      <div className="px-5 py-5 animate-scale-in delay-75" style={glassCard}>
         <div className="flex items-center gap-5">
-          {/* Ring */}
+          {/* Animated ring */}
           <div className="relative shrink-0 w-[110px] h-[110px]">
             <svg width="110" height="110" viewBox="0 0 110 110">
-              <circle cx="55" cy="55" r={RING_R} fill="none" stroke="#f3f4f6" strokeWidth="9" />
-              <circle cx="55" cy="55" r={RING_R} fill="none" stroke="#1D9E75" strokeWidth="9"
+              <circle cx="55" cy="55" r={RING_R} fill="none" stroke="rgba(229,231,235,0.8)" strokeWidth="9" />
+              <circle cx="55" cy="55" r={RING_R} fill="none"
+                stroke="#10b981" strokeWidth="9"
                 strokeLinecap="round"
                 strokeDasharray={RING_CIRC}
                 strokeDashoffset={ringOffset}
                 transform="rotate(-90 55 55)"
-                style={{ transition: 'stroke-dashoffset 1s ease' }}
+                style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1)', filter: 'drop-shadow(0 0 6px rgba(16,185,129,0.4))' }}
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <p className="font-serif text-2xl text-gray-900 leading-none">{adherence}<span className="text-sm text-gray-400">%</span></p>
-              <p className="text-[9px] text-gray-400 mt-0.5 uppercase tracking-wide">adherence</p>
+              <p className="text-[9px] text-gray-400 mt-0.5 uppercase tracking-widest">adherence</p>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="flex-1 space-y-3">
+          <div className="flex-1 space-y-2.5">
             {[
-              { icon: '🔥', label: 'Current streak',    value: `${streak} days` },
-              { icon: '📅', label: 'Days tracked',      value: `${daysTracked} days` },
-              { icon: '💊', label: 'Doses logged',      value: logCount },
-              { icon: '📸', label: 'Angles captured',   value: `${photoCount}/6` },
+              { icon: '🔥', label: 'Current streak',  value: `${streak} days` },
+              { icon: '📅', label: 'Days tracked',    value: `${daysTracked} days` },
+              { icon: '💊', label: 'Doses logged',    value: logCount },
+              { icon: '📸', label: 'Angles captured', value: `${photoCount}/6` },
             ].map(s => (
               <div key={s.label} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -172,11 +173,12 @@ export default async function ProgressPage() {
             ))}
           </div>
         </div>
-        <p className="text-[10px] text-gray-400 mt-4 pt-3 border-t border-gray-50">{adherenceMessage}</p>
+        <p className="text-[10px] text-gray-400 mt-4 pt-3"
+          style={{ borderTop: '0.5px solid rgba(0,0,0,0.06)' }}>{adherenceMessage}</p>
       </div>
 
-      {/* 28-day heatmap */}
-      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
+      {/* ── 28-day heatmap ── */}
+      <div className="px-5 py-4 animate-fade-in-up delay-150" style={glassCard}>
         <p className="text-xs font-semibold text-gray-700 mb-3">Last 28 days</p>
         <div className="grid grid-cols-7 gap-1.5">
           {days28.map(date => {
@@ -184,28 +186,38 @@ export default async function ProgressPage() {
             const isToday = date === todayStr
             const future  = date > todayStr
             return (
-              <div key={date} className={`aspect-square rounded-lg transition-colors ${
-                isToday && logged  ? 'bg-primary ring-2 ring-primary/30'
-                : isToday         ? 'bg-white ring-2 ring-primary/30'
-                : logged          ? 'bg-primary/70'
-                : future          ? 'bg-gray-50'
-                :                   'bg-gray-100'
-              }`} title={date} />
+              <div key={date}
+                className={`aspect-square rounded-lg transition-all duration-200 ${
+                  isToday && logged  ? 'ring-2 ring-primary/40'
+                  : isToday         ? 'ring-2 ring-primary/30'
+                  : ''
+                }`}
+                style={{
+                  background: logged
+                    ? (isToday ? '#10b981' : 'rgba(16,185,129,0.65)')
+                    : future ? 'rgba(249,250,251,0.5)' : 'rgba(229,231,235,0.8)',
+                }}
+                title={date}
+              />
             )
           })}
         </div>
-        <div className="flex items-center gap-2 mt-3">
-          <div className="w-3 h-3 rounded bg-gray-100" />
-          <span className="text-[10px] text-gray-400">Missed</span>
-          <div className="w-3 h-3 rounded bg-primary/70 ml-2" />
-          <span className="text-[10px] text-gray-400">Logged</span>
-          <div className="w-3 h-3 rounded bg-primary ml-2" />
-          <span className="text-[10px] text-gray-400">Today</span>
+        <div className="flex items-center gap-3 mt-3">
+          {[
+            { color: 'rgba(229,231,235,0.8)', label: 'Missed' },
+            { color: 'rgba(16,185,129,0.65)', label: 'Logged' },
+            { color: '#10b981',               label: 'Today' },
+          ].map(({ color, label }) => (
+            <div key={label} className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded" style={{ background: color }} />
+              <span className="text-[10px] text-gray-400">{label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* 8-week bar chart */}
-      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
+      {/* ── 8-week bar chart ── */}
+      <div className="px-5 py-4 animate-fade-in-up delay-200" style={glassCard}>
         <p className="text-xs font-semibold text-gray-700 mb-4">Weekly adherence</p>
         <div className="flex items-end gap-1.5 h-24">
           {weeklyData.map((w, i) => {
@@ -215,8 +227,14 @@ export default async function ProgressPage() {
               <div key={i} className="flex-1 flex flex-col items-center gap-1">
                 <div className="w-full relative flex items-end" style={{ height: 96 }}>
                   <div
-                    className={`w-full rounded-t-lg transition-all duration-700 ${isLast ? 'bg-primary' : 'bg-primary/25'}`}
-                    style={{ height }}
+                    className="w-full rounded-t-lg transition-all duration-700"
+                    style={{
+                      height,
+                      background: isLast
+                        ? 'linear-gradient(180deg, #10b981, #059669)'
+                        : 'rgba(16,185,129,0.22)',
+                      boxShadow: isLast ? '0 4px 12px rgba(16,185,129,0.25)' : 'none',
+                    }}
                   />
                   {w.pct > 0 && (
                     <span className="absolute -top-4 left-0 right-0 text-center text-[9px] font-semibold text-gray-500">
@@ -233,39 +251,60 @@ export default async function ProgressPage() {
         </div>
       </div>
 
-      {/* AI Analysis — above milestones so it's not buried */}
-      <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} />
+      {/* ── AI Analysis ── */}
+      <div className="animate-fade-in-up delay-300">
+        <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} />
+      </div>
 
-      {/* Milestones */}
-      <div className="bg-white rounded-2xl shadow-card px-5 py-4">
-        <p className="text-xs font-semibold text-gray-700 mb-3">Milestones</p>
-        <div className="space-y-3">
-          {milestones.map((m, i) => (
+      {/* ── Milestones ── */}
+      <div className="px-5 py-4 animate-fade-in-up delay-350" style={glassCard}>
+        <p className="text-xs font-semibold text-gray-700 mb-4">Milestones</p>
+        <div className="space-y-3.5">
+          {ms.map((m, i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-base shrink-0 ${m.done ? 'bg-primary/10' : 'bg-gray-50'}`}>
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 transition-all ${
+                m.done
+                  ? 'bg-primary/10'
+                  : 'bg-gray-50'
+              }`}>
                 {m.icon}
               </div>
               <div className="flex-1 min-w-0">
                 <p className={`text-xs font-semibold ${m.done ? 'text-gray-900' : 'text-gray-400'}`}>{m.label}</p>
-                {!m.done && 'progress' in m && (
-                  <div className="mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary/40 rounded-full"
-                      style={{ width: `${Math.round(((m.progress ?? 0) / (m.total ?? 1)) * 100)}%` }} />
+                {!m.done && m.progress != null && (
+                  <div className="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${Math.min(100, Math.round((m.progress / (m.total ?? 1)) * 100))}%`,
+                        background: 'linear-gradient(90deg, #10b981, #34d399)',
+                      }}
+                    />
                   </div>
                 )}
               </div>
               {m.done
-                ? <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                : <span className="text-[10px] text-gray-300 shrink-0">{m.progress != null ? `${m.progress}/${m.total}` : ''}</span>
+                ? (
+                  <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )
+                : (
+                  <span className="text-[10px] text-gray-300 shrink-0 tabular-nums">
+                    {m.progress != null ? `${m.progress}/${m.total}` : ''}
+                  </span>
+                )
               }
             </div>
           ))}
         </div>
       </div>
 
-      {/* Photo gallery */}
+      {/* ── Latest photos grid ── */}
       {photoCount > 0 && (
-        <div className="bg-white rounded-2xl shadow-card px-5 py-4">
+        <div className="px-5 py-4 animate-fade-in-up delay-400" style={glassCard}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-gray-700">Latest photos</p>
             <Link href="/photos" className="text-[10px] text-primary font-semibold">View all →</Link>
@@ -274,61 +313,67 @@ export default async function ProgressPage() {
             {photoAngles.filter(a => latestPhotos[a]).slice(0, 6).map(angle => (
               <div key={angle} className="aspect-square rounded-xl overflow-hidden bg-gray-50 relative">
                 <Image src={latestPhotos[angle]} alt={angle} fill className="object-cover" sizes="30vw" unoptimized />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/30 px-1.5 py-1">
-                  <p className="text-[9px] text-white font-medium capitalize">{angle}</p>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <p className="absolute bottom-1.5 left-1.5 text-[9px] text-white font-semibold capitalize">{angle}</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Photo comparison */}
+      {/* ── Before vs Now ── */}
       {comparisonAngles.length > 0 && (
         isPro ? (
-          <div className="bg-white rounded-2xl shadow-card px-5 py-4">
-            <p className="text-xs font-semibold text-gray-700 mb-1">Before vs Now</p>
+          <div className="px-5 py-4 animate-fade-in-up delay-450" style={glassCard}>
+            <p className="text-xs font-semibold text-gray-700 mb-0.5">Before vs Now</p>
             <p className="text-[10px] text-gray-400 mb-4">Your first photo compared to your latest</p>
             <div className="space-y-4">
               {comparisonAngles.slice(0, 3).map(([angle, data]) => (
                 <div key={angle}>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-2 capitalize">{angle}</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-2 capitalize">{angle}</p>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
-                      <Image src={data.first} alt={`${angle} first`} fill className="object-cover" sizes="45vw" unoptimized />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/40 py-1 px-2">
-                        <p className="text-[9px] text-white font-medium">First</p>
+                    {[
+                      { src: data.first,  label: 'First' },
+                      { src: data.latest, label: 'Latest' },
+                    ].map(({ src, label }) => (
+                      <div key={label} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
+                        <Image src={src} alt={`${angle} ${label.toLowerCase()}`} fill className="object-cover" sizes="45vw" unoptimized />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5">
+                          <p className="text-[9px] text-white font-semibold">{label}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
-                      <Image src={data.latest} alt={`${angle} latest`} fill className="object-cover" sizes="45vw" unoptimized />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/40 py-1 px-2">
-                        <p className="text-[9px] text-white font-medium">Latest</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <UpgradeGate
-            feature="Before vs Now comparison"
-            description="See your first photo side-by-side with your latest to measure real progress."
-          />
+          <div className="animate-fade-in-up delay-450">
+            <UpgradeGate
+              feature="Before vs Now comparison"
+              description="See your first photo side-by-side with your latest to measure real progress."
+            />
+          </div>
         )
       )}
 
-
-      {/* Empty photo CTA */}
+      {/* ── Empty photo CTA ── */}
       {photoCount === 0 && (
-        <div className="bg-white rounded-2xl shadow-card px-5 py-5 text-center">
+        <div className="px-5 py-6 text-center animate-fade-in-up delay-400" style={glassCard}>
           <p className="text-2xl mb-2">📸</p>
           <p className="text-sm font-semibold text-gray-900 mb-1">Add progress photos</p>
-          <p className="text-xs text-gray-400 mb-3 leading-relaxed">Photos are the most powerful way to see real change over time.</p>
+          <p className="text-xs text-gray-400 mb-4 leading-relaxed">
+            Photos are the most powerful way to see real change over time.
+          </p>
           <Link href="/photos"
-            className="inline-flex bg-primary text-white text-xs font-semibold px-4 py-2 rounded-xl active:scale-95 transition-transform">
+            className="inline-flex items-center gap-2 text-white text-xs font-semibold px-5 py-2.5 rounded-xl active:scale-95 transition-transform"
+            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}>
             Take photos now
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </Link>
         </div>
       )}
