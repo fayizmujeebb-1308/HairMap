@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import ThemeToggle from '@/app/components/ThemeToggle'
 
 const glassCard = {
   background: 'rgba(255,255,255,0.9)',
@@ -189,6 +190,23 @@ export default async function AccountPage() {
           </div>
         </Link>
       )}
+
+      {/* ── Preferences ── */}
+      <div className="overflow-hidden animate-fade-in-up delay-350" style={{ ...glassCard, padding: 0 }}>
+        <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(229,231,235,0.6)' }}>
+          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Preferences</p>
+        </div>
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+              style={{ background: 'rgba(99,102,241,0.08)' }}>
+              🎨
+            </div>
+            <span className="text-sm font-medium text-gray-700">Appearance</span>
+          </div>
+          <ThemeToggle />
+        </div>
+      </div>
 
       {/* ── Sign out ── */}
       <div className="overflow-hidden animate-fade-in-up delay-400" style={{ ...glassCard, padding: 0 }}>

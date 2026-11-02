@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import AIAnalysis from '@/app/components/AIAnalysis'
 import UpgradeGate from '@/app/components/UpgradeGate'
+import PhotoComparisonSlider from '@/app/components/PhotoComparisonSlider'
 
 function toDate(iso: string) { return iso.split('T')[0] }
 function today() { return new Date().toISOString().split('T')[0] }
@@ -352,25 +353,16 @@ export default async function ProgressPage() {
           <div className="px-5 py-4 animate-fade-in-up delay-450" style={glassCard}>
             <p className="text-xs font-semibold text-gray-700 mb-0.5">Before vs Now</p>
             <p className="text-[10px] text-gray-400 mb-4">Your first photo compared to your latest</p>
-            <div className="space-y-4">
+            <div className="space-y-5">
               {comparisonAngles.slice(0, 3).map(([angle, data]) => (
-                <div key={angle}>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-2 capitalize">{angle}</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { src: data.first,  label: 'First' },
-                      { src: data.latest, label: 'Latest' },
-                    ].map(({ src, label }) => (
-                      <div key={label} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
-                        <Image src={src} alt={`${angle} ${label.toLowerCase()}`} fill className="object-cover" sizes="45vw" unoptimized />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5">
-                          <p className="text-[9px] text-white font-semibold">{label}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <PhotoComparisonSlider
+                  key={angle}
+                  angle={angle}
+                  beforeSrc={data.first}
+                  afterSrc={data.latest}
+                  beforeLabel="First"
+                  afterLabel="Latest"
+                />
               ))}
             </div>
           </div>

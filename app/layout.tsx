@@ -60,10 +60,21 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+// Inline script to apply saved theme before first paint (prevents flash)
+const themeScript = `
+  try {
+    var t = localStorage.getItem('hairmap-theme');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  } catch(e) {}
+`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Anti-FOUT theme script */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {/* iOS PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

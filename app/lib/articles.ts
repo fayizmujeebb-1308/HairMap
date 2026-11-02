@@ -245,6 +245,142 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: 'dutasteride-vs-finasteride',
+    title: 'Dutasteride vs finasteride — is the stronger option worth it?',
+    subtitle: 'A deeper DHT blocker with stronger evidence and more side effect caution.',
+    readTime: '5 min',
+    category: 'Treatments',
+    content: [
+      {
+        body: 'Dutasteride is a 5-alpha reductase inhibitor like finasteride, but it blocks both type 1 and type 2 isoenzymes rather than just type 2. The result is more complete DHT suppression — roughly 90% compared to finasteride\'s 60–70%. It is approved for benign prostatic hyperplasia (BPH) and used off-label for hair loss.',
+      },
+      {
+        heading: 'What the evidence shows',
+        body: 'A large multinational trial (Olsen et al., 2006) compared dutasteride 0.5mg to finasteride 1mg and placebo in 416 men over 24 weeks. Dutasteride produced significantly greater hair count increases than finasteride at all time points. A Korean study over 6 months found similar superiority. Hair loss is not an approved indication in most countries, but many dermatologists prescribe it off-label based on this evidence.',
+      },
+      {
+        heading: 'Side effects — what changes',
+        body: 'The side effect profile of dutasteride is similar to finasteride but potentially more pronounced, given the deeper hormonal suppression. Sexual side effects (reduced libido, erectile dysfunction) are reported at similar rates in trials — roughly 2–5% — but dutasteride has a much longer half-life (5 weeks vs finasteride\'s 6 hours). This means any side effects persist longer after stopping the drug.',
+      },
+      {
+        heading: 'Post-finasteride syndrome note',
+        body: 'A small subset of men report persistent sexual or cognitive side effects after stopping finasteride — so-called post-finasteride syndrome. The mechanism is not established and the condition is contested in the medical literature, but it is real for those who experience it. Dutasteride carries a similar theoretical risk and the longer half-life means longer exposure to the hormonal change. Anyone with a history of sensitivity to finasteride should approach dutasteride with caution.',
+      },
+      {
+        heading: 'Who should consider it',
+        body: 'Dutasteride is most often considered by men who have been on finasteride for 12+ months without satisfactory results, or whose hair loss has progressed despite finasteride. It is also sometimes chosen from the start by men who want maximum DHT suppression and accept the trade-off of a longer-acting drug.',
+      },
+      {
+        heading: 'Key takeaway',
+        body: 'Dutasteride is more potent than finasteride for hair retention and regrowth. The stronger evidence is real. But the longer half-life means side effects — if they occur — take longer to resolve after stopping. Start with finasteride. Move to dutasteride with a doctor\'s guidance if you need stronger suppression.',
+      },
+    ],
+  },
+  {
+    slug: 'topical-finasteride',
+    title: 'Topical finasteride — lower systemic exposure, same results?',
+    subtitle: 'A newer delivery method that may reduce side effect risk.',
+    readTime: '4 min',
+    category: 'Treatments',
+    content: [
+      {
+        body: 'Topical finasteride applies the drug directly to the scalp rather than swallowing a tablet. The goal is to achieve high local DHT suppression in the scalp while limiting the amount of finasteride that reaches the bloodstream — potentially reducing the risk of systemic side effects.',
+      },
+      {
+        heading: 'Does it actually reduce systemic absorption?',
+        body: 'Yes, significantly. Studies show that topical finasteride produces roughly 50–75% less systemic finasteride exposure than oral dosing. This translates to less suppression of serum DHT (around 30–40% vs 60–70% for oral), but comparable scalp DHT suppression — which is what matters for hair retention.',
+      },
+      {
+        heading: 'Evidence for efficacy',
+        body: 'A 2021 randomised controlled trial published in JAMA Dermatology found topical finasteride 0.25% twice daily was non-inferior to oral finasteride 1mg daily for hair count after 24 weeks, with significantly lower serum DHT suppression. This supports the hypothesis that local scalp DHT suppression is what drives the hair benefit, not systemic suppression.',
+      },
+      {
+        heading: 'Combined topical formulations',
+        body: 'Compounding pharmacies and specialist hair loss clinics often offer topical formulations that combine finasteride with minoxidil in a single solution applied to the scalp once daily. This simplifies the treatment protocol significantly and may improve adherence. The combination approach has growing evidence and is increasingly used as a first-line protocol.',
+      },
+      {
+        heading: 'Who should consider it',
+        body: 'Topical finasteride is worth considering if you are reluctant to take an oral medication due to concerns about systemic side effects, or if you have experienced side effects on oral finasteride that were mild enough to tolerate topically. It is not widely available over-the-counter and typically requires a prescription and/or a compounding pharmacy.',
+      },
+      {
+        heading: 'Key takeaway',
+        body: 'Topical finasteride appears to be as effective as oral for hair retention with meaningfully lower systemic exposure. It is a compelling option for men who want the benefits of DHT suppression with reduced systemic risk. Ask your dermatologist — it is not a fringe option; it is increasingly mainstream.',
+      },
+    ],
+  },
+  {
+    slug: 'nutrition-and-hair',
+    title: 'Does diet affect hair loss? What the evidence says.',
+    subtitle: 'Sorting what matters from what is marketing.',
+    readTime: '5 min',
+    category: 'Lifestyle',
+    content: [
+      {
+        body: 'The supplement and "hair food" market is enormous, and mostly noise. The honest answer about nutrition and androgenetic alopecia (male pattern baldness): your diet is unlikely to cause it, and improving your diet alone is unlikely to reverse it. But nutrient deficiencies can make hair loss worse and slow regrowth — so they are worth addressing.',
+      },
+      {
+        heading: 'What can cause hair loss through nutrition',
+        body: 'Iron deficiency is the most common nutritional driver of hair loss, particularly diffuse thinning (hair loss across the whole scalp rather than patterned). Ferritin levels below 70ng/mL are associated with increased shedding. Zinc deficiency is also linked to hair loss and can be corrected with supplementation. Severe caloric restriction — crash diets, very low calorie diets — causes telogen effluvium: diffuse shedding triggered by physiological stress that typically resolves 3–6 months after normal eating resumes.',
+      },
+      {
+        heading: 'Protein',
+        body: 'Hair is made of keratin, a protein. Chronically low protein intake can impair hair growth. Most people eating a normal diet get adequate protein. Consuming more protein than adequate does not accelerate hair growth. If you are in aggressive caloric restriction or eat a restrictive diet (very low carb, vegan without planning), check that you are meeting minimum protein needs — roughly 0.8g per kg of body weight as a floor.',
+      },
+      {
+        heading: 'Biotin — the overhyped supplement',
+        body: 'Biotin (vitamin B7) deficiency can cause hair loss, but true biotin deficiency is extremely rare in people eating normally. Most people taking biotin supplements have no deficiency and derive no benefit for hair. The abundance of biotin supplements targeting hair loss is driven by marketing, not evidence. Do not waste money on high-dose biotin unless you have a confirmed deficiency.',
+      },
+      {
+        heading: 'Vitamins D and B12',
+        body: 'Vitamin D deficiency (serum 25-OH-D below 30ng/mL) is common and is associated with hair loss in several studies, though causation is not definitively established. Vitamin B12 deficiency — more common in vegans and those on long-term metformin — can contribute to hair thinning. Both are worth checking in a blood panel if you have not done so.',
+      },
+      {
+        heading: 'What to actually do',
+        body: 'Get a basic blood panel including ferritin, vitamin D, zinc, B12, and thyroid (TSH). Address any deficiencies found. Eat a diet with adequate protein and micronutrients — a normal balanced diet achieves this without supplements. Then focus your efforts where the evidence is much stronger: DHT-blocking medication and minoxidil.',
+      },
+      {
+        heading: 'Key takeaway',
+        body: 'Nutrition matters for overall hair health, but androgenetic alopecia is driven by genetics and DHT — not diet. Fix any deficiencies (iron, vitamin D, zinc, B12) and eat adequately. Beyond that, supplements will not replace medical treatment. Save the supplement budget for finasteride and minoxidil.',
+      },
+    ],
+  },
+  {
+    slug: 'hair-transplant-basics',
+    title: 'Hair transplants — what they are, who they are for, and when',
+    subtitle: 'A clear-eyed overview of surgical restoration.',
+    readTime: '6 min',
+    category: 'Science',
+    content: [
+      {
+        body: 'A hair transplant is a surgical procedure that moves DHT-resistant follicles from the back and sides of your scalp (the donor zone) to thinning or bald areas (the recipient zone). The transplanted follicles retain their genetic resistance to DHT and continue to grow in their new location permanently.',
+      },
+      {
+        heading: 'FUE vs FUT — the two techniques',
+        body: 'FUT (Follicular Unit Transplantation, also called "strip"): a strip of scalp skin is surgically removed from the donor zone, dissected into individual follicular units, and transplanted. Leaves a linear scar. Higher graft yield per session.\n\nFUE (Follicular Unit Extraction): individual follicular units are extracted one-by-one using a small punch tool. No linear scar — leaves small dot scars that are typically invisible with short hair. Slightly lower graft yield but more flexible for patients who wear their hair short. FUE is now the dominant technique globally.',
+      },
+      {
+        heading: 'Who is a good candidate',
+        body: 'Candidates for transplant should: have stable hair loss (not rapidly progressing), have an adequate donor zone (sufficient DHT-resistant follicles to harvest), be realistic about what surgery can achieve (transplants redistribute existing hair, they do not create new hair), and ideally already be on medical treatment to stabilise the remaining native hair. Age matters: operating on a 22-year-old with progressing loss risks creating an unnatural result as native hair continues to fall. Most surgeons prefer to wait until loss has significantly stabilised, typically mid-to-late 20s or later.',
+      },
+      {
+        heading: 'What transplants cannot do',
+        body: 'A transplant cannot give you the hair density you had at 18 — the donor zone has a finite supply of follicles. If you are a Norwood 6 or 7 (extensive loss), the donor supply may not cover the recipient area adequately. Transplanted hair restores coverage and density but cannot replicate the exact original density. Managing expectations here is critical.',
+      },
+      {
+        heading: 'Medical treatment and transplants',
+        body: 'A hair transplant addresses existing bald areas but does not stop your native hair from continuing to thin. This is why medical treatment (finasteride, minoxidil) is strongly recommended before, during, and after surgery — to protect the remaining native hair and preserve the result. A transplant without continued medical treatment often results in the transplanted area looking isolated as the surrounding native hair continues to recede.',
+      },
+      {
+        heading: 'Timeline post-transplant',
+        body: 'Weeks 1–2: Scabbing, redness, swelling — all normal.\nWeeks 2–4: Transplanted hairs shed. This is expected — the follicles are not lost, just resting.\nMonths 3–4: New growth begins.\nMonths 6–9: Noticeable density improvement.\nMonth 12–18: Full result visible. Continued improvement until 18 months.',
+      },
+      {
+        heading: 'Key takeaway',
+        body: 'Hair transplants offer permanent, natural-looking results for suitable candidates. The foundation should be: stable loss, realistic expectations, adequate donor zone, and a plan for continued medical treatment post-op. Surgery is not a shortcut — it works best as a complement to medical treatment, not a replacement for it.',
+      },
+    ],
+  },
 ]
 
 export function getArticle(slug: string): Article | undefined {

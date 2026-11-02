@@ -1,38 +1,24 @@
 export default function PhotosLoading() {
   return (
-    <div className="space-y-5 pb-2">
-
-      {/* Header */}
-      <div className="flex items-start justify-between pt-2">
-        <div className="space-y-2">
-          <div className="skeleton h-2.5 w-16 rounded-full" />
-          <div className="skeleton h-7 w-24 rounded-lg" />
-        </div>
-        <div className="space-y-1 text-right">
-          <div className="skeleton h-7 w-10 rounded-lg ml-auto" />
-          <div className="skeleton h-2.5 w-24 rounded-full ml-auto" />
-        </div>
+    <div className="space-y-4 pb-2 animate-pulse">
+      <div className="pt-2">
+        <div className="h-3 w-24 bg-gray-100 rounded-full mb-2" />
+        <div className="h-7 w-28 bg-gray-100 rounded-full" />
       </div>
-
-      {/* Progress bar */}
-      <div className="space-y-1.5">
-        <div className="skeleton h-2 rounded-full" />
-        <div className="skeleton h-2.5 w-48 rounded-full" />
-      </div>
-
-      {/* Tip banner */}
-      <div className="skeleton h-14 rounded-2xl" />
-
-      {/* 2×3 photo grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {[0,1,2,3,4,5].map(i => (
-          <div key={i} className="skeleton aspect-[4/3] rounded-2xl" />
+      {/* Upload button skeleton */}
+      <div className="h-12 w-full rounded-2xl bg-gray-100" />
+      {/* Angle tabs */}
+      <div className="flex gap-2 overflow-hidden">
+        {[1,2,3,4].map(i => (
+          <div key={i} className="h-8 w-20 rounded-full bg-gray-100 shrink-0" />
         ))}
       </div>
-
-      {/* Tips card */}
-      <div className="skeleton h-32 rounded-2xl" />
-
+      {/* Photo grid */}
+      <div className="grid grid-cols-2 gap-3">
+        {[1,2,3,4,5,6].map(i => (
+          <div key={i} className="aspect-square rounded-2xl bg-gray-100" />
+        ))}
+      </div>
     </div>
   )
 }
