@@ -275,7 +275,7 @@ export default async function StreakPage() {
             background: 'linear-gradient(135deg, #059669, #10b981)',
             boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
           }}>
-          <p className="text-sm font-semibold text-white">Log today's treatment →</p>
+          <p className="text-sm font-semibold text-white">Log today&apos;s treatment →</p>
           <p className="text-[11px] text-white/60 mt-0.5">Start your streak right now</p>
         </Link>
       )}
