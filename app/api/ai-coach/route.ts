@@ -11,6 +11,27 @@ export async function POST(req: Request) {
   const { message, history } = await req.json()
   if (!message?.trim()) return NextResponse.json({ error: 'No message' }, { status: 400 })
 
+  // Pro gate: AI coach is Pro-only (whitelist bypasses)
+  const WHITELISTED = ['b0d806de-9c91-4a57-be07-d524afb368cc']
+  if (!WHITELISTED.includes(user.id)) {
+    const { data: profileCheck } = await supabase
+      .from('profiles')
+      .select('subscription_status')
+      .eq('user_id', user.id)
+      .single()
+
+    const isPro =
+      profileCheck?.subscription_status === 'pro' ||
+      profileCheck?.subscription_status === 'trialing'
+
+    if (!isPro) {
+      return NextResponse.json(
+        { error: 'AI Hair Coach is a Pro feature.', upgrade: true },
+        { status: 403 }
+      )
+    }
+  }
+
   // Fetch user context
   const [{ data: profile }, { data: stack }, { data: logs }, { data: photos }] = await Promise.all([
     supabase.from('profiles').select('first_name, norwood_stage, created_at, subscription_status').eq('user_id', user.id).single(),

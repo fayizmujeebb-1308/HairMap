@@ -8,9 +8,29 @@ export async function POST() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Whitelist: owner account bypasses rate limit
+  // Whitelist: owner account bypasses Pro check and rate limit
   const WHITELISTED = ['b0d806de-9c91-4a57-be07-d524afb368cc']
   const isWhitelisted = WHITELISTED.includes(user.id)
+
+  // Pro gate: AI analysis is Pro-only
+  if (!isWhitelisted) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('subscription_status')
+      .eq('user_id', user.id)
+      .single()
+
+    const isPro =
+      profile?.subscription_status === 'pro' ||
+      profile?.subscription_status === 'trialing'
+
+    if (!isPro) {
+      return NextResponse.json(
+        { error: 'AI analysis is a Pro feature. Upgrade at hair-map.vercel.app/upgrade', upgrade: true },
+        { status: 403 }
+      )
+    }
+  }
 
   // Rate limit: 1 analysis per 30 days for regular users
   if (!isWhitelisted) {
