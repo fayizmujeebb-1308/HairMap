@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import DarkModeToggle from '@/app/components/DarkModeToggle'
 
 function greeting() {
   const h = new Date().getHours()
@@ -89,11 +88,8 @@ export default async function DashboardPage() {
               : `${pendingCount} treatments remaining today.`}
           </p>
         </div>
-        {/* Streak badge + dark mode toggle */}
+        {/* Streak badge */}
         <div className="flex flex-col items-end gap-2 shrink-0">
-        <div className="flex items-center gap-2">
-          <DarkModeToggle />
-        </div>
         <div className="flex items-center gap-1.5 animate-scale-in delay-100"
           style={{
             background: 'rgba(251,191,36,0.12)',
