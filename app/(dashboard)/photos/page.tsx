@@ -24,10 +24,14 @@ export default async function PhotosPage() {
   ])
 
   // Keep only most recent photo per angle
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const latestByAngle: Record<string, { id: string; url: string }> = {}
   for (const p of photos ?? []) {
     if (!latestByAngle[p.angle]) {
-      latestByAngle[p.angle] = { id: p.id, url: p.thumb_path ?? '' }
+      const url = p.thumb_path
+        ? `${supabaseUrl}/storage/v1/object/public/${p.thumb_path}`
+        : ''
+      latestByAngle[p.angle] = { id: p.id, url }
     }
   }
 

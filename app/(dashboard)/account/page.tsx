@@ -45,7 +45,7 @@ export default async function AccountPage() {
       {/* ── Avatar card ── */}
       <div className="overflow-hidden animate-fade-in-up delay-75" style={{ ...glassCard, padding: 0 }}>
         {/* Gradient banner */}
-        <div className="h-20 relative"
+        <div className="h-24 relative"
           style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 60%, #34d399 100%)' }}>
           {/* Decorative blobs */}
           <div className="absolute top-2 right-6 w-12 h-12 rounded-full opacity-20"
@@ -53,14 +53,15 @@ export default async function AccountPage() {
           <div className="absolute top-6 right-14 w-7 h-7 rounded-full opacity-15"
             style={{ background: 'rgba(255,255,255,0.5)' }} />
           {/* Fade into card */}
-          <div className="absolute bottom-0 left-0 right-0 h-6 rounded-t-2xl"
-            style={{ background: 'var(--bg-card)' }} />
+          <div className="absolute bottom-0 left-0 right-0 h-5 rounded-t-2xl"
+            style={{ background: 'var(--bg-card)', zIndex: 0 }} />
         </div>
 
         <div className="px-5 pb-5" style={{ background: 'var(--bg-card)' }}>
-          <div className="flex items-end justify-between -mt-7 mb-4">
+          <div className="flex items-end justify-between -mt-8 mb-4">
             {/* Avatar circle */}
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 z-10 relative"
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 relative"
+              style={{ zIndex: 10 }}
               style={{
                 background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
                 boxShadow: '0 4px 16px rgba(16,185,129,0.35)',

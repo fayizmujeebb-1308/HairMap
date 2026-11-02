@@ -58,9 +58,13 @@ export default async function DashboardPage() {
   const pendingCount   = (stack ?? []).filter(s => !loggedToday.has(s.id)).length
   const allDoneToday   = treatmentCount > 0 && pendingCount === 0
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const latestPhotos: Record<string, string> = {}
   for (const p of photos ?? []) {
-    if (!latestPhotos[p.angle] && p.thumb_path) latestPhotos[p.angle] = p.thumb_path
+    if (!latestPhotos[p.angle] && p.thumb_path) {
+      // Build full public URL from storage path
+      latestPhotos[p.angle] = `${supabaseUrl}/storage/v1/object/public/${p.thumb_path}`
+    }
   }
   const photoAngles = Object.keys(latestPhotos).slice(0, 4)
   const hasPhotos   = photoAngles.length > 0

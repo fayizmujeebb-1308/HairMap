@@ -81,7 +81,9 @@ export default function DarkModeToggle() {
       ref={containerRef}
       className="relative flex items-center p-1 rounded-2xl"
       style={{
-        background: 'rgba(120,120,128,0.16)',
+        background: 'var(--bg-card, rgba(255,255,255,0.95))',
+        border: '1px solid var(--bg-card-border, rgba(0,0,0,0.1))',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
         backdropFilter: 'blur(20px) saturate(1.8)',
         WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
         gap: 2,
