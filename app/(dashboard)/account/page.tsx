@@ -60,7 +60,7 @@ export default async function AccountPage() {
         <div className="px-5 pb-5" style={{ background: 'var(--bg-card)' }}>
           <div className="flex items-end justify-between -mt-7 mb-4">
             {/* Avatar circle */}
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 z-10 relative"
               style={{
                 background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
                 boxShadow: '0 4px 16px rgba(16,185,129,0.35)',
