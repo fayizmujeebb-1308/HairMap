@@ -18,7 +18,9 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, {
               ...options,
-              maxAge: options?.maxAge ?? 60 * 60 * 24 * 365,
+              maxAge: 60 * 60 * 24 * 30, // always 30 days — keeps session alive on mobile
+              sameSite: 'lax',
+              secure: true,
             })
           )
         },
