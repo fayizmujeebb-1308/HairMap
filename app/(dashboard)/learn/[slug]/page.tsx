@@ -2,8 +2,21 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { getArticle } from '@/app/lib/articles'
+import { getArticle, ARTICLES } from '@/app/lib/articles'
 import { getCallout, personalizeArticles, type UserContext } from '@/app/lib/personalize'
+
+const glassCard = {
+  background: 'rgba(255,255,255,0.92)',
+  backdropFilter: 'blur(20px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+  border: '1px solid rgba(255,255,255,0.75)',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+  borderRadius: 24,
+} as const
+
+export function generateStaticParams() {
+  return ARTICLES.map(a => ({ slug: a.slug }))
+}
 
 const CATEGORY_META: Record<string, { color: string; bg: string; border: string; pill: string }> = {
   Science:    { color: 'text-blue-600',  bg: 'bg-blue-50',   border: 'border-blue-100',    pill: 'bg-blue-50 text-blue-600' },
@@ -69,11 +82,12 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       {/* Back */}
       <div className="pt-2 pb-5">
         <Link href="/learn"
-          className="inline-flex items-center gap-1.5 text-xs text-gray-400 active:text-gray-600 transition-colors">
+          className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors"
+          style={{ color: '#059669' }}>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          Learn
+          ← Learn
         </Link>
       </div>
 
@@ -112,7 +126,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       <div className="h-px bg-gray-100 mb-8" />
 
       {/* Article body */}
-      <div className="space-y-8 pb-10">
+      <div className="space-y-8 pb-10" style={{ ...glassCard, padding: '24px 20px' }}>
         {article.content.map((section, i) => {
           const paragraphs = section.body.split('\n\n')
 

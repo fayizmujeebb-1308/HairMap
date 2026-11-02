@@ -25,6 +25,31 @@ const glassCard = {
   borderRadius: 24,
 } as const
 
+function WhyWeAskTooltip() {
+  const [open, setOpen] = useState(false)
+  return (
+    <span className="relative inline-block ml-2">
+      <button
+        type="button"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onTouchStart={() => setOpen(v => !v)}
+        className="w-4 h-4 rounded-full inline-flex items-center justify-center text-[10px] font-bold"
+        style={{ background: 'rgba(16,185,129,0.12)', color: '#059669' }}
+        aria-label="Why we ask this"
+      >
+        i
+      </button>
+      {open && (
+        <span className="absolute left-6 top-0 z-10 w-64 text-white text-xs rounded-xl px-3 py-2.5 shadow-xl leading-relaxed"
+          style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderRadius: 12 }}>
+          This helps us personalise your treatment protocol and track your progress accurately.
+        </span>
+      )}
+    </span>
+  )
+}
+
 function NorwoodTooltip() {
   const [open, setOpen] = useState(false)
   return (
@@ -237,8 +262,9 @@ export default function OnboardingPage() {
               <div className="space-y-6 animate-fade-in">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#10b981' }}>Hair Profile</p>
-                  <h2 className="text-2xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     What&apos;s your hair loss like?
+                    <WhyWeAskTooltip />
                   </h2>
                   <p className="text-sm text-gray-500 mt-1.5">
                     We&apos;ll calculate your{' '}

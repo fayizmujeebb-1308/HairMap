@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: 'HairMap',
     images: [
       {
-        url: 'https://hair-map.vercel.app/og-image.png',
+        url: 'https://hair-map.vercel.app/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'HairMap — Professional hair health tracking',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HairMap — Track & Restore Your Hair',
     description: 'AI-powered hair health tracking. Log treatments, monitor progress, get coaching.',
-    images: ['https://hair-map.vercel.app/og-image.png'],
+    images: ['https://hair-map.vercel.app/opengraph-image'],
   },
   appleWebApp: {
     capable: true,

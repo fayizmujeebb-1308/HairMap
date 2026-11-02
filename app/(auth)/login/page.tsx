@@ -5,6 +5,32 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
+const glassCard = {
+  background: 'rgba(255,255,255,0.92)',
+  backdropFilter: 'blur(20px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+  border: '1px solid rgba(255,255,255,0.75)',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+  borderRadius: 24,
+  padding: 32,
+} as const
+
+const inputBase: React.CSSProperties = {
+  width: '100%',
+  padding: '10px 12px',
+  border: '1px solid rgba(209,213,219,0.6)',
+  borderRadius: 10,
+  fontSize: 14,
+  outline: 'none',
+  background: 'rgba(255,255,255,0.7)',
+  transition: 'border 0.15s, box-shadow 0.15s',
+}
+
+const inputFocus: React.CSSProperties = {
+  border: '1px solid rgba(16,185,129,0.45)',
+  boxShadow: '0 0 0 3px rgba(16,185,129,0.10)',
+}
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -13,6 +39,7 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [focusedField, setFocusedField] = useState<string | null>(null)
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -36,18 +63,18 @@ export default function LoginPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` }, // callback stays at /auth/callback
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     })
   }
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-white rounded-card border border-gray-200 p-8 shadow-sm" style={{ borderWidth: '0.5px' }}>
+      <div style={glassCard}>
         <h1 className="font-serif text-2xl text-gray-900 mb-1">Welcome back</h1>
         <p className="text-gray-500 text-sm mb-8">Sign in to your HairMap account</p>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6" style={{ borderWidth: '0.5px' }}>
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl mb-6" style={{ borderWidth: '0.5px' }}>
             {error}
           </div>
         )}
@@ -60,8 +87,9 @@ export default function LoginPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-              style={{ borderWidth: '0.5px' }}
+              style={{ ...inputBase, ...(focusedField === 'email' ? inputFocus : {}) }}
+              onFocus={() => setFocusedField('email')}
+              onBlur={() => setFocusedField(null)}
               placeholder="you@example.com"
             />
           </div>
@@ -69,7 +97,7 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-sm font-medium text-gray-700">Password</label>
-              <Link href="/forgot-password" className="text-xs text-primary hover:text-primary-dark">
+              <Link href="/forgot-password" className="text-xs" style={{ color: '#059669' }}>
                 Forgot password?
               </Link>
             </div>
@@ -79,8 +107,9 @@ export default function LoginPage() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2.5 pr-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                style={{ borderWidth: '0.5px' }}
+                style={{ ...inputBase, paddingRight: 40, ...(focusedField === 'password' ? inputFocus : {}) }}
+                onFocus={() => setFocusedField('password')}
+                onBlur={() => setFocusedField(null)}
                 placeholder="••••••••"
               />
               <button type="button" onClick={() => setShowPw(v => !v)}
@@ -107,7 +136,12 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
+            className="w-full disabled:opacity-50 text-white font-semibold py-2.5 text-sm transition-opacity"
+            style={{
+              background: 'linear-gradient(135deg, #059669, #10b981)',
+              boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+              borderRadius: 14,
+            }}
           >
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
@@ -117,13 +151,14 @@ export default function LoginPage() {
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-100" style={{ borderWidth: '0.5px' }}></div>
           </div>
-          <div className="relative flex justify-center text-xs text-gray-400 bg-white px-2 w-fit mx-auto">or</div>
+          <div className="relative flex justify-center text-xs text-gray-400 px-2 w-fit mx-auto"
+            style={{ background: 'rgba(255,255,255,0.92)' }}>or</div>
         </div>
 
         <button
           onClick={handleGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-lg py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-          style={{ borderWidth: '0.5px' }}
+          className="w-full flex items-center justify-center gap-3 rounded-xl py-2.5 text-sm font-medium text-gray-700 hover:bg-white/60 transition-colors"
+          style={{ border: '1px solid rgba(209,213,219,0.6)' }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18">
             <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
@@ -136,7 +171,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-primary hover:text-primary-dark font-medium">
+          <Link href="/signup" className="font-medium" style={{ color: '#059669' }}>
             Create one
           </Link>
         </p>

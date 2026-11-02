@@ -38,7 +38,7 @@ export default async function OGImage() {
           Track, Preserve and Restore Your Hair
         </p>
 
-        {/* Stats row */}
+        {/* Feature pills */}
         <div style={{ display: 'flex', gap: 32, marginTop: 48 }}>
           {[['AI Analysis', '📸'], ['Treatment Tracking', '💊'], ['Progress Monitoring', '📈']].map(([label, icon]) => (
             <div key={label} style={{

@@ -252,9 +252,34 @@ export default async function ProgressPage() {
       </div>
 
       {/* ── AI Analysis ── */}
-      <div className="animate-fade-in-up delay-300">
-        <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} />
-      </div>
+      {photoCount < 2 ? (
+        <div className="animate-fade-in-up delay-300 relative" style={{ ...glassCard, overflow: 'hidden' }}>
+          {/* Blurred preview content */}
+          <div style={{ filter: 'blur(2px)', padding: '20px', pointerEvents: 'none', userSelect: 'none' }}>
+            <p className="text-xs font-semibold text-gray-700 mb-2">AI Hair Analysis</p>
+            <p className="text-sm text-gray-500 leading-relaxed">Your personalised AI analysis will appear here once you have before and after photos to compare. Track density changes, shedding patterns, and regrowth progress.</p>
+            <div className="mt-3 h-2 bg-gray-100 rounded-full w-3/4" />
+            <div className="mt-2 h-2 bg-gray-100 rounded-full w-1/2" />
+          </div>
+          {/* Lock overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center"
+            style={{ background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+            <span className="text-3xl mb-2">🔒</span>
+            <p className="text-sm font-semibold text-gray-700 text-center px-6 mb-3">
+              AI analysis unlocks after your first Before / After comparison
+            </p>
+            <Link href="/photos"
+              className="inline-block text-white text-xs font-semibold px-4 py-2 rounded-full"
+              style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}>
+              Add Photos →
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="animate-fade-in-up delay-300">
+          <AIAnalysis lastAnalysis={lastAnalysis} isPro={isPro} />
+        </div>
+      )}
 
       {/* ── Milestones ── */}
       <div className="px-5 py-4 animate-fade-in-up delay-350" style={glassCard}>

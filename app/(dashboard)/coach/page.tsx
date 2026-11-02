@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import CoachChat from '@/app/components/CoachChat'
-import Link from 'next/link'
+import CoachPaywall from '@/app/components/CoachPaywall'
 
 export default async function CoachPage() {
   const supabase = await createClient()
@@ -35,45 +35,8 @@ export default async function CoachPage() {
       {isPro ? (
         <CoachChat firstName={profile?.first_name ?? 'there'} />
       ) : (
-        /* ── Paywall ── */
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-in-up delay-75">
-          {/* Icon */}
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-            style={{
-              background: 'rgba(16,185,129,0.08)',
-              border: '1px solid rgba(16,185,129,0.15)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-            }}>
-            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-          </div>
-
-          <p className="font-serif text-xl text-gray-900 mb-2">AI Hair Coach</p>
-          <p className="text-sm text-gray-400 leading-relaxed mb-8 max-w-[260px]">
-            Ask anything about hair loss, your treatments, what&apos;s working, or what to try next. Available 24/7.
-          </p>
-
-          {/* Feature chips */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {['Treatment Q&A', 'Side effect help', 'Progress insights', 'Protocol advice'].map(f => (
-              <span key={f} className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
-                style={{ background: 'rgba(16,185,129,0.06)', color: '#059669', border: '1px solid rgba(16,185,129,0.12)' }}>
-                {f}
-              </span>
-            ))}
-          </div>
-
-          <Link href="/pricing"
-            className="text-white text-sm font-semibold px-8 py-3 rounded-2xl active:scale-95 transition-transform"
-            style={{
-              background: 'linear-gradient(135deg, #059669, #10b981)',
-              boxShadow: '0 8px 24px rgba(16,185,129,0.30)',
-            }}>
-            Upgrade to Pro
-          </Link>
-          <p className="text-[10px] text-gray-300 mt-2.5">7-day free trial · cancel anytime</p>
+        <div className="flex-1 flex flex-col justify-center animate-fade-in-up delay-75">
+          <CoachPaywall />
         </div>
       )}
 

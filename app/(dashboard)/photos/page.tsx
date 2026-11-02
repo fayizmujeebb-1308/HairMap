@@ -92,12 +92,29 @@ export default async function PhotosPage() {
         </div>
       )}
 
+      {/* ── Day 1 CTA card (empty state) ── */}
+      {doneCount === 0 && (
+        <div className="rounded-2xl px-5 py-6 text-center animate-fade-in-up delay-100"
+          style={{ background: 'linear-gradient(135deg, #059669, #10b981)', boxShadow: '0 8px 24px rgba(16,185,129,0.30)' }}>
+          <div className="text-4xl mb-3">📸</div>
+          <h2 className="text-white font-bold text-lg mb-1">Capture your Day 1 baseline</h2>
+          <p className="text-emerald-100 text-xs leading-relaxed mb-4">
+            Your first photos unlock AI analysis and give you a reference point for all future comparisons.
+          </p>
+          <a href="#photo-grid"
+            className="inline-block bg-white text-emerald-700 font-semibold text-sm px-5 py-2 rounded-full"
+            style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
+            Start →
+          </a>
+        </div>
+      )}
+
       {/* ── Angle grid ── */}
-      <div className="grid grid-cols-2 gap-3 animate-fade-in-up delay-150">
+      <div id="photo-grid" className="grid grid-cols-2 gap-3 animate-fade-in-up delay-150">
         {ANGLES.map((angle, i) => {
           const existing = latestByAngle[angle.key] ?? null
           return (
-            <div key={angle.key} className={`delay-${i * 75}`}>
+            <div key={angle.key} className={`delay-${i * 75}`} style={doneCount === 0 ? { opacity: 0.5 } : undefined}>
               <PhotoSlot
                 angle={angle.key}
                 label={angle.label}

@@ -193,6 +193,19 @@ export default async function DashboardPage() {
 
             {treatmentCount > 0 ? (
               <div className="space-y-2.5">
+                {pendingCount > 0 && streak > 0 && (
+                  <div style={{
+                    background: 'rgba(251,191,36,0.12)',
+                    border: '1px solid rgba(251,191,36,0.28)',
+                    borderRadius: 12,
+                    padding: '10px 14px',
+                    color: '#92400e',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                  }}>
+                    🔥 {streak}-day streak at risk — log before midnight
+                  </div>
+                )}
                 {(stack ?? []).slice(0, 3).map(s => {
                   const done = loggedToday.has(s.id)
                   return (
