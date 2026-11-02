@@ -55,11 +55,12 @@ export default function DarkModeToggle() {
       title={`Theme: ${LABELS[theme]}`}
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all active:scale-95"
       style={{
-        background: 'rgba(255,255,255,0.18)',
+        background: 'var(--bg-card)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255,255,255,0.3)',
+        border: '1px solid var(--bg-card-border)',
         color: 'var(--text-secondary)',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
       }}
     >
       {ICONS[theme]}

@@ -91,7 +91,9 @@ export default async function DashboardPage() {
         </div>
         {/* Streak badge + dark mode toggle */}
         <div className="flex flex-col items-end gap-2 shrink-0">
-        <DarkModeToggle />
+        <div className="flex items-center gap-2">
+          <DarkModeToggle />
+        </div>
         <div className="flex items-center gap-1.5 animate-scale-in delay-100"
           style={{
             background: 'rgba(251,191,36,0.12)',
