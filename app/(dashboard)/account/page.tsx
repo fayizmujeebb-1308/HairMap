@@ -4,10 +4,10 @@ import Link from 'next/link'
 import ThemeToggle from '@/app/components/ThemeToggle'
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.9)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.7)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
   borderRadius: 20,
 } as const
@@ -54,10 +54,10 @@ export default async function AccountPage() {
             style={{ background: 'rgba(255,255,255,0.5)' }} />
           {/* Fade into card */}
           <div className="absolute bottom-0 left-0 right-0 h-6 rounded-t-2xl"
-            style={{ background: 'rgba(255,255,255,0.9)' }} />
+            style={{ background: 'var(--bg-card)' }} />
         </div>
 
-        <div className="px-5 pb-5" style={{ background: 'rgba(255,255,255,0.9)' }}>
+        <div className="px-5 pb-5" style={{ background: 'var(--bg-card)' }}>
           <div className="flex items-end justify-between -mt-7 mb-4">
             {/* Avatar circle */}
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"

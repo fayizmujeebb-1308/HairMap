@@ -57,10 +57,10 @@ const RING_R = 44
 const RING_CIRC = 2 * Math.PI * RING_R
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.9)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.7)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
   borderRadius: 20,
 } as const

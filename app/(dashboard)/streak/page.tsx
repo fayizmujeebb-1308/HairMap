@@ -45,10 +45,10 @@ function getMonthLabel(daysAgo: number): string {
 const MILESTONES = [3, 7, 14, 21, 30, 60, 90, 180, 365]
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.92)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.75)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   borderRadius: 20,
 } as const

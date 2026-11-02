@@ -7,7 +7,7 @@ export default function AccountLoading() {
       </div>
 
       {/* Avatar card */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
         <div className="h-20 bg-gray-100" />
         <div className="px-5 pb-5">
           <div className="flex items-end justify-between -mt-7 mb-4">
@@ -26,7 +26,7 @@ export default function AccountLoading() {
       {/* Stats strip */}
       <div className="grid grid-cols-3 gap-3">
         {[1,2,3].map(i => (
-          <div key={i} className="rounded-2xl px-3 py-3.5 space-y-2 text-center" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+          <div key={i} className="rounded-2xl px-3 py-3.5 space-y-2 text-center" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
             <div className="w-8 h-8 bg-gray-100 rounded-xl mx-auto" />
             <div className="h-5 w-8 bg-gray-100 rounded-full mx-auto" />
             <div className="h-2.5 w-12 bg-gray-100 rounded-full mx-auto" />
@@ -35,7 +35,7 @@ export default function AccountLoading() {
       </div>
 
       {/* Hair profile */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
         <div className="px-5 py-3.5 border-b border-gray-100">
           <div className="h-2.5 w-24 bg-gray-100 rounded-full" />
         </div>
@@ -48,7 +48,7 @@ export default function AccountLoading() {
       </div>
 
       {/* Quick links */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
         {[1,2,3,4].map(i => (
           <div key={i} className="flex items-center gap-3 px-5 py-4 border-b border-gray-50 last:border-0">
             <div className="w-9 h-9 rounded-xl bg-gray-100 shrink-0" />

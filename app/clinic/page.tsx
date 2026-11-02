@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.92)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.75)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   borderRadius: 24,
 } as const
@@ -82,7 +82,7 @@ export default function ClinicPage() {
   return (
     <div
       className="min-h-screen"
-      style={{ background: 'linear-gradient(160deg, #f0fdf4 0%, #f8fafb 50%, #ecfdf5 100%)' }}
+      style={{ background: 'var(--bg-page)' }}
     >
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
@@ -147,7 +147,7 @@ export default function ClinicPage() {
               href="/pricing"
               className="px-8 py-4 rounded-2xl text-sm font-semibold transition-opacity active:opacity-70"
               style={{
-                background: 'rgba(255,255,255,0.80)',
+                background: 'var(--bg-card)',
                 color: '#374151',
                 border: '1px solid rgba(229,231,235,0.8)',
               }}
@@ -160,7 +160,7 @@ export default function ClinicPage() {
         {/* Social proof strip */}
         <div
           className="flex items-center justify-center gap-8 py-4 px-6 rounded-2xl mb-16 flex-wrap"
-          style={{ background: 'rgba(255,255,255,0.60)', border: '1px solid rgba(229,231,235,0.5)' }}
+          style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}
         >
           {[
             { value: '50+', label: 'Patients per clinic' },
@@ -350,7 +350,7 @@ export default function ClinicPage() {
       {/* Footer */}
       <footer
         className="border-t py-8 px-6"
-        style={{ borderColor: 'rgba(229,231,235,0.5)', background: 'rgba(255,255,255,0.40)' }}
+        style={{ borderColor: 'var(--bg-card-border)', background: 'var(--bg-card)' }}
       >
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400">© 2026 HairMap. Not medical advice.</p>

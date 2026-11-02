@@ -12,7 +12,7 @@ export default function LearnLoading() {
         ))}
       </div>
       {/* Featured article */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
         <div className="h-40 bg-gray-100" />
         <div className="p-4 space-y-2">
           <div className="h-2.5 bg-gray-100 rounded-full w-16" />
@@ -23,7 +23,7 @@ export default function LearnLoading() {
       </div>
       {/* Article list */}
       {[1,2,3,4].map(i => (
-        <div key={i} className="flex gap-3 rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.7)' }}>
+        <div key={i} className="flex gap-3 rounded-2xl p-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
           <div className="w-20 h-20 rounded-xl bg-gray-100 shrink-0" />
           <div className="flex-1 space-y-2 py-1">
             <div className="h-2.5 bg-gray-100 rounded-full w-16" />

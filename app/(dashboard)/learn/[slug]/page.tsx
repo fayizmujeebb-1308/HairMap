@@ -7,10 +7,10 @@ import { getCallout, personalizeArticles, type UserContext } from '@/app/lib/per
 import ReadingProgress from '@/app/components/ReadingProgress'
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.92)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.75)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
   borderRadius: 24,
 } as const

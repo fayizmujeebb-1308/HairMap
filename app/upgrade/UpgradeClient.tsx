@@ -81,7 +81,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
-      style={{ background: 'linear-gradient(160deg, #f0fdf4 0%, #f8fafb 50%, #ecfdf5 100%)' }}
+      style={{ background: 'var(--bg-page)' }}
     >
       {/* Back nav */}
       <div className="w-full max-w-md mb-8">
@@ -118,7 +118,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
         <div
           className="rounded-3xl overflow-hidden"
           style={{
-            background: 'rgba(255,255,255,0.92)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px) saturate(1.8)',
             WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
             border: '1.5px solid rgba(16,185,129,0.25)',

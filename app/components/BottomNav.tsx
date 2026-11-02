@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 const NAV = [
   {
@@ -68,37 +68,122 @@ const NAV = [
   },
 ]
 
+const logIdx = NAV.findIndex(n => n.href === '/log')
+
 export default function BottomNav() {
   const path = usePathname()
+  const router = useRouter()
   const navRef = useRef<HTMLDivElement>(null)
-  const [pillStyle, setPillStyle] = useState<{ left: number; width: number } | null>(null)
-  const [mounted, setMounted] = useState(false)
 
-  const activeIdx = NAV.findIndex(({ href }) =>
+  // Resolved active index from route
+  const routeActiveIdx = NAV.findIndex(({ href }) =>
     href === path || (href !== '/dashboard' && path.startsWith(href))
   )
-  const logIdx = NAV.findIndex(n => n.href === '/log')
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  // Drag state
+  const [mounted, setMounted] = useState(false)
+  const [dragging, setDragging] = useState(false)
+  // dragIdx = which tab the pill is hovering over during drag
+  const [dragIdx, setDragIdx] = useState<number | null>(null)
+  // pillStyle: computed from either route or drag
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number } | null>(null)
 
-  useEffect(() => {
-    if (!navRef.current || !mounted) return
+  useEffect(() => { setMounted(true) }, [])
+
+  // Compute pill position for a given nav index
+  const getPillForIdx = useCallback((idx: number) => {
+    if (!navRef.current) return null
     const btns = navRef.current.querySelectorAll<HTMLElement>('[data-navbtn]')
-    const idx = activeIdx >= 0 ? activeIdx : 0
     const btn = btns[idx]
-    if (!btn || idx === logIdx) {
-      setPillStyle(null)
-      return
-    }
+    if (!btn || idx === logIdx) return null
     const navRect = navRef.current.getBoundingClientRect()
     const btnRect = btn.getBoundingClientRect()
-    setPillStyle({
+    return {
       left: btnRect.left - navRect.left + (btnRect.width - 50) / 2,
       width: 50,
+    }
+  }, [])
+
+  // Update pill when route changes (no drag in progress)
+  useEffect(() => {
+    if (!mounted || dragging) return
+    const idx = routeActiveIdx >= 0 ? routeActiveIdx : 0
+    setPillStyle(getPillForIdx(idx))
+  }, [path, mounted, routeActiveIdx, dragging, getPillForIdx])
+
+  // Figure out which tab index a clientX corresponds to
+  const idxFromClientX = useCallback((clientX: number): number => {
+    if (!navRef.current) return 0
+    const btns = navRef.current.querySelectorAll<HTMLElement>('[data-navbtn]')
+    let closest = 0
+    let closestDist = Infinity
+    btns.forEach((btn, i) => {
+      const rect = btn.getBoundingClientRect()
+      const center = rect.left + rect.width / 2
+      const dist = Math.abs(clientX - center)
+      if (dist < closestDist) {
+        closestDist = dist
+        closest = i
+      }
     })
-  }, [path, mounted, activeIdx, logIdx])
+    return closest
+  }, [])
+
+  const handleDragStart = useCallback((clientX: number) => {
+    setDragging(true)
+    const idx = idxFromClientX(clientX)
+    setDragIdx(idx)
+    if (idx !== logIdx) setPillStyle(getPillForIdx(idx))
+  }, [idxFromClientX, getPillForIdx])
+
+  const handleDragMove = useCallback((clientX: number) => {
+    const idx = idxFromClientX(clientX)
+    setDragIdx(idx)
+    if (idx !== logIdx) setPillStyle(getPillForIdx(idx))
+  }, [idxFromClientX, getPillForIdx])
+
+  const handleDragEnd = useCallback((clientX: number) => {
+    const idx = idxFromClientX(clientX)
+    setDragging(false)
+    setDragIdx(null)
+    if (idx !== logIdx) {
+      router.push(NAV[idx].href)
+    }
+    // pill snaps to route via the route effect after navigation
+  }, [idxFromClientX, router])
+
+  // Mouse drag
+  const onMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    handleDragStart(e.clientX)
+
+    const onMove = (ev: MouseEvent) => handleDragMove(ev.clientX)
+    const onUp   = (ev: MouseEvent) => {
+      handleDragEnd(ev.clientX)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+    }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+  }
+
+  // Touch drag
+  const onTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX)
+
+    const onMove = (ev: TouchEvent) => { ev.preventDefault(); handleDragMove(ev.touches[0].clientX) }
+    const onEnd  = (ev: TouchEvent) => {
+      const x = ev.changedTouches[0]?.clientX ?? ev.touches[0]?.clientX ?? 0
+      handleDragEnd(x)
+      window.removeEventListener('touchmove', onMove)
+      window.removeEventListener('touchend', onEnd)
+    }
+    window.addEventListener('touchmove', onMove, { passive: false })
+    window.addEventListener('touchend', onEnd)
+  }
+
+  // Which index is visually "active" (route or drag-hover)
+  const displayIdx = dragging && dragIdx !== null ? dragIdx : routeActiveIdx
 
   return (
     <nav
@@ -114,8 +199,10 @@ export default function BottomNav() {
       <div
         ref={navRef}
         className="max-w-lg mx-auto flex items-end justify-around h-16 px-2 relative"
+        onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
       >
-        {/* animated glass pill */}
+        {/* animated glass pill — no transition during drag for instant response, spring on release */}
         {pillStyle && mounted && (
           <div
             aria-hidden
@@ -132,14 +219,15 @@ export default function BottomNav() {
               border: '1px solid rgba(16,185,129,0.22)',
               borderRadius: 100,
               pointerEvents: 'none',
-              transition: 'left 0.36s cubic-bezier(0.22,1,0.36,1)',
+              // Instant during drag, spring on route-based snap
+              transition: dragging ? 'none' : 'left 0.36s cubic-bezier(0.22,1,0.36,1)',
               zIndex: 0,
             }}
           />
         )}
 
         {NAV.map(({ href, label, icon }, i) => {
-          const active = activeIdx === i
+          const active = displayIdx === i
           const isLog  = href === '/log'
 
           return (
@@ -147,6 +235,10 @@ export default function BottomNav() {
               key={href}
               href={href}
               data-navbtn
+              onClick={e => {
+                // During drag, prevent Link navigation — we handle it in handleDragEnd
+                if (dragging) e.preventDefault()
+              }}
               className={`flex flex-col items-center justify-center gap-1 flex-1 min-h-[44px] relative z-10
                 transition-all duration-200 active:opacity-60
                 ${isLog ? 'pb-1' : ''}`}

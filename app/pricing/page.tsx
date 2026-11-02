@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.92)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.75)',
-  boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+  border: '1px solid var(--bg-card-border)',
+  boxShadow: 'var(--bg-card-shadow)',
   borderRadius: 24,
 } as const
 
@@ -79,7 +79,7 @@ export default function PricingPage() {
   return (
     <div
       className="min-h-screen"
-      style={{ background: 'linear-gradient(160deg, #f0fdf4 0%, #f8fafb 50%, #ecfdf5 100%)' }}
+      style={{ background: 'var(--bg-page)' }}
     >
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
@@ -380,7 +380,7 @@ export default function PricingPage() {
               href="/clinic"
               className="px-8 py-3.5 rounded-2xl text-sm font-semibold"
               style={{
-                background: 'rgba(255,255,255,0.8)',
+                background: 'var(--bg-card)',
                 color: '#059669',
                 border: '1px solid rgba(16,185,129,0.20)',
               }}

@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
 const glassCard = {
-  background: 'rgba(255,255,255,0.92)',
+  background: 'var(--bg-card)',
   backdropFilter: 'blur(20px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-  border: '1px solid rgba(255,255,255,0.75)',
+  border: '1px solid var(--bg-card-border)',
   boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
   borderRadius: 24,
 } as const
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
   return (
     <div
       className="min-h-screen"
-      style={{ background: 'linear-gradient(160deg, #f0fdf4 0%, #f8fafb 50%, #ecfdf5 100%)' }}
+      style={{ background: 'var(--bg-page)' }}
     >
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-3xl mx-auto">

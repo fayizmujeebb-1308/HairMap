@@ -130,10 +130,10 @@ export default async function PhotosPage() {
       {/* ── Photo tips ── */}
       <div className="rounded-2xl px-5 py-4 space-y-3 animate-fade-in-up delay-400"
         style={{
-          background: 'rgba(255,255,255,0.9)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(20px) saturate(1.8)',
           WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-          border: '1px solid rgba(255,255,255,0.7)',
+          border: '1px solid var(--bg-card-border)',
           boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
         }}>
         <div className="flex items-center gap-2">

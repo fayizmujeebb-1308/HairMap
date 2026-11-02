@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import DarkModeToggle from '@/app/components/DarkModeToggle'
 
 function greeting() {
   const h = new Date().getHours()
@@ -88,8 +89,10 @@ export default async function DashboardPage() {
               : `${pendingCount} treatments remaining today.`}
           </p>
         </div>
-        {/* Streak badge */}
-        <div className="flex items-center gap-1.5 shrink-0 animate-scale-in delay-100"
+        {/* Streak badge + dark mode toggle */}
+        <div className="flex flex-col items-end gap-2 shrink-0">
+        <DarkModeToggle />
+        <div className="flex items-center gap-1.5 animate-scale-in delay-100"
           style={{
             background: 'rgba(251,191,36,0.12)',
             backdropFilter: 'blur(12px) saturate(1.6)',
@@ -103,6 +106,7 @@ export default async function DashboardPage() {
             <p className="text-base font-bold text-amber-600 leading-none">{streak}</p>
             <p className="text-[10px] text-amber-500 leading-none mt-0.5">streak</p>
           </div>
+        </div>
         </div>
       </div>
 
@@ -167,10 +171,10 @@ export default async function DashboardPage() {
         <Link href="/log"
           className="block rounded-2xl overflow-hidden active:scale-[0.99] transition-transform animate-fade-in-up delay-150"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px) saturate(1.8)',
             WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
           }}>
           <div className="px-5 py-4">
@@ -253,10 +257,10 @@ export default async function DashboardPage() {
         {/* Adherence ring */}
         <div className="rounded-2xl p-3 flex flex-col items-center justify-center"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
           <div className="relative w-14 h-14">
@@ -279,10 +283,10 @@ export default async function DashboardPage() {
         {/* Norwood */}
         <div className="rounded-2xl px-3 py-3 flex flex-col justify-between"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
           <p className="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">Norwood</p>
@@ -301,10 +305,10 @@ export default async function DashboardPage() {
         {/* Days tracked */}
         <div className="rounded-2xl px-3 py-3 flex flex-col justify-between"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
           <p className="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">On treatment</p>
@@ -316,10 +320,10 @@ export default async function DashboardPage() {
       {/* ── Progress photos ── */}
       <div className="rounded-2xl overflow-hidden animate-fade-in-up delay-300"
         style={{
-          background: 'rgba(255,255,255,0.9)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(20px) saturate(1.8)',
           WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-          border: '1px solid rgba(255,255,255,0.7)',
+          border: '1px solid var(--bg-card-border)',
           boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
         }}>
         <div className="px-5 py-4">
@@ -374,10 +378,10 @@ export default async function DashboardPage() {
         <Link href="/learn"
           className="flex flex-col gap-2 rounded-2xl px-4 py-4 active:scale-[0.98] transition-transform"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
           <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
@@ -394,10 +398,10 @@ export default async function DashboardPage() {
         <Link href="/progress"
           className="flex flex-col gap-2 rounded-2xl px-4 py-4 active:scale-[0.98] transition-transform"
           style={{
-            background: 'rgba(255,255,255,0.9)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.7)',
+            border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">

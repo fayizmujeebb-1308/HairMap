@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Sans, DM_Serif_Display } from 'next/font/google'
 import './globals.css'
+import ServiceWorkerRegistrar from '@/app/components/ServiceWorkerRegistrar'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Splash screens (optional — iOS generates them automatically in iOS 12+) */}
       </head>
       <body className={`${dmSans.variable} ${dmSerif.variable} font-sans antialiased`}>
+        <ServiceWorkerRegistrar />
         {children}
       </body>
     </html>
