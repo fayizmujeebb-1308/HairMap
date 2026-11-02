@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { getArticle, ARTICLES } from '@/app/lib/articles'
 import { getCallout, personalizeArticles, type UserContext } from '@/app/lib/personalize'
+import ReadingProgress from '@/app/components/ReadingProgress'
 
 const glassCard = {
   background: 'rgba(255,255,255,0.92)',
@@ -78,28 +79,29 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
   return (
     <div>
+      <ReadingProgress />
 
-      {/* Back */}
-      <div className="pt-2 pb-5">
+      {/* Back + meta row */}
+      <div className="pt-2 pb-5 flex items-center justify-between">
         <Link href="/learn"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors active:opacity-70"
           style={{ color: '#059669' }}>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          ← Learn
+          Learn
         </Link>
-      </div>
-
-      {/* Hero */}
-      <div className="pb-7">
-        <div className="flex items-center gap-2.5 mb-4">
+        <div className="flex items-center gap-2">
           <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${meta.pill}`}>
             {article.category}
           </span>
           <span className="text-[10px] text-gray-300">{article.readTime} read</span>
         </div>
-        <h1 className="font-serif text-[1.65rem] text-gray-900 leading-tight mb-3">{article.title}</h1>
+      </div>
+
+      {/* Hero */}
+      <div className="pb-7">
+        <h1 className="font-serif text-[1.75rem] text-gray-900 leading-tight mb-3">{article.title}</h1>
         <p className="text-sm text-gray-500 leading-relaxed">{article.subtitle}</p>
       </div>
 

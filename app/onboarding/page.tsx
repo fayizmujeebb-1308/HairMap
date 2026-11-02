@@ -230,26 +230,49 @@ export default function OnboardingPage() {
       <main className="relative z-10 flex-1 flex items-start justify-center px-4 py-8">
         <div className="w-full max-w-lg animate-fade-in-up">
 
-          {/* Step indicator pills */}
-          <div className="flex gap-2 mb-5 justify-center">
+          {/* Step indicator — connected nodes */}
+          <div className="flex items-center justify-center gap-0 mb-6">
             {STEPS.map((s, i) => (
-              <div key={s}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
-                style={i === step ? {
-                  background: 'linear-gradient(135deg, rgba(5,150,105,0.12) 0%, rgba(16,185,129,0.08) 100%)',
-                  color: '#059669',
-                  border: '1px solid rgba(16,185,129,0.22)',
-                } : i < step ? {
-                  background: 'rgba(16,185,129,0.06)',
-                  color: '#10b981',
-                  border: '1px solid rgba(16,185,129,0.12)',
-                } : {
-                  background: 'rgba(0,0,0,0.04)',
-                  color: '#9ca3af',
-                  border: '1px solid rgba(0,0,0,0.06)',
-                }}>
-                <span>{i < step ? '✓' : stepIcons[i]}</span>
-                <span>{s}</span>
+              <div key={s} className="flex items-center">
+                {/* Node */}
+                <div className="flex flex-col items-center">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-base transition-all duration-300 shadow-sm"
+                    style={i < step ? {
+                      background: 'linear-gradient(135deg, #059669, #10b981)',
+                      boxShadow: '0 2px 8px rgba(16,185,129,0.30)',
+                    } : i === step ? {
+                      background: 'white',
+                      border: '2px solid #10b981',
+                      boxShadow: '0 0 0 3px rgba(16,185,129,0.12)',
+                    } : {
+                      background: 'rgba(229,231,235,0.7)',
+                      border: '2px solid rgba(209,213,219,0.8)',
+                    }}
+                  >
+                    {i < step
+                      ? <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      : <span style={{ fontSize: 15 }}>{stepIcons[i]}</span>
+                    }
+                  </div>
+                  <p
+                    className="text-[10px] mt-1.5 font-semibold uppercase tracking-wider transition-colors duration-300"
+                    style={{ color: i === step ? '#059669' : i < step ? '#10b981' : '#d1d5db' }}
+                  >
+                    {s}
+                  </p>
+                </div>
+                {/* Connector line between nodes */}
+                {i < STEPS.length - 1 && (
+                  <div
+                    className="h-0.5 w-16 mx-1 mb-5 rounded-full transition-all duration-500"
+                    style={{
+                      background: i < step
+                        ? 'linear-gradient(90deg, #059669, #10b981)'
+                        : 'rgba(209,213,219,0.6)',
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
