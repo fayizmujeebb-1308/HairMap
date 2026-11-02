@@ -26,6 +26,8 @@ export async function middleware(request: NextRequest) {
     }
   )
 
+  // Refresh the session cookie if the token is close to expiry
+  await supabase.auth.getSession()
   const { data: { user } } = await supabase.auth.getUser()
 
   const isProtected =
@@ -34,7 +36,10 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/log') ||
     request.nextUrl.pathname.startsWith('/progress') ||
     request.nextUrl.pathname.startsWith('/account') ||
-    request.nextUrl.pathname.startsWith('/onboarding')
+    request.nextUrl.pathname.startsWith('/onboarding') ||
+    request.nextUrl.pathname.startsWith('/coach') ||
+    request.nextUrl.pathname.startsWith('/learn') ||
+    request.nextUrl.pathname.startsWith('/streak')
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
@@ -53,5 +58,8 @@ export const config = {
     '/progress/:path*',
     '/account/:path*',
     '/onboarding/:path*',
+    '/coach/:path*',
+    '/learn/:path*',
+    '/streak/:path*',
   ],
 }
