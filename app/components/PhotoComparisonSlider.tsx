@@ -20,14 +20,16 @@ export default function PhotoComparisonSlider({
 }: Props) {
   const [position, setPosition] = useState(50)
   const [dragging, setDragging] = useState(false)
+  const [hinted, setHinted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const updatePosition = useCallback((clientX: number) => {
     const container = containerRef.current
     if (!container) return
     const rect = container.getBoundingClientRect()
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
+    const x = Math.max(2, Math.min(clientX - rect.left, rect.width - 2))
     setPosition((x / rect.width) * 100)
+    setHinted(true)
   }, [])
 
   const onMouseDown = (e: React.MouseEvent) => {
@@ -63,15 +65,20 @@ export default function PhotoComparisonSlider({
 
   return (
     <div className="space-y-2">
-      <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold capitalize">{angle}</p>
+      <p className="text-[10px] uppercase tracking-widest font-semibold capitalize"
+        style={{ color: 'var(--text-tertiary)' }}>{angle}</p>
+
       <div
         ref={containerRef}
         className="relative aspect-square rounded-2xl overflow-hidden select-none touch-none"
-        style={{ cursor: dragging ? 'col-resize' : 'ew-resize', background: '#f3f4f6' }}
+        style={{
+          cursor: dragging ? 'col-resize' : 'ew-resize',
+          background: 'var(--bg-card)',
+        }}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
       >
-        {/* After (Latest) — full width base */}
+        {/* After (Latest) — full base layer */}
         <div className="absolute inset-0">
           <Image
             src={afterSrc}
@@ -83,65 +90,76 @@ export default function PhotoComparisonSlider({
           />
         </div>
 
-        {/* Before (First) — clipped to left of slider */}
+        {/* Before (First) — clipped with clip-path for perfectly smooth slide */}
         <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ width: `${position}%` }}
+          className="absolute inset-0"
+          style={{
+            clipPath: `inset(0 ${100 - position}% 0 0)`,
+            willChange: 'clip-path',
+          }}
         >
-          <div className="absolute inset-0" style={{ width: `${100 / (position / 100)}%` }}>
-            <Image
-              src={beforeSrc}
-              alt={`${angle} first`}
-              fill
-              className="object-cover"
-              sizes="85vw"
-              unoptimized
-            />
-          </div>
+          <Image
+            src={beforeSrc}
+            alt={`${angle} first`}
+            fill
+            className="object-cover"
+            sizes="85vw"
+            unoptimized
+          />
         </div>
 
-        {/* Divider line */}
+        {/* Divider line — glows green */}
         <div
-          className="absolute top-0 bottom-0 w-0.5 z-10"
+          className="absolute top-0 bottom-0 z-10 pointer-events-none"
           style={{
             left: `${position}%`,
-            background: 'white',
-            boxShadow: '0 0 8px rgba(0,0,0,0.4)',
+            width: 2,
             transform: 'translateX(-50%)',
+            background: 'linear-gradient(to bottom, rgba(16,185,129,0.6), white, rgba(16,185,129,0.6))',
+            boxShadow: '0 0 12px rgba(16,185,129,0.5), 0 0 4px rgba(255,255,255,0.8)',
           }}
         />
 
-        {/* Handle */}
+        {/* Glass handle */}
         <div
           className="absolute top-1/2 z-20 flex items-center justify-center"
           style={{
             left: `${position}%`,
             transform: 'translate(-50%, -50%)',
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             borderRadius: '50%',
-            background: 'white',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(12px) saturate(1.8)',
+            WebkitBackdropFilter: 'blur(12px) saturate(1.8)',
+            border: '1.5px solid rgba(16,185,129,0.4)',
+            boxShadow: '0 2px 16px rgba(16,185,129,0.25), 0 1px 4px rgba(0,0,0,0.15)',
+            willChange: 'transform',
           }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M5 4L2 8L5 12M11 4L14 8L11 12" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 4L2 8L5 12M11 4L14 8L11 12"
+              stroke="#10b981" strokeWidth="1.8"
+              strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
 
         {/* Labels */}
-        <div className="absolute bottom-2 left-2 z-10">
-          <span className="text-[9px] text-white font-semibold px-1.5 py-0.5 rounded"
-            style={{ background: 'rgba(0,0,0,0.55)' }}>{beforeLabel}</span>
+        <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
+          <span className="text-[9px] text-white font-semibold px-1.5 py-0.5 rounded-md"
+            style={{ background: 'rgba(0,0,0,0.50)' }}>{beforeLabel}</span>
         </div>
-        <div className="absolute bottom-2 right-2 z-10">
-          <span className="text-[9px] text-white font-semibold px-1.5 py-0.5 rounded"
-            style={{ background: 'rgba(16,185,129,0.75)' }}>{afterLabel}</span>
+        <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
+          <span className="text-[9px] text-white font-semibold px-1.5 py-0.5 rounded-md"
+            style={{ background: 'rgba(16,185,129,0.80)' }}>{afterLabel}</span>
         </div>
       </div>
 
-      {/* Hint */}
-      <p className="text-[10px] text-gray-400 text-center">← drag to compare →</p>
+      {/* Hint — fades out after first drag */}
+      <p className="text-[10px] text-center transition-opacity duration-500"
+        style={{ color: 'var(--text-tertiary)', opacity: hinted ? 0 : 1 }}>
+        ← drag to compare →
+      </p>
     </div>
   )
 }

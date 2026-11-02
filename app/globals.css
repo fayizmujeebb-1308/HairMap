@@ -272,3 +272,48 @@ body {
   opacity: 0;
   transition: opacity 0.2s;
 }
+
+/* ── Dark mode: override Tailwind utility classes ── */
+/* These rules kick in when system dark OR [data-theme="dark"] is set */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .text-gray-900,
+  :root:not([data-theme="light"]) .text-gray-800 { color: var(--text-primary) !important; }
+  :root:not([data-theme="light"]) .text-gray-700,
+  :root:not([data-theme="light"]) .text-gray-600 { color: var(--text-secondary) !important; }
+  :root:not([data-theme="light"]) .text-gray-500,
+  :root:not([data-theme="light"]) .text-gray-400 { color: var(--text-tertiary) !important; }
+  :root:not([data-theme="light"]) .text-gray-300 { color: rgba(156,163,175,0.6) !important; }
+
+  :root:not([data-theme="light"]) .bg-white { background-color: #1e241e !important; }
+  :root:not([data-theme="light"]) .bg-gray-50 { background-color: #181e18 !important; }
+  :root:not([data-theme="light"]) .bg-gray-100 { background-color: #1f2937 !important; }
+  :root:not([data-theme="light"]) .border-gray-100,
+  :root:not([data-theme="light"]) .border-gray-200 { border-color: rgba(255,255,255,0.08) !important; }
+
+  :root:not([data-theme="light"]) .skeleton {
+    background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+:root[data-theme="dark"] .text-gray-900,
+:root[data-theme="dark"] .text-gray-800 { color: var(--text-primary) !important; }
+:root[data-theme="dark"] .text-gray-700,
+:root[data-theme="dark"] .text-gray-600 { color: var(--text-secondary) !important; }
+:root[data-theme="dark"] .text-gray-500,
+:root[data-theme="dark"] .text-gray-400 { color: var(--text-tertiary) !important; }
+:root[data-theme="dark"] .text-gray-300 { color: rgba(156,163,175,0.6) !important; }
+
+:root[data-theme="dark"] .bg-white { background-color: #1e241e !important; }
+:root[data-theme="dark"] .bg-gray-50 { background-color: #181e18 !important; }
+:root[data-theme="dark"] .bg-gray-100 { background-color: #1f2937 !important; }
+:root[data-theme="dark"] .border-gray-100,
+:root[data-theme="dark"] .border-gray-200 { border-color: rgba(255,255,255,0.08) !important; }
+
+:root[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
