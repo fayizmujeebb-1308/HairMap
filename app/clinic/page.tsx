@@ -89,7 +89,7 @@ export default function ClinicPage() {
         <Link href="/" className="flex items-center gap-2">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="3" fill="white" />
@@ -105,7 +105,7 @@ export default function ClinicPage() {
           <Link
             href="mailto:fayizmujeebb@gmail.com?subject=HairMap Clinic Plan"
             className="text-sm font-semibold px-4 py-2 rounded-xl text-white transition-opacity active:opacity-80"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
           >
             Contact us
           </Link>
@@ -118,7 +118,7 @@ export default function ClinicPage() {
         <div className="text-center pt-12 pb-16">
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold mb-6"
-            style={{ background: 'rgba(16,185,129,0.10)', color: '#059669' }}
+            style={{ background: 'rgba(16,185,129,0.10)', color: 'var(--color-primary-dark)' }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
             For Hair Transplant Clinics &amp; Dermatologists
@@ -137,7 +137,7 @@ export default function ClinicPage() {
               href="mailto:fayizmujeebb@gmail.com?subject=HairMap Clinic Plan — Demo Request"
               className="px-8 py-4 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80"
               style={{
-                background: 'linear-gradient(135deg, #059669, #10b981)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                 boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
               }}
             >
@@ -208,12 +208,12 @@ export default function ClinicPage() {
                 {i < 2 && (
                   <div
                     className="absolute top-5 left-1/2 w-full h-px hidden md:block"
-                    style={{ background: 'linear-gradient(90deg, #10b981, #d1fae5)' }}
+                    style={{ background: 'linear-gradient(90deg, var(--color-primary), #d1fae5)' }}
                   />
                 )}
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white mx-auto mb-4 relative z-10"
-                  style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+                  style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
                 >
                   {s.step}
                 </div>
@@ -273,7 +273,7 @@ export default function ClinicPage() {
               <li key={f} className="flex items-center gap-2.5">
                 <div
                   className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+                  style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
                 >
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                     <path d="M1.5 4l1.5 1.5L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -289,7 +289,7 @@ export default function ClinicPage() {
               href="mailto:fayizmujeebb@gmail.com?subject=HairMap Clinic Plan"
               className="px-8 py-4 rounded-2xl text-sm font-semibold text-white"
               style={{
-                background: 'linear-gradient(135deg, #059669, #10b981)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                 boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
               }}
             >
@@ -300,7 +300,7 @@ export default function ClinicPage() {
               className="px-8 py-4 rounded-2xl text-sm font-semibold"
               style={{
                 background: 'rgba(16,185,129,0.06)',
-                color: '#059669',
+                color: 'var(--color-primary-dark)',
                 border: '1px solid rgba(16,185,129,0.20)',
               }}
             >

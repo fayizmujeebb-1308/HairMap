@@ -110,7 +110,7 @@ export default async function StreakPage() {
       <div className="relative overflow-hidden animate-fade-in-up delay-75"
         style={{ ...glassCard, padding: 0 }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.04) 0%, transparent 60%)' }} />
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-dim) 0%, transparent 60%)' }} />
 
         <div className="px-6 pt-6 pb-5">
           <div className="flex items-center justify-between mb-4">
@@ -134,12 +134,12 @@ export default async function StreakPage() {
               <p className="text-[11px] text-gray-400">Next milestone: {nextMilestone} days</p>
               <p className="text-[11px] font-semibold text-primary">{milestoneProgress}%</p>
             </div>
-            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(16,185,129,0.10)' }}>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--color-primary-dim)' }}>
               <div
                 className="h-full rounded-full transition-all duration-700"
                 style={{
                   width: `${milestoneProgress}%`,
-                  background: 'linear-gradient(90deg, #059669, #10b981)',
+                  background: 'linear-gradient(90deg, var(--color-primary-dark), var(--color-primary))',
                 }}
               />
             </div>
@@ -195,10 +195,10 @@ export default async function StreakPage() {
               style={{
                 background: logged
                   ? i === 27
-                    ? 'linear-gradient(135deg, #059669, #10b981)'
+                    ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))'
                     : 'rgba(16,185,129,0.70)'
-                  : 'rgba(16,185,129,0.06)',
-                border: logged ? 'none' : '1px solid rgba(16,185,129,0.10)',
+                  : 'var(--color-primary-dim)',
+                border: logged ? 'none' : '1px solid var(--color-primary-dim)',
               }}
             />
           ))}
@@ -210,7 +210,7 @@ export default async function StreakPage() {
             <p className="text-[10px] text-gray-400">Logged</p>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.12)' }} />
+            <div className="w-3 h-3 rounded" style={{ background: 'var(--color-primary-dim)', border: '1px solid var(--color-primary-dim)' }} />
             <p className="text-[10px] text-gray-400">Missed</p>
           </div>
         </div>
@@ -234,9 +234,9 @@ export default async function StreakPage() {
                 className="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 text-base"
                 style={{
                   background: achieved
-                    ? 'linear-gradient(135deg, #059669, #10b981)'
+                    ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))'
                     : isCurrent
-                    ? 'rgba(16,185,129,0.10)'
+                    ? 'var(--color-primary-dim)'
                     : 'rgba(229,231,235,0.4)',
                   border: isCurrent ? '1.5px solid rgba(16,185,129,0.30)' : 'none',
                 }}
@@ -272,7 +272,7 @@ export default async function StreakPage() {
         <Link href="/dashboard"
           className="block rounded-2xl px-5 py-4 text-center animate-fade-in-up delay-300"
           style={{
-            background: 'linear-gradient(135deg, #059669, #10b981)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
             boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
           }}>
           <p className="text-sm font-semibold text-white">Log today&apos;s treatment →</p>

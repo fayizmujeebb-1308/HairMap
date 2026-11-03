@@ -22,7 +22,7 @@ export default function TermsPage() {
         <Link href="/" className="flex items-center gap-2">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="3" fill="white" />
@@ -31,7 +31,7 @@ export default function TermsPage() {
           </div>
           <span className="font-serif text-gray-900 font-semibold">HairMap</span>
         </Link>
-        <Link href="/privacy" className="text-sm font-semibold" style={{ color: '#059669' }}>
+        <Link href="/privacy" className="text-sm font-semibold" style={{ color: 'var(--color-primary-dark)' }}>
           Privacy Policy
         </Link>
       </nav>

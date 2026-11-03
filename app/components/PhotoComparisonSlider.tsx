@@ -139,7 +139,7 @@ export default function PhotoComparisonSlider({
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M5 4L2 8L5 12M11 4L14 8L11 12"
-              stroke="#10b981" strokeWidth="1.8"
+              stroke="var(--color-primary)" strokeWidth="1.8"
               strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>

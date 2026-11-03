@@ -111,7 +111,7 @@ export default async function LogPage() {
         <Link href="/log/setup"
           className="flex items-center gap-1.5 text-xs font-semibold text-primary px-3 py-2 rounded-xl active:scale-95 transition-transform"
           style={{
-            background: 'rgba(16,185,129,0.08)',
+            background: 'var(--color-primary-dim)',
             border: '1px solid rgba(16,185,129,0.15)',
           }}>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -161,9 +161,9 @@ export default async function LogPage() {
                   className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
                   style={{
                     background: logged
-                      ? (isToday ? '#10b981' : 'rgba(16,185,129,0.2)')
+                      ? (isToday ? 'var(--color-primary)' : 'rgba(16,185,129,0.2)')
                       : isToday ? 'transparent' : future ? 'rgba(249,250,251,0.8)' : 'rgba(229,231,235,0.8)',
-                    border: isToday ? '2px solid #10b981' : 'none',
+                    border: isToday ? '2px solid var(--color-primary)' : 'none',
                     boxShadow: isToday && logged ? '0 2px 8px rgba(16,185,129,0.35)' : 'none',
                   }}>
                   {logged && (
@@ -182,7 +182,7 @@ export default async function LogPage() {
       {allLoggedToday && (
         <div className="rounded-2xl px-5 py-4 flex items-center gap-3 animate-scale-in"
           style={{
-            background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
             boxShadow: '0 8px 32px rgba(16,185,129,0.25)',
           }}>
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
@@ -209,7 +209,7 @@ export default async function LogPage() {
           </p>
           <Link href="/log/setup"
             className="inline-flex items-center gap-2 text-white text-sm font-semibold px-6 py-2.5 rounded-xl active:scale-95 transition-transform"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}>
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}>
             Set up my stack
           </Link>
         </div>
@@ -290,19 +290,19 @@ function TreatmentRow({ item, isLogged, timeOfDay, existingReminders }: {
     <div
       className="overflow-hidden px-4 py-3.5 transition-all duration-300"
       style={{
-        background: isLogged ? 'rgba(16,185,129,0.05)' : 'rgba(255,255,255,0.9)',
+        background: isLogged ? 'var(--color-primary-dim)' : 'rgba(255,255,255,0.9)',
         backdropFilter: 'blur(20px) saturate(1.8)',
         WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
         border: isLogged ? '1px solid rgba(16,185,129,0.20)' : '1px solid rgba(255,255,255,0.7)',
         boxShadow: isLogged
-          ? '0 2px 12px rgba(16,185,129,0.10)'
+          ? '0 2px 12px var(--color-primary-dim)'
           : '0 1px 8px rgba(0,0,0,0.05)',
         borderRadius: 18,
       }}>
       <div className="flex items-center gap-4">
         {/* Icon */}
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0"
-          style={{ background: isLogged ? 'rgba(16,185,129,0.12)' : 'rgba(249,250,251,0.8)' }}>
+          style={{ background: isLogged ? 'var(--color-primary-dim)' : 'rgba(249,250,251,0.8)' }}>
           {TYPE_ICON[item.treatment_type] ?? '💊'}
         </div>
 

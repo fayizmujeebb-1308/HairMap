@@ -37,7 +37,7 @@ export default function ErrorScreen({
           className="flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80"
           style={{
             background: 'linear-gradient(135deg, #059669, #10b981)',
-            boxShadow: '0 6px 20px rgba(16,185,129,0.28)',
+            boxShadow: '0 6px 20px rgba(29,158,117,0.28)',
           }}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

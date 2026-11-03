@@ -41,7 +41,7 @@ const inputBase: React.CSSProperties = {
 
 const inputFocus: React.CSSProperties = {
   border: '1px solid rgba(16,185,129,0.45)',
-  boxShadow: '0 0 0 3px rgba(16,185,129,0.10)',
+  boxShadow: '0 0 0 3px var(--color-primary-dim)',
 }
 
 export default function SignupPage() {
@@ -213,9 +213,9 @@ export default function SignupPage() {
             />
             <label htmlFor="terms" className="text-sm text-gray-600">
               I agree to the{' '}
-              <Link href="/terms" style={{ color: '#059669' }}>Terms of Service</Link>
+              <Link href="/terms" style={{ color: 'var(--color-primary-dark)' }}>Terms of Service</Link>
               {' '}and{' '}
-              <Link href="/privacy" style={{ color: '#059669' }}>Privacy Policy</Link>
+              <Link href="/privacy" style={{ color: 'var(--color-primary-dark)' }}>Privacy Policy</Link>
             </label>
           </div>
 
@@ -224,7 +224,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full disabled:opacity-50 text-white font-semibold py-2.5 text-sm transition-opacity"
             style={{
-              background: 'linear-gradient(135deg, #059669, #10b981)',
+              background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
               boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
               borderRadius: 14,
             }}
@@ -257,7 +257,7 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{' '}
-          <Link href="/login" className="font-medium" style={{ color: '#059669' }}>
+          <Link href="/login" className="font-medium" style={{ color: 'var(--color-primary-dark)' }}>
             Sign in
           </Link>
         </p>

@@ -142,7 +142,7 @@ export default async function ProgressPage() {
             <svg width="110" height="110" viewBox="0 0 110 110">
               <circle cx="55" cy="55" r={RING_R} fill="none" stroke="rgba(229,231,235,0.8)" strokeWidth="9" />
               <circle cx="55" cy="55" r={RING_R} fill="none"
-                stroke="#10b981" strokeWidth="9"
+                stroke="var(--color-primary)" strokeWidth="9"
                 strokeLinecap="round"
                 strokeDasharray={RING_CIRC}
                 strokeDashoffset={ringOffset}
@@ -195,7 +195,7 @@ export default async function ProgressPage() {
                 }`}
                 style={{
                   background: logged
-                    ? (isToday ? '#10b981' : 'rgba(16,185,129,0.65)')
+                    ? (isToday ? 'var(--color-primary)' : 'rgba(16,185,129,0.65)')
                     : future ? 'rgba(249,250,251,0.5)' : 'rgba(229,231,235,0.8)',
                 }}
                 title={date}
@@ -207,7 +207,7 @@ export default async function ProgressPage() {
           {[
             { color: 'rgba(229,231,235,0.8)', label: 'Missed' },
             { color: 'rgba(16,185,129,0.65)', label: 'Logged' },
-            { color: '#10b981',               label: 'Today' },
+            { color: 'var(--color-primary)',               label: 'Today' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded" style={{ background: color }} />
@@ -232,7 +232,7 @@ export default async function ProgressPage() {
                     style={{
                       height,
                       background: isLast
-                        ? 'linear-gradient(180deg, #10b981, #059669)'
+                        ? 'linear-gradient(180deg, var(--color-primary), var(--color-primary-dark))'
                         : 'rgba(16,185,129,0.22)',
                       boxShadow: isLast ? '0 4px 12px rgba(16,185,129,0.25)' : 'none',
                     }}
@@ -271,7 +271,7 @@ export default async function ProgressPage() {
             </p>
             <Link href="/photos"
               className="inline-block text-white text-xs font-semibold px-4 py-2 rounded-full"
-              style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}>
+              style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}>
               Add Photos →
             </Link>
           </div>
@@ -303,7 +303,7 @@ export default async function ProgressPage() {
                       className="h-full rounded-full transition-all duration-700"
                       style={{
                         width: `${Math.min(100, Math.round((m.progress / (m.total ?? 1)) * 100))}%`,
-                        background: 'linear-gradient(90deg, #10b981, #34d399)',
+                        background: 'linear-gradient(90deg, var(--color-primary), var(--color-primary-light))',
                       }}
                     />
                   </div>
@@ -386,7 +386,7 @@ export default async function ProgressPage() {
           </p>
           <Link href="/photos"
             className="inline-flex items-center gap-2 text-white text-xs font-semibold px-5 py-2.5 rounded-xl active:scale-95 transition-transform"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}>
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}>
             Take photos now
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

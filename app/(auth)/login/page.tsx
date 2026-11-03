@@ -29,7 +29,7 @@ const inputBase: React.CSSProperties = {
 
 const inputFocus: React.CSSProperties = {
   border: '1px solid rgba(16,185,129,0.45)',
-  boxShadow: '0 0 0 3px rgba(16,185,129,0.10)',
+  boxShadow: '0 0 0 3px var(--color-primary-dim)',
 }
 
 export default function LoginPage() {
@@ -98,7 +98,7 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-sm font-medium text-gray-700">Password</label>
-              <Link href="/forgot-password" className="text-xs" style={{ color: '#059669' }}>
+              <Link href="/forgot-password" className="text-xs" style={{ color: 'var(--color-primary-dark)' }}>
                 Forgot password?
               </Link>
             </div>
@@ -139,7 +139,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full disabled:opacity-50 text-white font-semibold py-2.5 text-sm transition-opacity"
             style={{
-              background: 'linear-gradient(135deg, #059669, #10b981)',
+              background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
               boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
               borderRadius: 14,
             }}
@@ -172,7 +172,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="font-medium" style={{ color: '#059669' }}>
+          <Link href="/signup" className="font-medium" style={{ color: 'var(--color-primary-dark)' }}>
             Create one
           </Link>
         </p>

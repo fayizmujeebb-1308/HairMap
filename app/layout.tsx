@@ -62,13 +62,11 @@ export const viewport: Viewport = {
 }
 
 // Inline script: apply saved theme before first paint — prevents any flash.
-// Valid themes: blossom (default), clinical, mint, calm-blue, lavender, sand,
-//               dark, midnight, high-contrast, system
+// Valid themes: clinical (default), navy, slate, obsidian, dark, blossom
 const themeScript = `
   try {
-    var VALID = ['blossom','clinical','mint','calm-blue','lavender','sand','dark','midnight','high-contrast','system'];
+    var VALID = ['clinical','navy','slate','obsidian','dark','blossom'];
     var t = localStorage.getItem('hairmap-theme');
-    // Default to clinical when no preference saved
     var theme = (t && VALID.indexOf(t) !== -1) ? t : 'clinical';
     document.documentElement.setAttribute('data-theme', theme);
   } catch(e) {

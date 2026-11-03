@@ -44,7 +44,7 @@ export default function AIAnalysis({ lastAnalysis, isPro, compact }: { lastAnaly
     if (compact) {
       return (
         <div className="rounded-2xl px-5 py-4 shadow-glow-green flex items-center justify-between gap-4"
-          style={{ background: 'linear-gradient(135deg, #065f46 0%, #10b981 60%, #16a34a 100%)' }}>
+          style={{ background: 'linear-gradient(135deg, #065f46 0%, var(--color-primary) 60%, #16a34a 100%)' }}>
           <div>
             <p className="text-sm font-bold text-white">All 6 angles captured 🎉</p>
             <p className="text-xs text-white/60 mt-0.5">Unlock AI analysis to see what your photos reveal</p>
