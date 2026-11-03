@@ -60,7 +60,7 @@ export default function PaddleButton({ priceIdMonthly, priceIdYearly, userEmail 
         onClick={checkout}
         disabled={!loaded}
         className="w-full bg-white text-primary text-sm font-semibold py-3 rounded-xl disabled:opacity-60 active:scale-95 transition-transform">
-        {loaded ? 'Start 7-day free trial' : 'Loading…'}
+        {loaded ? 'Upgrade to Pro' : 'Loading…'}
       </button>
     </div>
   )

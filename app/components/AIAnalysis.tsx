@@ -71,7 +71,7 @@ export default function AIAnalysis({ lastAnalysis, isPro, compact }: { lastAnaly
           className="inline-block bg-primary text-white text-xs font-semibold px-5 py-2.5 rounded-xl active:scale-95 transition-transform">
           Upgrade to Pro
         </Link>
-        <p className="text-[10px] text-gray-300 mt-2">7-day free trial · cancel anytime</p>
+        <p className="text-[10px] text-gray-300 mt-2">Cancel anytime</p>
       </div>
     )
   }

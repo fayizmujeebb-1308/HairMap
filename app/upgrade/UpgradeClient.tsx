@@ -211,7 +211,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
             </div>
 
             <p className="text-center text-[10px] text-gray-400 mt-3 leading-relaxed">
-              7-day money-back guarantee · Cancel anytime · No hidden fees
+              Cancel anytime · No hidden fees
             </p>
           </div>
         </div>

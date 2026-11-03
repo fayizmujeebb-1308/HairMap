@@ -46,8 +46,8 @@ const FAQ = [
     a: 'Yes — cancel from your account settings with one click, no questions asked. Your Pro access continues until the end of your billing period.',
   },
   {
-    q: 'Is there a free trial?',
-    a: 'The Free plan lets you try HairMap with no credit card required. You can upgrade to Pro whenever you\'re ready.',
+    q: 'Is there a free plan?',
+    a: 'Yes — the Free plan lets you try HairMap with no credit card required. You can upgrade to Pro whenever you\'re ready.',
   },
   {
     q: 'What does the AI analysis do?',
@@ -63,7 +63,7 @@ const FAQ = [
   },
   {
     q: 'Do you offer refunds?',
-    a: 'If you\'re not satisfied within 7 days of your first Pro payment, contact us and we\'ll refund you in full.',
+    a: 'If you\'re not satisfied, contact us within 7 days of your first payment and we\'ll review your refund request.',
   },
 ]
 

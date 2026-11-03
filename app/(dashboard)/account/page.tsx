@@ -187,7 +187,7 @@ export default async function AccountPage() {
           <div className="mt-4 pt-3.5 flex items-center gap-3" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
             <span className="text-xs font-bold text-white">$12 / month</span>
             <span className="text-white/30 text-xs">·</span>
-            <span className="text-[10px] text-white/60">7-day free trial · cancel anytime</span>
+            <span className="text-[10px] text-white/60">Cancel anytime</span>
           </div>
         </Link>
       )}

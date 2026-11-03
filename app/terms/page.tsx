@@ -114,7 +114,7 @@ export default function TermsPage() {
             <p><strong>Pro plan:</strong> $12/month or $99/year (billed annually). Provides unlimited photos, AI analysis, and the full article library.</p>
             <p><strong>Clinic plan:</strong> $49/month per clinic. Includes patient management features for up to 50 patients.</p>
             <p>Payments are processed by Paddle. By subscribing, you agree to Paddle&apos;s terms of service. Subscriptions automatically renew unless cancelled.</p>
-            <p><strong>Refund policy:</strong> We offer a 7-day money-back guarantee for first-time Pro subscribers. Contact us within 7 days of your first payment to request a full refund. Subsequent billing periods are non-refundable.</p>
+            <p><strong>Refund policy:</strong> Refund requests may be considered within 7 days of your first payment. Contact us to request a review. Subsequent billing periods are non-refundable.</p>
             <p>We reserve the right to change subscription prices with 30 days&apos; notice. Existing subscribers will be notified by email before any price change takes effect.</p>
           </Section>
 
