@@ -61,13 +61,19 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
-// Inline script to apply saved theme before first paint (prevents flash)
+// Inline script: apply saved theme before first paint — prevents any flash.
+// Valid themes: blossom (default), clinical, mint, calm-blue, lavender, sand,
+//               dark, midnight, high-contrast, system
 const themeScript = `
   try {
+    var VALID = ['blossom','clinical','mint','calm-blue','lavender','sand','dark','midnight','high-contrast','system'];
     var t = localStorage.getItem('hairmap-theme');
-    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-    else if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
-  } catch(e) {}
+    // Default to blossom when no preference saved
+    var theme = (t && VALID.indexOf(t) !== -1) ? t : 'blossom';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'blossom');
+  }
 `
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
