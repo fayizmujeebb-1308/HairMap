@@ -61,8 +61,8 @@ export default async function AccountPage() {
           <div className="flex items-end justify-between -mt-8 mb-4">
             {/* Avatar circle */}
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 relative"
-              style={{ zIndex: 10 }}
               style={{
+                zIndex: 10,
                 background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
                 boxShadow: '0 4px 16px rgba(16,185,129,0.35)',
               }}>
