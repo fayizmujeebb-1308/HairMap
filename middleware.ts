@@ -41,7 +41,8 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/onboarding') ||
     request.nextUrl.pathname.startsWith('/coach') ||
     request.nextUrl.pathname.startsWith('/learn') ||
-    request.nextUrl.pathname.startsWith('/streak')
+    request.nextUrl.pathname.startsWith('/streak') ||
+    request.nextUrl.pathname.startsWith('/admin')
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
@@ -63,5 +64,7 @@ export const config = {
     '/coach/:path*',
     '/learn/:path*',
     '/streak/:path*',
+    '/admin/:path*',
+    '/admin',
   ],
 }
