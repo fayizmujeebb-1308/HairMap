@@ -10,10 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#10b981",
-          dark: "#059669",
-          light: "#d1fae5",
-          dim: "rgba(16,185,129,0.10)",
+          DEFAULT: "var(--color-primary)",
+          dark: "var(--color-primary-dark)",
+          light: "var(--color-primary-light)",
+          dim: "var(--color-primary-dim)",
         },
       },
       fontFamily: {

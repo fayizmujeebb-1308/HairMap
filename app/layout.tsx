@@ -68,11 +68,11 @@ const themeScript = `
   try {
     var VALID = ['blossom','clinical','mint','calm-blue','lavender','sand','dark','midnight','high-contrast','system'];
     var t = localStorage.getItem('hairmap-theme');
-    // Default to blossom when no preference saved
-    var theme = (t && VALID.indexOf(t) !== -1) ? t : 'blossom';
+    // Default to clinical when no preference saved
+    var theme = (t && VALID.indexOf(t) !== -1) ? t : 'clinical';
     document.documentElement.setAttribute('data-theme', theme);
   } catch(e) {
-    document.documentElement.setAttribute('data-theme', 'blossom');
+    document.documentElement.setAttribute('data-theme', 'clinical');
   }
 `
 

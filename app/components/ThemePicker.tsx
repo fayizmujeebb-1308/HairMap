@@ -40,7 +40,7 @@ const THEMES: ThemeDef[] = [
 const VALID_IDS = THEMES.map(t => t.id)
 
 export default function ThemePicker() {
-  const [active, setActive] = useState<ThemeId>('blossom')
+  const [active, setActive] = useState<ThemeId>('clinical')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function ThemePicker() {
       const s = localStorage.getItem('hairmap-theme') as ThemeId | null
       if (s && VALID_IDS.includes(s)) localTheme = s
     } catch { /* ignore */ }
-    setActive(localTheme ?? 'blossom')
+    setActive(localTheme ?? 'clinical')
 
     // Slow path: Supabase (wins on a fresh device with no localStorage)
     const supabase = createClient()

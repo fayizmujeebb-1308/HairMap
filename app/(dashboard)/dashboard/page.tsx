@@ -142,7 +142,8 @@ export default async function DashboardPage() {
             <span className="text-base">💊</span>
           </div>
           <p className="text-xs flex-1 font-medium" style={{ color: "var(--text-secondary)" }}>Add your first treatment to start tracking progress.</p>
-          <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+            style={{ color: 'var(--color-primary)' }}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </Link>
@@ -247,10 +248,11 @@ export default async function DashboardPage() {
               background: 'var(--color-primary-dim)',
               borderTop: '0.5px solid var(--color-primary-dim)',
             }}>
-            <span className="text-sm font-semibold text-primary">
+            <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>
               {treatmentCount === 0 ? 'Set up treatments' : 'Log treatments'}
             </span>
-            <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+              style={{ color: 'var(--color-primary)' }}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </div>
@@ -343,16 +345,15 @@ export default async function DashboardPage() {
           </div>
 
           {hasPhotos ? (
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
               {photoAngles.map(angle => (
-                <div key={angle} className="flex-shrink-0 overflow-hidden rounded-xl relative"
-                  style={{ width: 76, height: 76, background: 'var(--bg-surface)' }}>
+                <div key={angle} className="flex-shrink-0 rounded-xl overflow-hidden"
+                  style={{ width: 76, height: 76, background: 'var(--bg-surface)', position: 'relative' }}>
                   <Image src={latestPhotos[angle]} alt={angle} fill className="object-cover" sizes="76px" unoptimized />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <p className="absolute bottom-1 left-1.5 text-[8px] text-white font-semibold capitalize leading-none">{angle}</p>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
+                  <p style={{ position: 'absolute', bottom: 4, left: 6, fontSize: 8, color: '#fff', fontWeight: 600, lineHeight: 1, textTransform: 'capitalize', letterSpacing: '0.01em' }}>{angle}</p>
                 </div>
               ))}
-              {/* Empty angle slots */}
               {photoAngles.length < 4 && Array.from({ length: Math.min(2, 4 - photoAngles.length) }).map((_, i) => (
                 <div key={`empty-${i}`} className="flex-shrink-0 rounded-xl flex items-center justify-center"
                   style={{
@@ -376,10 +377,11 @@ export default async function DashboardPage() {
           )}
         </div>
         <Link href="/photos"
-          className="flex items-center justify-between px-5 py-3 transition-colors active:bg-primary/5"
+          className="flex items-center justify-between px-5 py-3 transition-colors"
           style={{ borderTop: '0.5px solid var(--color-primary-dim)', background: 'var(--color-primary-dim)' }}>
-          <span className="text-sm font-semibold text-primary">{hasPhotos ? 'View all photos' : 'Upload first photos'}</span>
-          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>{hasPhotos ? 'View all photos' : 'Upload first photos'}</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+            style={{ color: 'var(--color-primary)' }}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </Link>
@@ -416,8 +418,10 @@ export default async function DashboardPage() {
             border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-            <svg className="w-4.5 h-4.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ background: 'var(--color-primary-dim)' }}>
+            <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+              style={{ color: 'var(--color-primary)' }}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
@@ -453,8 +457,8 @@ export default async function DashboardPage() {
           <p className="text-xs text-white/60 leading-relaxed mb-4">
             Get personalised answers about your treatments, timeline, and how to improve results.
           </p>
-          <div className="inline-flex items-center gap-2 bg-white text-primary text-xs font-bold px-4 py-2.5 rounded-xl"
-            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
+          <div className="inline-flex items-center gap-2 bg-white text-xs font-bold px-4 py-2.5 rounded-xl"
+            style={{ color: 'var(--color-primary)', boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
             Chat now
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
