@@ -35,8 +35,8 @@ const NAV = [
         active:scale-95 transition-all duration-150"
         style={{
           width: 52, height: 52,
-          background: 'linear-gradient(135deg, #10b981, #059669)',
-          boxShadow: '0 4px 16px rgba(16,185,129,0.4)',
+          background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+          boxShadow: '0 4px 16px var(--color-primary-dim)',
         }}>
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.2} className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -213,10 +213,10 @@ export default function BottomNav() {
               left: pillStyle.left,
               width: pillStyle.width,
               height: 30,
-              background: 'rgba(16,185,129,0.10)',
+              background: 'var(--color-primary-dim)',
               backdropFilter: 'blur(14px) saturate(1.6)',
               WebkitBackdropFilter: 'blur(14px) saturate(1.6)',
-              border: '1px solid rgba(16,185,129,0.22)',
+              border: '1px solid var(--color-primary-light)',
               borderRadius: 100,
               pointerEvents: 'none',
               // Instant during drag, spring on route-based snap
@@ -247,12 +247,15 @@ export default function BottomNav() {
                 icon(false)
               ) : (
                 <>
-                  <div className={`flex items-center justify-center w-10 h-8 rounded-2xl transition-all duration-200
-                    ${active ? 'text-emerald-500' : 'text-gray-400'}`}>
+                  <div className="flex items-center justify-center w-10 h-8 rounded-2xl transition-all duration-200"
+                    style={{ color: active ? 'var(--color-primary)' : 'var(--text-tertiary)' }}>
                     {icon(active)}
                   </div>
-                  <span className={`text-[10px] font-medium leading-none transition-colors duration-200
-                    ${active ? 'text-emerald-500 font-semibold' : 'text-gray-400'}`}>
+                  <span className="text-[10px] leading-none transition-colors duration-200"
+                    style={{
+                      color: active ? 'var(--color-primary)' : 'var(--text-tertiary)',
+                      fontWeight: active ? 600 : 500,
+                    }}>
                     {label}
                   </span>
                 </>

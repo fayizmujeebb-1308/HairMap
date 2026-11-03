@@ -78,11 +78,11 @@ export default async function DashboardPage() {
       {/* ── Header ── */}
       <div className="flex items-start justify-between pt-2 animate-fade-in-up">
         <div>
-          <p className="text-[10px] text-gray-400 font-medium tracking-widest uppercase">{formatDate()}</p>
-          <h1 className="font-serif text-[26px] leading-tight text-gray-900 mt-0.5">
+          <p className="text-[10px] font-medium tracking-widest uppercase" style={{ color: 'var(--text-tertiary)' }}>{formatDate()}</p>
+          <h1 className="font-serif text-[26px] leading-tight mt-0.5" style={{ color: 'var(--text-primary)' }}>
             {greeting()},&nbsp;{profile.first_name || 'there'}
           </h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
             {treatmentCount === 0
               ? 'Set up your treatment stack to start tracking.'
               : allDoneToday
@@ -124,7 +124,7 @@ export default async function DashboardPage() {
           <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
             <span className="text-base">📋</span>
           </div>
-          <p className="text-xs text-gray-700 flex-1 font-medium">Complete your hair profile for accurate tracking.</p>
+          <p className="text-xs flex-1 font-medium" style={{ color: "var(--text-secondary)" }}>Complete your hair profile for accurate tracking.</p>
           <svg className="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -134,14 +134,14 @@ export default async function DashboardPage() {
         <Link href="/log/setup"
           className="flex items-center gap-3 rounded-2xl px-4 py-3.5 active:scale-[0.99] transition-transform animate-fade-in-up delay-100"
           style={{
-            background: 'rgba(16,185,129,0.07)',
-            border: '1px solid rgba(16,185,129,0.18)',
+            background: 'var(--color-primary-dim)',
+            border: '1px solid var(--color-primary-dim)',
             borderRadius: 16,
           }}>
           <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
             <span className="text-base">💊</span>
           </div>
-          <p className="text-xs text-gray-700 flex-1 font-medium">Add your first treatment to start tracking progress.</p>
+          <p className="text-xs flex-1 font-medium" style={{ color: "var(--text-secondary)" }}>Add your first treatment to start tracking progress.</p>
           <svg className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -152,8 +152,8 @@ export default async function DashboardPage() {
       {allDoneToday ? (
         <div className="rounded-2xl px-5 py-4 animate-scale-in delay-150"
           style={{
-            background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
-            boxShadow: '0 8px 32px rgba(16,185,129,0.28)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+            boxShadow: '0 8px 32px var(--color-primary-dim)',
           }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
@@ -182,8 +182,8 @@ export default async function DashboardPage() {
           <div className="px-5 py-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Today</p>
-                <p className="text-sm font-semibold text-gray-900 mt-0.5">
+                <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--text-tertiary)' }}>Today</p>
+                <p className="text-sm font-semibold mt-0.5" style={{ color: 'var(--text-primary)' }}>
                   {treatmentCount === 0 ? 'No treatments set up' : `${pendingCount} of ${treatmentCount} remaining`}
                 </p>
               </div>
@@ -216,33 +216,36 @@ export default async function DashboardPage() {
                   const done = loggedToday.has(s.id)
                   return (
                     <div key={s.id} className="flex items-center gap-3">
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
-                        done ? 'border-primary bg-primary' : 'border-gray-200'
-                      }`}>
+                      <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
+                        style={{
+                          borderColor: done ? 'var(--color-primary)' : 'var(--bg-card-border)',
+                          background: done ? 'var(--color-primary)' : 'transparent',
+                        }}>
                         {done && (
                           <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         )}
                       </div>
-                      <span className={`text-sm transition-colors ${done ? 'text-gray-300 line-through' : 'text-gray-700 font-medium'}`}>
+                      <span className="text-sm transition-colors"
+                        style={{ color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', fontWeight: done ? 400 : 500, textDecoration: done ? 'line-through' : 'none' }}>
                         {s.treatment_name}
                       </span>
                     </div>
                   )
                 })}
                 {(stack?.length ?? 0) > 3 && (
-                  <p className="text-[10px] text-gray-400 pl-8">+{(stack?.length ?? 0) - 3} more</p>
+                  <p className="text-[10px] pl-8" style={{ color: 'var(--text-tertiary)' }}>+{(stack?.length ?? 0) - 3} more</p>
                 )}
               </div>
             ) : (
-              <p className="text-xs text-gray-400">Tap to set up your treatment stack</p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Tap to set up your treatment stack</p>
             )}
           </div>
           <div className="flex items-center justify-between px-5 py-3"
             style={{
-              background: 'rgba(16,185,129,0.04)',
-              borderTop: '0.5px solid rgba(16,185,129,0.10)',
+              background: 'var(--color-primary-dim)',
+              borderTop: '0.5px solid var(--color-primary-dim)',
             }}>
             <span className="text-sm font-semibold text-primary">
               {treatmentCount === 0 ? 'Set up treatments' : 'Log treatments'}
@@ -267,8 +270,8 @@ export default async function DashboardPage() {
           }}>
           <div className="relative w-14 h-14">
             <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="10" />
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#10b981" strokeWidth="10"
+              <circle cx="50" cy="50" r="45" fill="none" stroke="var(--bg-surface)" strokeWidth="10" />
+              <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-primary)" strokeWidth="10"
                 strokeDasharray={adherenceRingCirc}
                 strokeDashoffset={logDates.size === 0 ? adherenceRingCirc : ringOffset}
                 strokeLinecap="round"
@@ -276,10 +279,10 @@ export default async function DashboardPage() {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-bold text-xs text-gray-900">{logDates.size === 0 ? '—' : `${adherence}%`}</span>
+              <span className="font-bold text-xs" style={{ color: 'var(--text-primary)' }}>{logDates.size === 0 ? '—' : `${adherence}%`}</span>
             </div>
           </div>
-          <p className="text-[9px] text-gray-400 text-center mt-1.5 leading-tight">Adherence</p>
+          <p className="text-[9px] text-center mt-1.5 leading-tight" style={{ color: 'var(--text-tertiary)' }}>Adherence</p>
         </div>
 
         {/* Norwood */}
@@ -291,15 +294,14 @@ export default async function DashboardPage() {
             border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
-          <p className="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">Norwood</p>
-          <p className="font-serif text-2xl text-gray-900 mt-1">
-            {profile.norwood_stage ? `NW${profile.norwood_stage}` : <span className="text-gray-200 text-lg">—</span>}
+          <p className="text-[9px] uppercase tracking-widest font-semibold" style={{ color: 'var(--text-tertiary)' }}>Norwood</p>
+          <p className="font-serif text-2xl mt-1" style={{ color: 'var(--text-primary)' }}>
+            {profile.norwood_stage ? `NW${profile.norwood_stage}` : <span className="text-lg" style={{ color: 'var(--text-tertiary)' }}>—</span>}
           </p>
           <div className="flex gap-0.5 mt-1">
             {[1,2,3,4,5,6,7].map(n => (
-              <div key={n} className={`flex-1 h-1.5 rounded-full transition-colors ${
-                profile.norwood_stage && n <= profile.norwood_stage ? 'bg-primary' : 'bg-gray-100'
-              }`} />
+              <div key={n} className="flex-1 h-1.5 rounded-full transition-colors"
+                style={{ background: profile.norwood_stage && n <= profile.norwood_stage ? 'var(--color-primary)' : 'var(--bg-surface)' }} />
             ))}
           </div>
         </div>
@@ -313,9 +315,9 @@ export default async function DashboardPage() {
             border: '1px solid var(--bg-card-border)',
             boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
           }}>
-          <p className="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">On treatment</p>
-          <p className="font-serif text-2xl text-gray-900 mt-1">{daysTracked}</p>
-          <p className="text-[9px] text-gray-400">days tracked</p>
+          <p className="text-[9px] uppercase tracking-widest font-semibold" style={{ color: 'var(--text-tertiary)' }}>On treatment</p>
+          <p className="font-serif text-2xl mt-1" style={{ color: 'var(--text-primary)' }}>{daysTracked}</p>
+          <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>days tracked</p>
         </div>
       </div>
 
@@ -331,10 +333,11 @@ export default async function DashboardPage() {
         <div className="px-5 py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Progress</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">Photo log</p>
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--text-tertiary)' }}>Progress</p>
+              <p className="text-sm font-semibold mt-0.5" style={{ color: 'var(--text-primary)' }}>Photo log</p>
             </div>
-            <span className="text-[10px] text-gray-400 font-medium px-2 py-1 bg-gray-50 rounded-lg">
+            <span className="text-[10px] font-medium px-2 py-1 rounded-lg"
+              style={{ color: 'var(--text-tertiary)', background: 'var(--bg-surface)' }}>
               {photoAngles.length}/6 angles
             </span>
           </div>
@@ -342,32 +345,39 @@ export default async function DashboardPage() {
           {hasPhotos ? (
             <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
               {photoAngles.map(angle => (
-                <div key={angle} className="w-20 h-20 rounded-xl flex-shrink-0 overflow-hidden relative bg-gray-100">
-                  <Image src={latestPhotos[angle]} alt={angle} fill className="object-cover" sizes="80px" unoptimized />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <p className="absolute bottom-1.5 left-1.5 text-[9px] text-white font-semibold capitalize">{angle}</p>
+                <div key={angle} className="flex-shrink-0 overflow-hidden rounded-xl relative"
+                  style={{ width: 76, height: 76, background: 'var(--bg-surface)' }}>
+                  <Image src={latestPhotos[angle]} alt={angle} fill className="object-cover" sizes="76px" unoptimized />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <p className="absolute bottom-1 left-1.5 text-[8px] text-white font-semibold capitalize leading-none">{angle}</p>
                 </div>
               ))}
-              {/* Progress rings for missing angles */}
+              {/* Empty angle slots */}
               {photoAngles.length < 4 && Array.from({ length: Math.min(2, 4 - photoAngles.length) }).map((_, i) => (
-                <div key={`empty-${i}`} className="w-20 h-20 rounded-xl flex-shrink-0 bg-gray-50 flex items-center justify-center border border-dashed border-gray-200">
-                  <svg className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div key={`empty-${i}`} className="flex-shrink-0 rounded-xl flex items-center justify-center"
+                  style={{
+                    width: 76, height: 76,
+                    background: 'var(--bg-surface)',
+                    border: '1.5px dashed var(--bg-card-border)',
+                  }}>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
+                    style={{ color: 'var(--text-tertiary)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="rounded-xl px-4 py-5 text-center bg-gray-50/80">
+            <div className="rounded-xl px-4 py-5 text-center" style={{ background: 'var(--bg-surface)' }}>
               <p className="text-2xl mb-2">📸</p>
-              <p className="text-xs font-semibold text-gray-700 mb-0.5">No photos yet</p>
-              <p className="text-[10px] text-gray-400 leading-relaxed">Photos are essential for tracking real change.</p>
+              <p className="text-xs font-semibold mb-0.5" style={{ color: 'var(--text-secondary)' }}>No photos yet</p>
+              <p className="text-[10px] leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>Photos are essential for tracking real change.</p>
             </div>
           )}
         </div>
         <Link href="/photos"
           className="flex items-center justify-between px-5 py-3 transition-colors active:bg-primary/5"
-          style={{ borderTop: '0.5px solid rgba(16,185,129,0.10)', background: 'rgba(16,185,129,0.03)' }}>
+          style={{ borderTop: '0.5px solid var(--color-primary-dim)', background: 'var(--color-primary-dim)' }}>
           <span className="text-sm font-semibold text-primary">{hasPhotos ? 'View all photos' : 'Upload first photos'}</span>
           <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -392,8 +402,8 @@ export default async function DashboardPage() {
             </svg>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-900 leading-snug">Learn</p>
-            <p className="text-[10px] text-gray-400 mt-0.5">7 evidence-based guides</p>
+            <p className="text-sm font-semibold leading-snug" style={{ color: 'var(--text-primary)' }}>Learn</p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>7 evidence-based guides</p>
           </div>
         </Link>
 
@@ -412,8 +422,8 @@ export default async function DashboardPage() {
             </svg>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-900 leading-snug">Progress</p>
-            <p className="text-[10px] text-gray-400 mt-0.5">Charts & AI analysis</p>
+            <p className="text-sm font-semibold leading-snug" style={{ color: 'var(--text-primary)' }}>Progress</p>
+            <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Charts & AI analysis</p>
           </div>
         </Link>
       </div>
@@ -422,8 +432,8 @@ export default async function DashboardPage() {
       <Link href="/coach"
         className="block rounded-2xl overflow-hidden relative active:scale-[0.99] transition-transform animate-fade-in-up delay-500"
         style={{
-          background: 'linear-gradient(135deg, #065f46 0%, #10b981 55%, #34d399 100%)',
-          boxShadow: '0 12px 40px rgba(16,185,129,0.30)',
+          background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 55%)',
+          boxShadow: '0 12px 40px var(--color-primary-dim)',
         }}>
         {/* Decorative blobs */}
         <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full" style={{ background: 'rgba(255,255,255,0.07)' }} />

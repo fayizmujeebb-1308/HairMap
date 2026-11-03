@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import BottomNav from '@/app/components/BottomNav'
-import DarkModeToggle from '@/app/components/DarkModeToggle'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -18,16 +17,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
       >
         {children}
       </main>
-      {/* Dark mode toggle — fixed top-right, always visible */}
-      <div
-        className="fixed z-40"
-        style={{
-          top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-          right: 16,
-        }}
-      >
-        <DarkModeToggle />
-      </div>
       <BottomNav />
     </div>
   )
