@@ -111,7 +111,7 @@ export default async function AdminAnalytics() {
               <div key={day} className="flex-1 rounded-t-sm"
                 style={{
                   height: `${Math.max(pct, 4)}%`,
-                  background: val > 0 ? 'linear-gradient(180deg,#34d399,#059669)' : 'var(--bg-surface)',
+                  background: val > 0 ? 'linear-gradient(180deg,var(--color-primary-light),var(--color-primary-dark))' : 'var(--bg-surface)',
                   minHeight: 3,
                 }} />
             )
@@ -140,7 +140,7 @@ export default async function AdminAnalytics() {
                   <div className="h-1.5 rounded-full" style={{ background: 'var(--bg-surface)' }}>
                     <div className="h-full rounded-full" style={{
                       width: `${pct}%`,
-                      background: stage <= 2 ? '#059669' : stage <= 4 ? '#d97706' : '#dc2626',
+                      background: stage <= 2 ? 'var(--color-primary)' : stage <= 4 ? '#d97706' : '#dc2626',
                     }} />
                   </div>
                 </div>

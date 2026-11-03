@@ -64,8 +64,8 @@ export default async function PhotosPage() {
             style={{
               width: `${progress}%`,
               background: progress === 100
-                ? 'linear-gradient(90deg, #059669, #10b981)'
-                : 'linear-gradient(90deg, #10b981, #34d399)',
+                ? 'linear-gradient(90deg, var(--color-primary-dark), var(--color-primary))'
+                : 'linear-gradient(90deg, var(--color-primary), var(--color-primary-light))',
             }}
           />
         </div>
@@ -80,8 +80,8 @@ export default async function PhotosPage() {
       {doneCount < 6 ? (
         <div className="rounded-2xl px-4 py-3.5 flex items-center gap-3 animate-fade-in-up delay-100"
           style={{
-            background: 'rgba(16,185,129,0.07)',
-            border: '1px solid rgba(16,185,129,0.15)',
+            background: 'var(--color-primary-dim)',
+            border: '1px solid rgba(from var(--color-primary) r g b / 15%)',
           }}>
           <span className="text-xl shrink-0">💡</span>
           <p className="text-xs text-gray-600 leading-relaxed">
@@ -99,7 +99,7 @@ export default async function PhotosPage() {
       {/* ── Day 1 CTA card (empty state) ── */}
       {doneCount === 0 && (
         <div className="rounded-2xl px-5 py-6 text-center animate-fade-in-up delay-100"
-          style={{ background: 'linear-gradient(135deg, #059669, #10b981)', boxShadow: '0 8px 24px rgba(16,185,129,0.30)' }}>
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 8px 24px rgba(from var(--color-primary) r g b / 30%)' }}>
           <div className="text-4xl mb-3">📸</div>
           <h2 className="text-white font-bold text-lg mb-1">Capture your Day 1 baseline</h2>
           <p className="text-emerald-100 text-xs leading-relaxed mb-4">

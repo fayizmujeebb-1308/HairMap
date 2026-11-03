@@ -51,7 +51,7 @@ export default function CoachPaywall() {
     <div className="px-5 py-6 space-y-5" style={glassCard}>
       <div className="text-center">
         <div className="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl"
-          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 6px 20px rgba(16,185,129,0.30)' }}>
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 30%)' }}>
           🧬
         </div>
         <h2 className="font-bold text-gray-900 text-lg">AI Hair Coach</h2>
@@ -74,11 +74,11 @@ export default function CoachPaywall() {
                   background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                   color: 'white',
                   border: '1px solid transparent',
-                  boxShadow: '0 3px 10px rgba(16,185,129,0.30)',
+                  boxShadow: '0 3px 10px rgba(from var(--color-primary) r g b / 30%)',
                 } : {
                   background: 'var(--color-primary-dim)',
                   color: 'var(--color-primary-dark)',
-                  border: '1px solid rgba(16,185,129,0.18)',
+                  border: '1px solid rgba(from var(--color-primary) r g b / 18%)',
                 }}
               >
                 {chip.label}
@@ -93,7 +93,7 @@ export default function CoachPaywall() {
         <div className="rounded-2xl px-4 py-3 text-sm leading-relaxed transition-all"
           style={{
             background: 'var(--color-primary-dim)',
-            border: '1px solid rgba(16,185,129,0.15)',
+            border: '1px solid rgba(from var(--color-primary) r g b / 15%)',
             color: '#1a3a2a',
           }}>
           {typing ? (
@@ -112,7 +112,7 @@ export default function CoachPaywall() {
       <div className="space-y-3 pt-1">
         <Link href="/upgrade"
           className="block w-full text-center text-white font-semibold py-3 rounded-2xl text-sm"
-          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 6px 20px rgba(16,185,129,0.32)' }}>
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)' }}>
           Unlock AI Coach — £9.99/mo
         </Link>
         <p className="text-center text-[11px] text-gray-400">Cancel anytime · No commitment</p>

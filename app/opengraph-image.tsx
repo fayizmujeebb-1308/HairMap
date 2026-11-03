@@ -23,10 +23,10 @@ export default async function OGImage() {
         {/* Logo */}
         <div style={{
           width: 80, height: 80, borderRadius: 20,
-          background: 'linear-gradient(135deg, #059669, #10b981)',
+          background: 'linear-gradient(135deg, #1D9E75, #157a5a)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           marginBottom: 24,
-          boxShadow: '0 16px 48px rgba(16,185,129,0.35)',
+          boxShadow: '0 16px 48px rgba(29,158,117,0.35)',
         }}>
           <span style={{ color: 'white', fontSize: 40, fontWeight: 800 }}>H</span>
         </div>

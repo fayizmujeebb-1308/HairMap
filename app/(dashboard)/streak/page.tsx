@@ -196,7 +196,7 @@ export default async function StreakPage() {
                 background: logged
                   ? i === 27
                     ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))'
-                    : 'rgba(16,185,129,0.70)'
+                    : 'rgba(from var(--color-primary) r g b / 70%)'
                   : 'var(--color-primary-dim)',
                 border: logged ? 'none' : '1px solid var(--color-primary-dim)',
               }}
@@ -206,7 +206,7 @@ export default async function StreakPage() {
 
         <div className="flex items-center gap-3 mt-3">
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded" style={{ background: 'rgba(16,185,129,0.70)' }} />
+            <div className="w-3 h-3 rounded" style={{ background: 'rgba(from var(--color-primary) r g b / 70%)' }} />
             <p className="text-[10px] text-gray-400">Logged</p>
           </div>
           <div className="flex items-center gap-1.5">
@@ -238,7 +238,7 @@ export default async function StreakPage() {
                     : isCurrent
                     ? 'var(--color-primary-dim)'
                     : 'rgba(229,231,235,0.4)',
-                  border: isCurrent ? '1.5px solid rgba(16,185,129,0.30)' : 'none',
+                  border: isCurrent ? '1.5px solid rgba(from var(--color-primary) r g b / 30%)' : 'none',
                 }}
               >
                 {achieved ? '✓' : isCurrent ? '→' : '·'}
@@ -273,7 +273,7 @@ export default async function StreakPage() {
           className="block rounded-2xl px-5 py-4 text-center animate-fade-in-up delay-300"
           style={{
             background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
-            boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
+            boxShadow: '0 8px 28px rgba(from var(--color-primary) r g b / 28%)',
           }}>
           <p className="text-sm font-semibold text-white">Log today&apos;s treatment →</p>
           <p className="text-[11px] text-white/60 mt-0.5">Start your streak right now</p>

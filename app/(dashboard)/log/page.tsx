@@ -112,7 +112,7 @@ export default async function LogPage() {
           className="flex items-center gap-1.5 text-xs font-semibold text-primary px-3 py-2 rounded-xl active:scale-95 transition-transform"
           style={{
             background: 'var(--color-primary-dim)',
-            border: '1px solid rgba(16,185,129,0.15)',
+            border: '1px solid rgba(from var(--color-primary) r g b / 15%)',
           }}>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -161,10 +161,10 @@ export default async function LogPage() {
                   className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
                   style={{
                     background: logged
-                      ? (isToday ? 'var(--color-primary)' : 'rgba(16,185,129,0.2)')
+                      ? (isToday ? 'var(--color-primary)' : 'var(--color-primary-dim)')
                       : isToday ? 'transparent' : future ? 'rgba(249,250,251,0.8)' : 'rgba(229,231,235,0.8)',
                     border: isToday ? '2px solid var(--color-primary)' : 'none',
-                    boxShadow: isToday && logged ? '0 2px 8px rgba(16,185,129,0.35)' : 'none',
+                    boxShadow: isToday && logged ? '0 2px 8px rgba(from var(--color-primary) r g b / 35%)' : 'none',
                   }}>
                   {logged && (
                     <svg className={`w-3 h-3 ${isToday ? 'text-white' : 'text-primary'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -183,7 +183,7 @@ export default async function LogPage() {
         <div className="rounded-2xl px-5 py-4 flex items-center gap-3 animate-scale-in"
           style={{
             background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
-            boxShadow: '0 8px 32px rgba(16,185,129,0.25)',
+            boxShadow: '0 8px 32px rgba(from var(--color-primary) r g b / 25%)',
           }}>
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -293,7 +293,7 @@ function TreatmentRow({ item, isLogged, timeOfDay, existingReminders }: {
         background: isLogged ? 'var(--color-primary-dim)' : 'rgba(255,255,255,0.9)',
         backdropFilter: 'blur(20px) saturate(1.8)',
         WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-        border: isLogged ? '1px solid rgba(16,185,129,0.20)' : '1px solid rgba(255,255,255,0.7)',
+        border: isLogged ? '1px solid rgba(from var(--color-primary) r g b / 20%)' : '1px solid rgba(255,255,255,0.7)',
         boxShadow: isLogged
           ? '0 2px 12px var(--color-primary-dim)'
           : '0 1px 8px rgba(0,0,0,0.05)',

@@ -147,7 +147,7 @@ export default async function ProgressPage() {
                 strokeDasharray={RING_CIRC}
                 strokeDashoffset={ringOffset}
                 transform="rotate(-90 55 55)"
-                style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1)', filter: 'drop-shadow(0 0 6px rgba(16,185,129,0.4))' }}
+                style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1)', filter: 'drop-shadow(0 0 6px var(--color-primary))' }}
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -195,7 +195,7 @@ export default async function ProgressPage() {
                 }`}
                 style={{
                   background: logged
-                    ? (isToday ? 'var(--color-primary)' : 'rgba(16,185,129,0.65)')
+                    ? (isToday ? 'var(--color-primary)' : 'rgba(from var(--color-primary) r g b / 65%)')
                     : future ? 'rgba(249,250,251,0.5)' : 'rgba(229,231,235,0.8)',
                 }}
                 title={date}
@@ -206,7 +206,7 @@ export default async function ProgressPage() {
         <div className="flex items-center gap-3 mt-3">
           {[
             { color: 'rgba(229,231,235,0.8)', label: 'Missed' },
-            { color: 'rgba(16,185,129,0.65)', label: 'Logged' },
+            { color: 'rgba(from var(--color-primary) r g b / 65%)', label: 'Logged' },
             { color: 'var(--color-primary)',               label: 'Today' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5">
@@ -233,8 +233,8 @@ export default async function ProgressPage() {
                       height,
                       background: isLast
                         ? 'linear-gradient(180deg, var(--color-primary), var(--color-primary-dark))'
-                        : 'rgba(16,185,129,0.22)',
-                      boxShadow: isLast ? '0 4px 12px rgba(16,185,129,0.25)' : 'none',
+                        : 'rgba(from var(--color-primary) r g b / 22%)',
+                      boxShadow: isLast ? '0 4px 12px rgba(from var(--color-primary) r g b / 25%)' : 'none',
                     }}
                   />
                   {w.pct > 0 && (

@@ -26,7 +26,7 @@ export default async function CoachPage() {
           <h1 className="font-serif text-[26px] text-gray-900 mt-0.5">Hair Coach</h1>
         </div>
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
-          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.15)' }}>
+          style={{ background: 'var(--color-primary-dim)', border: '1px solid rgba(from var(--color-primary) r g b / 15%)' }}>
           <div className="w-1.5 h-1.5 rounded-full bg-primary" style={{ animation: 'pulse 2s cubic-bezier(0.4,0,0.6,1) infinite' }} />
           <span className="text-[10px] font-semibold text-primary">GPT-4o mini</span>
         </div>

@@ -79,8 +79,8 @@ export default function OfflinePage() {
         onClick={() => window.location.reload()}
         className="flex items-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80"
         style={{
-          background: 'linear-gradient(135deg, #059669, #10b981)',
-          boxShadow: '0 6px 20px rgba(16,185,129,0.28)',
+          background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+          boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 28%)',
         }}
       >
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none">

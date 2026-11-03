@@ -82,7 +82,7 @@ export default async function AdminOverview() {
       {/* Key metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total Users" value={totalUsers ?? 0} sub={`+${newUsersToday?.length ?? 0} today`} accent="#7c3aed" icon="👥" />
-        <StatCard label="Pro Subscribers" value={proUsers ?? 0} sub={`${conversionRate}% conversion`} accent="#059669" icon="⭐" />
+        <StatCard label="Pro Subscribers" value={proUsers ?? 0} sub={`${conversionRate}% conversion`} accent="var(--color-primary)" icon="⭐" />
         <StatCard label="Photos Uploaded" value={totalPhotos ?? 0} sub="across all users" accent="#2563eb" icon="📸" />
         <StatCard label="AI Analyses" value={totalAnalyses ?? 0} sub="total runs" accent="#d97706" icon="🤖" />
       </div>
@@ -129,7 +129,7 @@ export default async function AdminOverview() {
                     <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold"
                       style={{
                         background: isPro ? 'rgba(5,150,105,0.12)' : 'rgba(100,116,139,0.1)',
-                        color: isPro ? '#059669' : 'var(--text-tertiary)',
+                        color: isPro ? 'var(--color-primary)' : 'var(--text-tertiary)',
                       }}>
                       {isPro ? 'Pro' : 'Free'}
                     </span>

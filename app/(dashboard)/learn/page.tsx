@@ -5,12 +5,12 @@ import { personalizeArticles, type UserContext } from '@/app/lib/personalize'
 
 const CATEGORY_META: Record<string, { color: string; bg: string; icon: string }> = {
   Science:    { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)',  icon: '🔬' },
-  Treatments: { color: '#10b981', bg: 'rgba(16,185,129,0.08)',  icon: '💊' },
+  Treatments: { color: 'var(--color-primary)', bg: 'var(--color-primary-dim)',  icon: '💊' },
   Progress:   { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)',  icon: '📈' },
 }
 
 const TAG_STYLE: Record<string, { bg: string; color: string }> = {
-  green: { bg: 'rgba(16,185,129,0.08)',  color: '#059669' },
+  green: { bg: 'var(--color-primary-dim)',  color: 'var(--color-primary-dark)' },
   blue:  { bg: 'rgba(59,130,246,0.08)',  color: '#3b82f6' },
   amber: { bg: 'rgba(245,158,11,0.08)',  color: '#d97706' },
   gray:  { bg: 'rgba(156,163,175,0.12)', color: '#6b7280' },
@@ -92,7 +92,7 @@ export default async function LearnPage() {
                   style={{
                     ...glassCard,
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 70%, rgba(240,253,244,0.9) 100%)',
-                    border: '1px solid rgba(16,185,129,0.10)',
+                    border: '1px solid var(--color-primary-dim)',
                   }}>
                   {/* Icon */}
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"

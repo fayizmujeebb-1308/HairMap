@@ -118,7 +118,7 @@ export default function ClinicPage() {
         <div className="text-center pt-12 pb-16">
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold mb-6"
-            style={{ background: 'rgba(16,185,129,0.10)', color: 'var(--color-primary-dark)' }}
+            style={{ background: 'var(--color-primary-dim)', color: 'var(--color-primary-dark)' }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
             For Hair Transplant Clinics &amp; Dermatologists
@@ -138,7 +138,7 @@ export default function ClinicPage() {
               className="px-8 py-4 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80"
               style={{
                 background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
-                boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
+                boxShadow: '0 8px 28px rgba(from var(--color-primary) r g b / 28%)',
               }}
             >
               Request a demo
@@ -185,7 +185,7 @@ export default function ClinicPage() {
               <div key={f.title} style={{ ...glassCard, padding: '22px 20px' }}>
                 <div
                   className="w-10 h-10 rounded-2xl flex items-center justify-center text-xl mb-4"
-                  style={{ background: 'rgba(16,185,129,0.08)' }}
+                  style={{ background: 'var(--color-primary-dim)' }}
                 >
                   {f.icon}
                 </div>
@@ -248,8 +248,8 @@ export default function ClinicPage() {
           className="rounded-3xl px-8 py-10 mb-16 text-center"
           style={{
             ...glassCard,
-            border: '1.5px solid rgba(16,185,129,0.25)',
-            boxShadow: '0 8px 40px rgba(16,185,129,0.12)',
+            border: '1.5px solid rgba(from var(--color-primary) r g b / 25%)',
+            boxShadow: '0 8px 40px var(--color-primary-dim)',
           }}
         >
           <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-4">Clinic Plan</p>
@@ -290,7 +290,7 @@ export default function ClinicPage() {
               className="px-8 py-4 rounded-2xl text-sm font-semibold text-white"
               style={{
                 background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
-                boxShadow: '0 8px 28px rgba(16,185,129,0.28)',
+                boxShadow: '0 8px 28px rgba(from var(--color-primary) r g b / 28%)',
               }}
             >
               Get started — $49/mo
@@ -299,9 +299,9 @@ export default function ClinicPage() {
               href="mailto:fayizmujeebb@gmail.com?subject=HairMap Clinic Plan — Demo Request"
               className="px-8 py-4 rounded-2xl text-sm font-semibold"
               style={{
-                background: 'rgba(16,185,129,0.06)',
+                background: 'var(--color-primary-dim)',
                 color: 'var(--color-primary-dark)',
-                border: '1px solid rgba(16,185,129,0.20)',
+                border: '1px solid rgba(from var(--color-primary) r g b / 20%)',
               }}
             >
               Book a demo first

@@ -35,7 +35,7 @@ function WhyWeAskTooltip() {
         onMouseLeave={() => setOpen(false)}
         onTouchStart={() => setOpen(v => !v)}
         className="w-4 h-4 rounded-full inline-flex items-center justify-center text-[10px] font-bold"
-        style={{ background: 'rgba(16,185,129,0.12)', color: '#059669' }}
+        style={{ background: 'var(--color-primary-dim)', color: 'var(--color-primary-dark)' }}
         aria-label="Why we ask this"
       >
         i
@@ -60,7 +60,7 @@ function NorwoodTooltip() {
         onMouseLeave={() => setOpen(false)}
         onTouchStart={() => setOpen(v => !v)}
         className="ml-1.5 w-4 h-4 rounded-full inline-flex items-center justify-center text-[10px] font-bold"
-        style={{ background: 'rgba(16,185,129,0.12)', color: '#059669' }}
+        style={{ background: 'var(--color-primary-dim)', color: 'var(--color-primary-dark)' }}
         aria-label="What is the Norwood Scale?"
       >
         i
@@ -102,10 +102,10 @@ function OptionBtn({ selected, onClick, children, className = '' }: OptionBtnPro
       onClick={onClick}
       className={`py-2.5 rounded-xl text-sm font-medium transition-all active:scale-95 ${className}`}
       style={selected ? {
-        background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+        background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
         color: '#fff',
         border: '1px solid transparent',
-        boxShadow: '0 4px 12px rgba(16,185,129,0.30)',
+        boxShadow: '0 4px 12px rgba(from var(--color-primary) r g b / 30%)',
       } : {
         background: 'rgba(255,255,255,0.7)',
         backdropFilter: 'blur(8px)',
@@ -194,7 +194,7 @@ export default function OnboardingPage() {
 
       {/* Decorative blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div style={{ position: 'absolute', top: '-80px', right: '-60px', width: '320px', height: '320px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '-80px', right: '-60px', width: '320px', height: '320px', borderRadius: '50%', background: 'radial-gradient(circle, var(--color-primary-dim) 0%, transparent 70%)' }} />
         <div style={{ position: 'absolute', bottom: '-60px', left: '-80px', width: '280px', height: '280px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%)' }} />
       </div>
 
@@ -203,13 +203,13 @@ export default function OnboardingPage() {
         <div className="max-w-lg mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)' }}>
+              style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}>
               <span className="text-white font-bold text-sm">H</span>
             </div>
             <span className="font-semibold text-gray-900">HairMap</span>
           </div>
           <div className="px-3 py-1 rounded-full text-xs font-medium"
-            style={{ background: 'rgba(16,185,129,0.10)', color: '#059669', border: '1px solid rgba(16,185,129,0.18)' }}>
+            style={{ background: 'var(--color-primary-dim)', color: 'var(--color-primary-dark)', border: '1px solid rgba(from var(--color-primary) r g b / 18%)' }}>
             Step {step + 1} of {STEPS.length}
           </div>
         </div>
@@ -221,8 +221,8 @@ export default function OnboardingPage() {
           className="h-full rounded-full transition-all duration-500"
           style={{
             width: `${((step + 1) / STEPS.length) * 100}%`,
-            background: 'linear-gradient(90deg, #059669 0%, #10b981 100%)',
-            boxShadow: '0 0 8px rgba(16,185,129,0.40)',
+            background: 'linear-gradient(90deg, var(--color-primary-dark), var(--color-primary))',
+            boxShadow: '0 0 8px rgba(from var(--color-primary) r g b / 40%)',
           }}
         />
       </div>
@@ -239,12 +239,12 @@ export default function OnboardingPage() {
                   <div
                     className="w-9 h-9 rounded-full flex items-center justify-center text-base transition-all duration-300 shadow-sm"
                     style={i < step ? {
-                      background: 'linear-gradient(135deg, #059669, #10b981)',
-                      boxShadow: '0 2px 8px rgba(16,185,129,0.30)',
+                      background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+                      boxShadow: '0 2px 8px rgba(from var(--color-primary) r g b / 30%)',
                     } : i === step ? {
                       background: 'white',
-                      border: '2px solid #10b981',
-                      boxShadow: '0 0 0 3px rgba(16,185,129,0.12)',
+                      border: '2px solid var(--color-primary)',
+                      boxShadow: '0 0 0 3px var(--color-primary-dim)',
                     } : {
                       background: 'rgba(229,231,235,0.7)',
                       border: '2px solid rgba(209,213,219,0.8)',
@@ -257,7 +257,7 @@ export default function OnboardingPage() {
                   </div>
                   <p
                     className="text-[10px] mt-1.5 font-semibold uppercase tracking-wider transition-colors duration-300"
-                    style={{ color: i === step ? '#059669' : i < step ? '#10b981' : '#d1d5db' }}
+                    style={{ color: i === step ? 'var(--color-primary-dark)' : i < step ? 'var(--color-primary)' : '#d1d5db' }}
                   >
                     {s}
                   </p>
@@ -268,7 +268,7 @@ export default function OnboardingPage() {
                     className="h-0.5 w-16 mx-1 mb-5 rounded-full transition-all duration-500"
                     style={{
                       background: i < step
-                        ? 'linear-gradient(90deg, #059669, #10b981)'
+                        ? 'linear-gradient(90deg, var(--color-primary-dark), var(--color-primary))'
                         : 'rgba(209,213,219,0.6)',
                     }}
                   />
@@ -284,7 +284,7 @@ export default function OnboardingPage() {
             {step === 0 && (
               <div className="space-y-6 animate-fade-in">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#10b981' }}>Hair Profile</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-primary)' }}>Hair Profile</p>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     What&apos;s your hair loss like?
                     <WhyWeAskTooltip />
@@ -338,7 +338,7 @@ export default function OnboardingPage() {
             {step === 1 && (
               <div className="space-y-5 animate-fade-in">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#10b981' }}>Treatment Stack</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-primary)' }}>Treatment Stack</p>
                   <h2 className="text-2xl font-bold text-gray-900">What are you currently using?</h2>
                   <p className="text-sm text-gray-500 mt-1.5">Add your first treatment to start tracking.</p>
                 </div>
@@ -353,10 +353,10 @@ export default function OnboardingPage() {
                           <button key={t} type="button" onClick={() => setTreatmentName(t)}
                             className="px-3 py-1.5 rounded-full text-xs font-medium transition-all active:scale-95"
                             style={treatmentName === t ? {
-                              background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                              background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                               color: '#fff',
                               border: '1px solid transparent',
-                              boxShadow: '0 2px 8px rgba(16,185,129,0.28)',
+                              boxShadow: '0 2px 8px rgba(from var(--color-primary) r g b / 28%)',
                             } : {
                               background: 'rgba(255,255,255,0.7)',
                               color: '#374151',
@@ -384,8 +384,8 @@ export default function OnboardingPage() {
                           color: '#111827',
                         }}
                         onFocus={e => {
-                          e.currentTarget.style.border = '1px solid rgba(16,185,129,0.45)'
-                          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.10)'
+                          e.currentTarget.style.border = '1px solid rgba(from var(--color-primary) r g b / 45%)'
+                          e.currentTarget.style.boxShadow = '0 0 0 3px var(--color-primary-dim)'
                         }}
                         onBlur={e => {
                           e.currentTarget.style.border = '1px solid rgba(229,231,235,0.8)'
@@ -402,10 +402,10 @@ export default function OnboardingPage() {
                           <button key={t} type="button" onClick={() => setTreatmentType(t)}
                             className="py-2.5 rounded-xl text-xs font-medium transition-all active:scale-95 flex items-center justify-center gap-1"
                             style={treatmentType === t ? {
-                              background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                              background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                               color: '#fff',
                               border: '1px solid transparent',
-                              boxShadow: '0 2px 8px rgba(16,185,129,0.28)',
+                              boxShadow: '0 2px 8px rgba(from var(--color-primary) r g b / 28%)',
                             } : {
                               background: 'rgba(255,255,255,0.7)',
                               color: '#374151',
@@ -434,7 +434,7 @@ export default function OnboardingPage() {
 
                 {skipTreatment && (
                   <div className="py-8 text-center rounded-2xl"
-                    style={{ background: 'rgba(16,185,129,0.04)', border: '1px dashed rgba(16,185,129,0.20)' }}>
+                    style={{ background: 'var(--color-primary-dim)', border: '1px dashed rgba(from var(--color-primary) r g b / 20%)' }}>
                     <p className="text-2xl mb-2">💊</p>
                     <p className="text-sm text-gray-500">You can add treatments later from your dashboard.</p>
                   </div>
@@ -442,7 +442,7 @@ export default function OnboardingPage() {
 
                 <button type="button" onClick={() => setSkipTreatment(v => !v)}
                   className="text-xs font-medium transition-colors"
-                  style={{ color: '#10b981' }}>
+                  style={{ color: 'var(--color-primary)' }}>
                   {skipTreatment ? '← Add a treatment' : 'Skip for now →'}
                 </button>
               </div>
@@ -452,7 +452,7 @@ export default function OnboardingPage() {
             {step === 2 && (
               <div className="space-y-6 animate-fade-in">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#10b981' }}>Daily Reminder</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-primary)' }}>Daily Reminder</p>
                   <h2 className="text-2xl font-bold text-gray-900">Never miss a treatment</h2>
                   <p className="text-sm text-gray-500 mt-1.5">Consistency is the #1 factor in results. We&apos;ll remind you every day.</p>
                 </div>
@@ -461,7 +461,7 @@ export default function OnboardingPage() {
                   <>
                     {/* Consistency tip */}
                     <div className="flex items-start gap-3 px-4 py-3 rounded-2xl"
-                      style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                      style={{ background: 'var(--color-primary-dim)', border: '1px solid rgba(from var(--color-primary) r g b / 15%)' }}>
                       <span className="text-lg mt-0.5">🔥</span>
                       <div>
                         <p className="text-xs font-semibold text-gray-700">Streaks boost results</p>
@@ -483,8 +483,8 @@ export default function OnboardingPage() {
                           color: '#111827',
                         }}
                         onFocus={e => {
-                          e.currentTarget.style.border = '1px solid rgba(16,185,129,0.45)'
-                          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.10)'
+                          e.currentTarget.style.border = '1px solid rgba(from var(--color-primary) r g b / 45%)'
+                          e.currentTarget.style.boxShadow = '0 0 0 3px var(--color-primary-dim)'
                         }}
                         onBlur={e => {
                           e.currentTarget.style.border = '1px solid rgba(229,231,235,0.8)'
@@ -502,7 +502,7 @@ export default function OnboardingPage() {
                       </div>
                       <button type="button" onClick={() => setEmailEnabled(v => !v)}
                         className="relative w-12 h-6 rounded-full transition-all duration-200 shrink-0"
-                        style={{ background: emailEnabled ? 'linear-gradient(135deg, #059669, #10b981)' : 'rgba(209,213,219,1)', boxShadow: emailEnabled ? '0 2px 8px rgba(16,185,129,0.35)' : 'none' }}>
+                        style={{ background: emailEnabled ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' : 'rgba(209,213,219,1)', boxShadow: emailEnabled ? '0 2px 8px rgba(from var(--color-primary) r g b / 35%)' : 'none' }}>
                         <span
                           className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
                           style={{ transform: emailEnabled ? 'translateX(24px)' : 'translateX(0)' }}
@@ -514,7 +514,7 @@ export default function OnboardingPage() {
 
                 {skipReminder && (
                   <div className="py-8 text-center rounded-2xl"
-                    style={{ background: 'rgba(16,185,129,0.04)', border: '1px dashed rgba(16,185,129,0.20)' }}>
+                    style={{ background: 'var(--color-primary-dim)', border: '1px dashed rgba(from var(--color-primary) r g b / 20%)' }}>
                     <p className="text-2xl mb-2">⏰</p>
                     <p className="text-sm text-gray-500">You can set reminders anytime from your account settings.</p>
                   </div>
@@ -522,7 +522,7 @@ export default function OnboardingPage() {
 
                 <button type="button" onClick={() => setSkipReminder(v => !v)}
                   className="text-xs font-medium transition-colors"
-                  style={{ color: '#10b981' }}>
+                  style={{ color: 'var(--color-primary)' }}>
                   {skipReminder ? '← Set a reminder' : 'Skip for now →'}
                 </button>
               </div>
@@ -547,9 +547,9 @@ export default function OnboardingPage() {
                   disabled={(step === 0 && !step1Valid) || (step === 1 && !step2Valid)}
                   className="text-sm font-semibold px-7 py-3 rounded-2xl transition-all active:scale-95 disabled:opacity-40"
                   style={{
-                    background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                    background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                     color: '#fff',
-                    boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+                    boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
                   }}>
                   Continue →
                 </button>
@@ -560,9 +560,9 @@ export default function OnboardingPage() {
                   disabled={saving}
                   className="text-sm font-semibold px-7 py-3 rounded-2xl transition-all active:scale-95 disabled:opacity-40"
                   style={{
-                    background: saving ? 'rgba(16,185,129,0.6)' : 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                    background: saving ? 'var(--color-primary)' : 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
                     color: '#fff',
-                    boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+                    boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
                   }}>
                   {saving ? 'Saving…' : 'Go to Dashboard →'}
                 </button>

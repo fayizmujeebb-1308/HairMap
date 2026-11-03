@@ -36,7 +36,7 @@ export default function ErrorScreen({
           onClick={reset}
           className="flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80"
           style={{
-            background: 'linear-gradient(135deg, #059669, #10b981)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
             boxShadow: '0 6px 20px rgba(29,158,117,0.28)',
           }}
         >

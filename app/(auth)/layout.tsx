@@ -6,7 +6,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Decorative blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div style={{ position: 'absolute', top: '-100px', right: '-80px', width: '360px', height: '360px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.09) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', top: '-100px', right: '-80px', width: '360px', height: '360px', borderRadius: '50%', background: 'radial-gradient(circle, var(--color-primary-dim) 0%, transparent 70%)' }} />
         <div style={{ position: 'absolute', bottom: '-80px', left: '-100px', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(52,211,153,0.07) 0%, transparent 70%)' }} />
       </div>
 

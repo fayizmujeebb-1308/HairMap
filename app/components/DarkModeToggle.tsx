@@ -111,7 +111,7 @@ export default function DarkModeToggle() {
             onClick={() => select(opt.value)}
             className="relative flex items-center gap-1 px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-colors duration-150 select-none"
             style={{
-              color: active ? '#059669' : 'rgba(60,60,67,0.6)',
+              color: active ? 'var(--color-primary)' : 'rgba(60,60,67,0.6)',
               zIndex: 1,
               WebkitTapHighlightColor: 'transparent',
             }}

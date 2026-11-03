@@ -112,7 +112,7 @@ export default async function AdminUsers({
                     <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold"
                       style={{
                         background: isPro ? 'rgba(5,150,105,0.12)' : 'rgba(100,116,139,0.1)',
-                        color: isPro ? '#059669' : 'var(--text-tertiary)',
+                        color: isPro ? 'var(--color-primary)' : 'var(--text-tertiary)',
                       }}>
                       {u.subscription_status || 'free'}
                     </span>
@@ -128,7 +128,7 @@ export default async function AdminUsers({
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-[10px]" style={{ color: u.onboarding_completed ? '#059669' : 'var(--text-tertiary)' }}>
+                    <span className="text-[10px]" style={{ color: u.onboarding_completed ? 'var(--color-primary)' : 'var(--text-tertiary)' }}>
                       {u.onboarding_completed ? '✓ Yes' : '✗ No'}
                     </span>
                   </td>

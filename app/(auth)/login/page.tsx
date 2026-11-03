@@ -28,7 +28,7 @@ const inputBase: React.CSSProperties = {
 }
 
 const inputFocus: React.CSSProperties = {
-  border: '1px solid rgba(16,185,129,0.45)',
+  border: '1px solid rgba(from var(--color-primary) r g b / 45%)',
   boxShadow: '0 0 0 3px var(--color-primary-dim)',
 }
 
@@ -140,7 +140,7 @@ export default function LoginPage() {
             className="w-full disabled:opacity-50 text-white font-semibold py-2.5 text-sm transition-opacity"
             style={{
               background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
-              boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+              boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
               borderRadius: 14,
             }}
           >

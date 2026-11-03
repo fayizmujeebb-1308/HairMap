@@ -85,7 +85,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       <div className="pt-2 pb-5 flex items-center justify-between">
         <Link href="/learn"
           className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors active:opacity-70"
-          style={{ color: '#059669' }}>
+          style={{ color: 'var(--color-primary-dark)' }}>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
@@ -186,7 +186,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     <p className="text-xs font-semibold text-gray-900 leading-snug line-clamp-2">{rel.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       {rel.tag && (
-                        <span className={`text-[9px] font-semibold`} style={{ color: rel.tag.style === 'green' ? '#10b981' : rel.tag.style === 'amber' ? '#d97706' : '#2563eb' }}>
+                        <span className={`text-[9px] font-semibold`} style={{ color: rel.tag.style === 'green' ? 'var(--color-primary)' : rel.tag.style === 'amber' ? '#d97706' : '#2563eb' }}>
                           {rel.tag.label}
                         </span>
                       )}

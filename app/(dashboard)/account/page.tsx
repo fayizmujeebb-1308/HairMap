@@ -46,7 +46,7 @@ export default async function AccountPage() {
       <div className="overflow-hidden animate-fade-in-up delay-75" style={{ ...glassCard, padding: 0 }}>
         {/* Gradient banner */}
         <div className="h-24 relative"
-          style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 60%, #34d399 100%)' }}>
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}>
           {/* Decorative blobs */}
           <div className="absolute top-2 right-6 w-12 h-12 rounded-full opacity-20"
             style={{ background: 'rgba(255,255,255,0.4)' }} />
@@ -63,14 +63,14 @@ export default async function AccountPage() {
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 relative"
               style={{
                 zIndex: 10,
-                background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
-                boxShadow: '0 4px 16px rgba(16,185,129,0.35)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+                boxShadow: '0 4px 16px rgba(from var(--color-primary) r g b / 35%)',
               }}>
               <span className="font-serif text-2xl text-white">{initials}</span>
             </div>
             <Link href="/account/edit"
               className="flex items-center gap-1.5 text-xs font-semibold text-primary px-3 py-2 rounded-xl active:scale-95 transition-transform mb-1"
-              style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.15)' }}>
+              style={{ background: 'var(--color-primary-dim)', border: '1px solid rgba(from var(--color-primary) r g b / 15%)' }}>
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>
@@ -86,7 +86,7 @@ export default async function AccountPage() {
           <div className="flex items-center gap-2 mt-3">
             <span className="text-[10px] px-2.5 py-1 rounded-full font-bold"
               style={{
-                background: isPro ? 'linear-gradient(135deg, #059669, #10b981)' : 'rgba(229,231,235,0.8)',
+                background: isPro ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' : 'rgba(229,231,235,0.8)',
                 color: isPro ? '#fff' : '#9ca3af',
               }}>
               {isPro ? '✦ Pro' : 'Free plan'}
@@ -140,7 +140,7 @@ export default async function AccountPage() {
       {/* ── Quick links ── */}
       <div className="overflow-hidden animate-fade-in-up delay-200" style={{ ...glassCard, padding: 0 }}>
         {[
-          { href: '/log/setup', label: 'Manage treatment stack', icon: '💊', iconBg: 'rgba(16,185,129,0.10)' },
+          { href: '/log/setup', label: 'Manage treatment stack', icon: '💊', iconBg: 'var(--color-primary-dim)' },
           { href: '/photos',    label: 'Progress photos',        icon: '📸', iconBg: 'rgba(99,102,241,0.08)' },
           { href: '/progress',  label: 'AI analysis & charts',   icon: '🤖', iconBg: 'rgba(139,92,246,0.08)' },
           { href: '/learn',     label: 'Education library',      icon: '📚', iconBg: 'rgba(245,158,11,0.10)' },
@@ -167,8 +167,8 @@ export default async function AccountPage() {
         <Link href="/pricing"
           className="block rounded-2xl px-5 py-5 active:opacity-90 transition-opacity animate-fade-in-up delay-300"
           style={{
-            background: 'linear-gradient(135deg, #065f46 0%, #059669 50%, #10b981 100%)',
-            boxShadow: '0 12px 40px rgba(16,185,129,0.25)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+            boxShadow: '0 12px 40px rgba(from var(--color-primary) r g b / 25%)',
           }}>
           <div className="flex items-start justify-between">
             <div>

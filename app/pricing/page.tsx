@@ -86,7 +86,7 @@ export default function PricingPage() {
         <Link href="/" className="flex items-center gap-2">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="3" fill="white" />
@@ -98,7 +98,7 @@ export default function PricingPage() {
         <Link
           href="/login"
           className="text-sm font-semibold px-4 py-2 rounded-xl transition-opacity active:opacity-70"
-          style={{ color: '#059669' }}
+          style={{ color: 'var(--color-primary-dark)' }}
         >
           Sign in
         </Link>
@@ -123,7 +123,7 @@ export default function PricingPage() {
           <button
             onClick={() => setAnnual(a => !a)}
             className="relative w-12 h-6 rounded-full transition-colors duration-200"
-            style={{ background: annual ? 'linear-gradient(135deg, #059669, #10b981)' : 'rgba(229,231,235,0.8)' }}
+            style={{ background: annual ? 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' : 'rgba(229,231,235,0.8)' }}
           >
             <span
               className="absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
@@ -134,7 +134,7 @@ export default function PricingPage() {
             Annual
             <span
               className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-              style={{ background: 'rgba(16,185,129,0.12)', color: '#059669' }}
+              style={{ background: 'var(--color-primary-dim)', color: 'var(--color-primary-dark)' }}
             >
               Save {savings}%
             </span>
@@ -165,10 +165,10 @@ export default function PricingPage() {
                 <li key={f} className="flex items-start gap-2.5">
                   <div
                     className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                    style={{ background: 'rgba(16,185,129,0.10)' }}
+                    style={{ background: 'var(--color-primary-dim)' }}
                   >
                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                      <path d="M1.5 4l1.5 1.5L6.5 2" stroke="#10b981" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1.5 4l1.5 1.5L6.5 2" stroke="var(--color-primary)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                   <span className="text-sm text-gray-600 leading-snug">{f}</span>
@@ -183,14 +183,14 @@ export default function PricingPage() {
             style={{
               ...glassCard,
               padding: '28px 24px',
-              border: '1.5px solid rgba(16,185,129,0.30)',
-              boxShadow: '0 8px 40px rgba(16,185,129,0.14)',
+              border: '1.5px solid rgba(from var(--color-primary) r g b / 30%)',
+              boxShadow: '0 8px 40px rgba(from var(--color-primary) r g b / 14%)',
             }}
           >
             {/* Popular badge */}
             <div
               className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+              style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
             >
               Most popular
             </div>
@@ -210,8 +210,8 @@ export default function PricingPage() {
               href="/upgrade"
               className="block w-full py-3.5 rounded-2xl text-sm font-semibold text-center text-white mb-8 transition-opacity active:opacity-80"
               style={{
-                background: 'linear-gradient(135deg, #059669, #10b981)',
-                boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+                boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
               }}
             >
               Upgrade to Pro
@@ -222,7 +222,7 @@ export default function PricingPage() {
                 <li key={f} className="flex items-start gap-2.5">
                   <div
                     className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                    style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+                    style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
                   >
                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                       <path d="M1.5 4l1.5 1.5L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -247,9 +247,9 @@ export default function PricingPage() {
               href="/clinic"
               className="block w-full py-3.5 rounded-2xl text-sm font-semibold text-center mb-8 transition-opacity active:opacity-70"
               style={{
-                background: 'rgba(16,185,129,0.08)',
-                color: '#059669',
-                border: '1px solid rgba(16,185,129,0.20)',
+                background: 'var(--color-primary-dim)',
+                color: 'var(--color-primary-dark)',
+                border: '1px solid rgba(from var(--color-primary) r g b / 20%)',
               }}
             >
               Learn more →
@@ -260,10 +260,10 @@ export default function PricingPage() {
                 <li key={f} className="flex items-start gap-2.5">
                   <div
                     className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                    style={{ background: 'rgba(16,185,129,0.10)' }}
+                    style={{ background: 'var(--color-primary-dim)' }}
                   >
                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                      <path d="M1.5 4l1.5 1.5L6.5 2" stroke="#10b981" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1.5 4l1.5 1.5L6.5 2" stroke="var(--color-primary)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                   <span className="text-sm text-gray-600 leading-snug">{f}</span>
@@ -284,7 +284,7 @@ export default function PricingPage() {
                 <tr style={{ borderBottom: '1px solid rgba(229,231,235,0.4)' }}>
                   <th className="text-left px-6 py-3 text-xs text-gray-400 font-semibold w-1/2">Feature</th>
                   <th className="text-center px-4 py-3 text-xs text-gray-400 font-semibold">Free</th>
-                  <th className="text-center px-4 py-3 text-xs font-bold" style={{ color: '#059669' }}>Pro</th>
+                  <th className="text-center px-4 py-3 text-xs font-bold" style={{ color: 'var(--color-primary-dark)' }}>Pro</th>
                   <th className="text-center px-4 py-3 text-xs text-gray-400 font-semibold">Clinic</th>
                 </tr>
               </thead>
@@ -307,7 +307,7 @@ export default function PricingPage() {
                   >
                     <td className="px-6 py-3.5 text-sm text-gray-700">{feature}</td>
                     <td className="px-4 py-3.5 text-center text-sm text-gray-400">{free}</td>
-                    <td className="px-4 py-3.5 text-center text-sm font-semibold" style={{ color: '#059669' }}>{pro}</td>
+                    <td className="px-4 py-3.5 text-center text-sm font-semibold" style={{ color: 'var(--color-primary-dark)' }}>{pro}</td>
                     <td className="px-4 py-3.5 text-center text-sm text-gray-500">{clinic}</td>
                   </tr>
                 ))}
@@ -355,8 +355,8 @@ export default function PricingPage() {
         <div
           className="rounded-3xl text-center px-8 py-12"
           style={{
-            background: 'linear-gradient(135deg, rgba(5,150,105,0.06) 0%, rgba(16,185,129,0.10) 100%)',
-            border: '1px solid rgba(16,185,129,0.15)',
+            background: 'linear-gradient(135deg, rgba(5,150,105,0.06) 0%, var(--color-primary-dim) 100%)',
+            border: '1px solid rgba(from var(--color-primary) r g b / 15%)',
           }}
         >
           <p className="font-serif text-2xl text-gray-900 mb-3">
@@ -370,8 +370,8 @@ export default function PricingPage() {
               href="/login"
               className="px-8 py-3.5 rounded-2xl text-sm font-semibold text-white"
               style={{
-                background: 'linear-gradient(135deg, #059669, #10b981)',
-                boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+                boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
               }}
             >
               Get started free
@@ -381,8 +381,8 @@ export default function PricingPage() {
               className="px-8 py-3.5 rounded-2xl text-sm font-semibold"
               style={{
                 background: 'var(--bg-card)',
-                color: '#059669',
-                border: '1px solid rgba(16,185,129,0.20)',
+                color: 'var(--color-primary-dark)',
+                border: '1px solid rgba(from var(--color-primary) r g b / 20%)',
               }}
             >
               For clinics →

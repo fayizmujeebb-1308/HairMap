@@ -88,7 +88,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
         <Link
           href="/account"
           className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors"
-          style={{ color: '#059669' }}
+          style={{ color: 'var(--color-primary-dark)' }}
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -102,7 +102,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
         <div className="text-center mb-8">
           <div
             className="w-14 h-14 rounded-3xl flex items-center justify-center mx-auto mb-5"
-            style={{ background: 'linear-gradient(135deg, #059669, #10b981)', boxShadow: '0 8px 24px rgba(16,185,129,0.30)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))', boxShadow: '0 8px 24px rgba(from var(--color-primary) r g b / 30%)' }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="white" />
@@ -121,8 +121,8 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
             background: 'var(--bg-card)',
             backdropFilter: 'blur(20px) saturate(1.8)',
             WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
-            border: '1.5px solid rgba(16,185,129,0.25)',
-            boxShadow: '0 8px 40px rgba(16,185,129,0.12)',
+            border: '1.5px solid rgba(from var(--color-primary) r g b / 25%)',
+            boxShadow: '0 8px 40px var(--color-primary-dim)',
           }}
         >
           {/* Billing toggle */}
@@ -142,7 +142,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
                   className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200"
                   style={annual === key ? {
                     background: 'white',
-                    color: '#059669',
+                    color: 'var(--color-primary-dark)',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   } : {
                     color: '#9ca3af',
@@ -153,7 +153,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
               ))}
             </div>
             {annual && (
-              <p className="text-center text-[10px] font-bold mt-2.5" style={{ color: '#059669' }}>
+              <p className="text-center text-[10px] font-bold mt-2.5" style={{ color: 'var(--color-primary-dark)' }}>
                 Save {savings}% — billed as $99/year
               </p>
             )}
@@ -177,7 +177,7 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
                 <li key={f} className="flex items-start gap-2.5">
                   <div
                     className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                    style={{ background: 'linear-gradient(135deg, #059669, #10b981)' }}
+                    style={{ background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))' }}
                   >
                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                       <path d="M1.5 4l1.5 1.5L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -197,8 +197,8 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
               disabled={loading}
               className="w-full py-4 rounded-2xl text-sm font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-60"
               style={{
-                background: 'linear-gradient(135deg, #059669, #10b981)',
-                boxShadow: '0 6px 20px rgba(16,185,129,0.32)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark), var(--color-primary))',
+                boxShadow: '0 6px 20px rgba(from var(--color-primary) r g b / 32%)',
               }}
             >
               {loading ? 'Opening checkout…' : `Upgrade to Pro · ${ annual ? '$99/yr' : '$12/mo' }`}
@@ -219,9 +219,9 @@ export default function UpgradeClient({ userEmail, priceIdMonthly, priceIdYearly
         {/* Trust footer */}
         <p className="text-center text-[10px] text-gray-400 mt-6 leading-relaxed">
           By subscribing you agree to our{' '}
-          <Link href="/terms" className="underline" style={{ color: '#059669' }}>Terms</Link>
+          <Link href="/terms" className="underline" style={{ color: 'var(--color-primary-dark)' }}>Terms</Link>
           {' '}and{' '}
-          <Link href="/privacy" className="underline" style={{ color: '#059669' }}>Privacy Policy</Link>.
+          <Link href="/privacy" className="underline" style={{ color: 'var(--color-primary-dark)' }}>Privacy Policy</Link>.
         </p>
       </div>
     </div>

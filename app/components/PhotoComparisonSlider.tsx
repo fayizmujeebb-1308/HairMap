@@ -115,8 +115,8 @@ export default function PhotoComparisonSlider({
             left: `${position}%`,
             width: 2,
             transform: 'translateX(-50%)',
-            background: 'linear-gradient(to bottom, rgba(16,185,129,0.6), white, rgba(16,185,129,0.6))',
-            boxShadow: '0 0 12px rgba(16,185,129,0.5), 0 0 4px rgba(255,255,255,0.8)',
+            background: 'linear-gradient(to bottom, var(--color-primary), white, var(--color-primary))',
+            boxShadow: '0 0 12px var(--color-primary-dim), 0 0 4px rgba(255,255,255,0.8)',
           }}
         />
 
@@ -132,8 +132,8 @@ export default function PhotoComparisonSlider({
             background: 'rgba(255,255,255,0.85)',
             backdropFilter: 'blur(12px) saturate(1.8)',
             WebkitBackdropFilter: 'blur(12px) saturate(1.8)',
-            border: '1.5px solid rgba(16,185,129,0.4)',
-            boxShadow: '0 2px 16px rgba(16,185,129,0.25), 0 1px 4px rgba(0,0,0,0.15)',
+            border: '1.5px solid var(--color-primary-dim)',
+            boxShadow: '0 2px 16px rgba(from var(--color-primary) r g b / 25%), 0 1px 4px rgba(0,0,0,0.15)',
             willChange: 'transform',
           }}
         >
@@ -151,7 +151,7 @@ export default function PhotoComparisonSlider({
         </div>
         <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
           <span className="text-[9px] text-white font-semibold px-1.5 py-0.5 rounded-md"
-            style={{ background: 'rgba(16,185,129,0.80)' }}>{afterLabel}</span>
+            style={{ background: 'rgba(from var(--color-primary) r g b / 80%)' }}>{afterLabel}</span>
         </div>
       </div>
 
