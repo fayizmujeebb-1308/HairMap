@@ -35,6 +35,10 @@ create table if not exists profiles (
   paddle_subscription_id text,
   subscription_status text default 'free',
   is_admin boolean default false,
+  theme text default 'blossom' check (theme in (
+    'blossom','clinical','mint','calm-blue',
+    'lavender','sand','dark','midnight','high-contrast','system'
+  )),
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );

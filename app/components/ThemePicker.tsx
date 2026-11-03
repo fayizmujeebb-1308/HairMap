@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 type ThemeId =
   | 'blossom'
@@ -44,21 +45,51 @@ export default function ThemePicker() {
 
   useEffect(() => {
     setMounted(true)
+    // Fast path: localStorage (already applied by inline script in layout)
+    let localTheme: ThemeId | null = null
     try {
-      const saved = localStorage.getItem('hairmap-theme') as ThemeId | null
-      if (saved && VALID_IDS.includes(saved)) setActive(saved)
-      else setActive('blossom')
-    } catch {
-      setActive('blossom')
-    }
+      const s = localStorage.getItem('hairmap-theme') as ThemeId | null
+      if (s && VALID_IDS.includes(s)) localTheme = s
+    } catch { /* ignore */ }
+    setActive(localTheme ?? 'blossom')
+
+    // Slow path: Supabase (wins on a fresh device with no localStorage)
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return
+      supabase
+        .from('profiles')
+        .select('theme')
+        .eq('user_id', data.user.id)
+        .single()
+        .then(({ data: profile }) => {
+          const dbTheme = profile?.theme as ThemeId | null
+          if (dbTheme && VALID_IDS.includes(dbTheme) && dbTheme !== localTheme) {
+            // DB has a different (more up-to-date) theme — apply it
+            setActive(dbTheme)
+            document.documentElement.setAttribute('data-theme', dbTheme)
+            try { localStorage.setItem('hairmap-theme', dbTheme) } catch { /* ignore */ }
+          }
+        })
+    })
   }, [])
 
   function applyTheme(id: ThemeId) {
     setActive(id)
-    try {
-      localStorage.setItem('hairmap-theme', id)
-    } catch { /* ignore */ }
+    // Apply instantly — no waiting for network
     document.documentElement.setAttribute('data-theme', id)
+    try { localStorage.setItem('hairmap-theme', id) } catch { /* ignore */ }
+    // Fire-and-forget sync to Supabase for cross-device persistence
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        supabase
+          .from('profiles')
+          .update({ theme: id })
+          .eq('user_id', data.user.id)
+          .then(() => { /* silent — localStorage is the fast path */ })
+      }
+    })
   }
 
   if (!mounted) return null
