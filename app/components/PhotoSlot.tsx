@@ -4,6 +4,7 @@ import { useRef, useState, useTransition } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { uploadPhoto } from '@/app/actions/photos'
+import { useIsNative, takePhoto } from '@/app/hooks/useNativeCamera'
 
 interface Props {
   angle:     string
@@ -19,6 +20,7 @@ export default function PhotoSlot({ angle, label, desc, photoUrl: initialUrl }: 
   const [error, setError]     = useState('')
   const [preview, setPreview] = useState(false)
   const inputRef              = useRef<HTMLInputElement>(null)
+  const isNative              = useIsNative()
 
   const handleFile = (file: File) => {
     setError('')
@@ -61,8 +63,24 @@ export default function PhotoSlot({ angle, label, desc, photoUrl: initialUrl }: 
       <div
         role="button"
         tabIndex={0}
-        onClick={() => !pending && inputRef.current?.click()}
-        onKeyDown={e => e.key === 'Enter' && inputRef.current?.click()}
+        onClick={async () => {
+          if (pending) return
+          if (isNative) {
+            const file = await takePhoto()
+            if (file) handleFile(file)
+          } else {
+            inputRef.current?.click()
+          }
+        }}
+        onKeyDown={async e => {
+          if (e.key !== 'Enter') return
+          if (isNative) {
+            const file = await takePhoto()
+            if (file) handleFile(file)
+          } else {
+            inputRef.current?.click()
+          }
+        }}
         onDragOver={e => e.preventDefault()}
         onDrop={handleDrop}
         className={`relative rounded-2xl border overflow-hidden aspect-[4/5] flex flex-col cursor-pointer select-none
