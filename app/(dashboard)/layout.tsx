@@ -1,12 +1,20 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import BottomNav from '@/app/components/BottomNav'
 import DarkModeToggle from '@/app/components/DarkModeToggle'
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) router.replace('/login')
+    })
+  }, [router])
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-body)' }}>
