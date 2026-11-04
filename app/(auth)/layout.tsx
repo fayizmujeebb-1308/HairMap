@@ -12,11 +12,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       <header className="relative z-10 px-6 py-5">
         <Link href="/" className="flex items-center gap-2.5 w-fit">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)' }}>
-            <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="12" y="10" width="22" height="80" rx="11" fill="white"/>
-              <rect x="66" y="10" width="22" height="80" rx="11" fill="white"/>
-              <path d="M34 48 C42 48 44 56 50 56 C56 56 58 48 66 48" stroke="white" strokeWidth="10" strokeLinecap="round" fill="none"/>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm" style={{ background: '#3a9d7f' }}>
+            <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="12" width="14" height="76" rx="7" fill="white"/>
+              <rect x="68" y="12" width="14" height="76" rx="7" fill="white"/>
+              <path d="M32 48 C45 48 55 58 68 48" stroke="white" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
             </svg>
           </div>
           <span className="font-semibold text-gray-900 text-lg">HairMap</span>

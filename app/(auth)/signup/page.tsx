@@ -109,6 +109,16 @@ export default function SignupPage() {
           </div>
           <span className="font-semibold text-gray-900 text-xl">HairMap</span>
         </div>
+        <div className="flex items-center gap-2.5 mb-6">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ background: '#3a9d7f' }}>
+            <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="12" width="14" height="76" rx="7" fill="white"/>
+              <rect x="68" y="12" width="14" height="76" rx="7" fill="white"/>
+              <path d="M32 48 C45 48 55 58 68 48" stroke="white" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+            </svg>
+          </div>
+          <span className="font-semibold text-gray-900 text-xl">HairMap</span>
+        </div>
         <h1 className="font-serif text-2xl text-gray-900 mb-1">Create your account</h1>
         <p className="text-gray-500 text-sm mb-8">Start tracking your hair health today</p>
 
