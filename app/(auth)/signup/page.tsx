@@ -98,6 +98,15 @@ export default function SignupPage() {
   return (
     <div className="w-full max-w-md">
       <div style={glassCard}>
+
+        <div className="flex items-center gap-2.5 mb-6">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)' }}>
+            <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 3.5V14.5M14 3.5V14.5M4 9H10.5C11.5 9 12.5 8.2 13 7" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <span className="font-semibold text-gray-900 text-xl">HairMap</span>
+        </div>
         <h1 className="font-serif text-2xl text-gray-900 mb-1">Create your account</h1>
         <p className="text-gray-500 text-sm mb-8">Start tracking your hair health today</p>
 
