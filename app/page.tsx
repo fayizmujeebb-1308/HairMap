@@ -25,8 +25,12 @@ export default async function WelcomePage() {
       {/* Header */}
       <header className="px-6 py-5 flex items-center justify-between border-b border-gray-100" style={{ borderWidth: '0.5px' }}>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white font-bold text-sm">H</span>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm" style={{ background: '#3a9d7f' }}>
+            <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="12" width="14" height="76" rx="7" fill="white"/>
+              <rect x="68" y="12" width="14" height="76" rx="7" fill="white"/>
+              <path d="M32 48 C45 48 55 58 68 48" stroke="white" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+            </svg>
           </div>
           <span className="font-semibold text-gray-900 text-lg">HairMap</span>
         </div>
