@@ -48,7 +48,7 @@ export default function LoginPage() {
     setError('')
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
       setError(error.message)
@@ -56,7 +56,25 @@ export default function LoginPage() {
       return
     }
 
-    window.location.href = '/dashboard'
+    // Bridge: write session into cookies so server-side middleware can read it
+    // This fixes the Android/Capacitor WebView sign-in loop
+    if (data.session) {
+      try {
+        await fetch('/api/set-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          }),
+        })
+      } catch {
+        // Non-fatal: session is already in localStorage, cookie is best-effort
+      }
+    }
+
+    router.push('/dashboard')
+    router.refresh()
   }
 
   async function handleGoogle() {
@@ -179,7 +197,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
-
-
-
