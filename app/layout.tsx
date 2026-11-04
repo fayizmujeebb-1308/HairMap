@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { DM_Sans, DM_Serif_Display } from 'next/font/google'
 import './globals.css'
 import ServiceWorkerRegistrar from '@/app/components/ServiceWorkerRegistrar'
+import { PosthogProvider } from '@/app/components/PosthogProvider'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -94,7 +95,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${dmSans.variable} ${dmSerif.variable} font-sans antialiased`}>
         <ServiceWorkerRegistrar />
-        {children}
+        <PosthogProvider>
+          {children}
+        </PosthogProvider>
       </body>
     </html>
   )

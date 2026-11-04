@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import posthog from 'posthog-js'
 
 function renderMarkdown(text: string) {
   return text
@@ -28,6 +29,7 @@ export default function AIAnalysis({ lastAnalysis, isPro, compact }: { lastAnaly
       if (data.error) { setError(data.error); return }
       setResult(data.analysis)
       setDone(true)
+      posthog.capture('ai_analysis_completed')
     } catch {
       setError('Something went wrong. Try again.')
     } finally {
