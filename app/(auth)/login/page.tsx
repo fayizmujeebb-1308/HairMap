@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 const glassCard = {
@@ -32,6 +33,7 @@ const inputFocus: React.CSSProperties = {
 }
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(true)
@@ -54,8 +56,7 @@ export default function LoginPage() {
       return
     }
 
-    setLoading(false)
-    window.location.href = '/dashboard'
+    router.push('/dashboard')
   }
 
   async function handleGoogle() {
