@@ -11,7 +11,7 @@ const TEMPLATES = [
   {
     id: 'gold',
     name: 'Gold Standard',
-    description: 'Dermatologist-endorsed first-line protocol for androgenetic alopecia',
+    description: 'Commonly used protocol',
     badge: '⭐ Most recommended',
     badgeColor: 'bg-primary/10 text-primary',
     treatments: [
